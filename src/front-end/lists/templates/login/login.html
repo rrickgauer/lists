@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% include 'includes/header.html' %}
+    <title>Log in</title>
+</head>
+
+<body>
+    <div class="container mt-5 py-5">
+
+        <div class="d-flex justify-content-center">
+            <div class="card card-body card-form-sm">
+                <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
+                    <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#tab-content-login">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab-content-signup">Sign up</a></li>
+                </ul>
+    
+                <div class="tab-content">
+                    <!-- login  -->
+                    <div class="tab-pane fade show active" id="tab-content-login">
+                        <form id="login-form">
+                            <!-- email -->
+                            <div class="form-group">
+                                <label for="login-form-input-email">Email address</label>
+                                <input type="email" class="form-control form-input-email" id="login-form-input-email" required>
+                                <div class="invalid-feedback"></div>
+                            </div>
+    
+                            <!-- password -->
+                            <div class="form-group">
+                                <label for="login-form-input-password">Password</label>
+                                <input type="password" class="form-control form-input-password" id="login-form-input-password" required>
+                                <div class="invalid-feedback"></div>
+                            </div>
+    
+                            <!-- submit button -->
+                            <button type="button" class="btn btn-success btn-block" id="login-form-btn-submit">Log in</button>
+                        </form>
+    
+                    </div>
+    
+                    <!-- create account -->
+                    <div class="tab-pane fade" id="tab-content-signup">
+                        <form id="signup-form">
+                            <!-- email -->
+                            <div class="form-group">
+                                <label for="signup-form-input-email">Email address</label>
+                                <input type="email" class="form-control form-input-email" id="signup-form-input-email" required>
+                                <div class="invalid-feedback"></div>
+                            </div>
+    
+                            <!-- password -->
+                            <div class="form-group">
+                                <label for="signup-form-input-password">Password</label>
+                                <input type="password" class="form-control form-input-password" id="signup-form-input-password" required>
+                                <div class="invalid-feedback"></div>
+                            </div>
+    
+                            <!-- submit button -->
+                            <button type="button" class="btn btn-success btn-block" id="signup-form-btn-submit">Create account</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+    
+        </div>
+    </div>
+
+
+
+    {% include 'includes/footer.html' %}
+    <script src="/static/js/custom/login/index.js"></script>
+
+</body>
+
+</html>
