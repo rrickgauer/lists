@@ -20,6 +20,7 @@ def initApp(flask_app: flask.Flask):
 #------------------------------------------------------
 def registerBlueprints(flask_app: flask.Flask):
     flask_app.register_blueprint(routes.login.bp_login, url_prefix='/login')
+    flask_app.register_blueprint(routes.api.bp_api, url_prefix='/api')
 
 
 app = flask.Flask(__name__)
