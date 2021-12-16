@@ -44,10 +44,10 @@ class DB:
     # Returns:
     #     MySQLCursor: The connected mysql cursor.
     #----------------------------------------------------------
-    def getCursor(self, asDict: bool=True) -> MySQLCursor:
+    def getCursor(self, as_dict: bool=True) -> MySQLCursor:
         cursor = None
 
-        if asDict:
+        if as_dict:
             cursor = self.connection.cursor(dictionary=True)
         else:
             cursor = self.connection.cursor(prepared=True)

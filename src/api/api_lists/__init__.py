@@ -1,5 +1,6 @@
 import flask
 from . import routes
+from .common import CustomJSONEncoder
 
 
 #------------------------------------------------------
@@ -14,6 +15,8 @@ def initApp(flask_app: flask.Flask):
 
     flask_app.config['JSON_SORT_KEYS'] = False               # don't sort the json keys
     flask_app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False  # print the json pretty
+
+    app.json_encoder = CustomJSONEncoder
 
 #------------------------------------------------------
 # Register all of the Flask blueprints

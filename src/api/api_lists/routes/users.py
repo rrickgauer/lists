@@ -7,27 +7,24 @@ Purpose:    create all the routes related to users
 """
 
 import uuid
-from datetime import date, datetime
 import flask
-
-from ..models import User
+from ..services import users as user_services
 
 # module blueprint
 bp_users = flask.Blueprint('users', __name__)
 
 #------------------------------------------------------
-# Users
+# Retrieve a single user
 #------------------------------------------------------
-@bp_users.route('')
-def get():
+@bp_users.get('<uuid:user_id>')
+def get(user_id: uuid.UUID):
+    return user_services.responseGet(user_id)
 
-    user = User(
-        id = uuid.uuid4(),
-        # email = 'this is the email',
-        # password = 'password',
-        # created_on = datetime.now()
-    )
 
-    return flask.jsonify(user.__dict__)
-
-    return 'users'
+#------------------------------------------------------
+# Create a new user
+#------------------------------------------------------
+@bp_users.post('')
+def post():
+    request_body = flask.request.form.to_dict()
+    return user_services.responsePost(request_body)
