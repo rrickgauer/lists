@@ -7,6 +7,8 @@ const eSidebar = {
 }
 
 
+const mSidenavFormList = new SidenavFormList();
+
 /**********************************************************
 Main logic
 **********************************************************/
@@ -29,6 +31,9 @@ function addEventListeners() {
 
     // close sidebar button clicked
     $(eSidebar.buttons.close).on('click', closeSidenav);
+
+    // add value to sidebar new list form input
+    $(SidenavFormList.elements.input).on('keyup change', mSidenavFormList.toggleSubmitButton);
 }
 
 
