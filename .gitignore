@@ -153,3 +153,5 @@ cython_debug/
 
 
 credentials.py
+
+.table-schemas/
