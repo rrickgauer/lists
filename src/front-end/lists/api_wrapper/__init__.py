@@ -8,3 +8,4 @@ from .base_wrapper import RequestParms as RequestParms
 from .base_wrapper import *
 
 from .users import ApiWrapperUsers as ApiWrapperUsers
+from .lists import ApiWrapperLists as ApiWrapperLists
