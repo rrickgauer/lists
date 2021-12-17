@@ -1,8 +1,8 @@
 """
 ********************************************************************************************
-Module:     login
-Prefix:     /login
-Purpose:    create all the routes related to loggin in or creating an account
+Module:     home
+Prefix:     ''
+Purpose:    Home page routing
 ********************************************************************************************
 """
 
@@ -11,14 +11,12 @@ from ..common import security
 
 
 # module blueprint
-bp_login = flask.Blueprint('login', __name__)
-
-
+bp_home = flask.Blueprint('home', __name__)
 
 #------------------------------------------------------
 # Home page (search page)
 #------------------------------------------------------
-@bp_login.route('')
-def login():
-    security.clear_session_values()
-    return flask.render_template('login/login.html')
+@bp_home.route('')
+@security.login_required
+def home():
+    return flask.render_template('home/home.html')
