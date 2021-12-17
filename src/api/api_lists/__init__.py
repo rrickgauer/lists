@@ -23,6 +23,7 @@ def initApp(flask_app: flask.Flask):
 #------------------------------------------------------
 def registerBlueprints(flask_app: flask.Flask):
     flask_app.register_blueprint(routes.users.bp_users, url_prefix='/users')
+    flask_app.register_blueprint(routes.lists.bp_lists, url_prefix='/lists')
 
 
 app = flask.Flask(__name__)
