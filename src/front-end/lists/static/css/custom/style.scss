@@ -40,6 +40,13 @@ textarea {
     max-width: 500px;
 }
 
+// no focus outline on a button
+.no-focus-outline {
+    &,
+    &:focus {
+        outline: none;
+    }
+}
 
 
 

@@ -5,6 +5,8 @@ class SidenavFormList
     Constructor
     **********************************************************/
     constructor() {
+        this.spinnerButton = new SpinnerButton(SidenavFormList.elements.submit);
+
         // bind all the functions
         this.toggleSubmitButton = this.toggleSubmitButton.bind(this);
         this.showSubmitButton   = this.showSubmitButton.bind(this);
@@ -22,8 +24,6 @@ class SidenavFormList
         inputValue.length > 0 ? this.showSubmitButton() : this.hideSubmitButton();
     }
 
-
-
     /**********************************************************
     Show the submit button
     **********************************************************/
@@ -38,7 +38,6 @@ class SidenavFormList
         $(SidenavFormList.elements.submit).addClass('d-none');
     }
 
-
     /**********************************************************
     Save the new list
     **********************************************************/
@@ -49,6 +48,8 @@ class SidenavFormList
         if (inputValue.length == 0) {
             return;
         }
+
+        this.spinnerButton.showSpinner();
         
         // send the api request
         const formData = this.getFormData();
@@ -60,6 +61,7 @@ class SidenavFormList
         } 
         else {
             console.log(await apiResponse.text());
+            this.spinnerButton.reset();
         }
     }
 

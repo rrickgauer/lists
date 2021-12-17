@@ -15,9 +15,14 @@ Incoming data (called data):
     <div id="sidenav">
 
         <div class="d-flex align-baseline justify-content-between">
-            <h3>Lists</h3>
+            <h3>Lists <span class="badge badge-secondary">{{ data.lists|length}}</span></h3>
             <!-- button to close the sidebar -->
-            <div><button type="button" class="btn btn-sm btn-secondary" id="sidenav-btn-close">X</button></div>
+            <div>
+                <button type="button" class="close no-focus-outline" id="sidenav-btn-close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            
         </div>
 
 
@@ -37,9 +42,9 @@ Incoming data (called data):
         <div class="list-group" id="lists-container">
             
             {% for list in data.lists %}
-                <button type="button" class="list-group-item list-group-item-action" data-list-id="{{ list.id }}">
+                <button type="button" class="list-group-item list-group-item-action no-focus-outline" data-list-id="{{ list.id }}">
                     <div class="list-group-item-name">{{ list.name }}</div>
-                    <span class="badge badge-primary badge-pill">{{ list.count_items }}</span>
+                    <span class="badge badge-secondary badge-pill">{{ list.count_items }}</span>
                 </button>
             {% endfor %}
         

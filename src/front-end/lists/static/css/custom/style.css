@@ -35,6 +35,10 @@ textarea {
   max-width: 500px;
 }
 
+.no-focus-outline, .no-focus-outline:focus {
+  outline: none;
+}
+
 #sidenav-container {
   z-index: 110;
   width: 0px;
