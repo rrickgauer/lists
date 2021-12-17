@@ -28,7 +28,25 @@ def getAll():
 @security.login_required
 def get(list_id: UUID):
     return list_services.getList(list_id)
+
+
+#------------------------------------------------------
+# Create a new list
+#------------------------------------------------------
+@bp_lists.post('')
+@security.login_required
+def post():
+    return list_services.createList(flask.request.form.to_dict())
     
+
+#------------------------------------------------------
+# Update an existing list
+# Or Create a new list with the provided list id from the url
+#------------------------------------------------------
+@bp_lists.put('<uuid:list_id>')
+@security.login_required
+def put(list_id: UUID):
+    return list_services.updateList(list_id, flask.request.form.to_dict())
 
 
 
