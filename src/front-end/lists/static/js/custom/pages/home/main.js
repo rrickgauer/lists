@@ -15,7 +15,6 @@ Main logic
 $(document).ready(function() {
     addEventListeners();
     
-    
     toggleSidenav();    // open the sidebar initially
 });
 
@@ -41,7 +40,12 @@ function addEventListeners() {
     // create a new list from the sidenav
     $(SidenavFormList.elements.submit).on('click', mSidenavFormList.saveNewList);
 
-
+    $(SidenavFormList.elements.input).on('keypress', function(e) {
+        if (e.keyCode == 13) {
+            e.preventDefault();
+            mSidenavFormList.saveNewList();
+        }
+    });
 }
 
 

@@ -18,6 +18,12 @@ const eForms = {
     }
 }
 
+// spinner buttons
+const mSpinnerButtons = {
+    login: new SpinnerButton(eForms.buttons.login),
+    signup: new SpinnerButton(eForms.buttons.signup),
+}
+
 
 /**********************************************************
 Main logic
@@ -66,6 +72,8 @@ function submitForm(activeInputElement) {
 Attempt to create a new user account
 **********************************************************/
 async function attemptSignup() {
+    mSpinnerButtons.signup.showSpinner();
+
     // retrieve the input values and turn them into a form data object
     const inputValues = getFormInputValues(eForms.selectors.signup);
     const formData = inputValuesToFormData(inputValues);
@@ -78,6 +86,7 @@ async function attemptSignup() {
         window.location.href = '/';
     } else {
         console.error(await apiResponse.text());
+        mSpinnerButtons.signup.reset();
     }
 }
 
@@ -85,6 +94,8 @@ async function attemptSignup() {
 Attempt to create a new user account
 **********************************************************/
 async function attemptLogin() {
+    mSpinnerButtons.login.showSpinner();
+
     // retrieve the input values and turn them into a form data object
     const inputValues = getFormInputValues(eForms.selectors.login);
     const formData = inputValuesToFormData(inputValues);
@@ -97,6 +108,7 @@ async function attemptLogin() {
         window.location.href = '/';
     } else {
         console.error(await apiResponse.text());
+        mSpinnerButtons.login.reset();
     }
 }
 
