@@ -18,7 +18,7 @@ bp_api = flask.Blueprint('api', __name__)
 # Create a new account
 #------------------------------------------------------
 @bp_api.post('users')
-def login():
+def signUp():
     request_form = flask.request.form.to_dict()
     api_response = api_wrapper.createAccount(request_form)
 
@@ -40,4 +40,38 @@ def login():
 
     return (response_text, api_response.status_code)
 
+
+#------------------------------------------------------
+# Create a new account
+#
+# Need to provide email and password in request body
+#------------------------------------------------------
+@bp_api.post('login')
+def login():
+    # create a user api wrapper to fetch their account data
+    user_email    = flask.request.form.get('email') or None
+    user_password = flask.request.form.get('password') or None
     
+    api = api_wrapper.ApiWrapperUsers(
+        email = user_email,
+        password = user_password,
+    )
+
+    api_response = api.get()
+
+    # invalid email/password combination
+    if not api_response.ok:
+        return (api_response.text, api_response.status_code)
+    
+    # save the user's credentials since it was a successful login
+    security.clear_session_values()
+
+    security.set_session_values(
+        user_id  = api_response.json().get('id'),
+        email    = user_email,
+        password = user_password,
+    )
+
+    return ('', api_response.status_code)
+
+

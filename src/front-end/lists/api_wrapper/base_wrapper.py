@@ -34,10 +34,10 @@ CUSTOM_HEADER = {
 #------------------------------------------------------
 @dataclass
 class RequestParms:
-    url  : str  = None
-    parms: dict = None
-    data : dict = None
-    files: dict = None
+    url         : str  = None
+    query_parms: dict  = None
+    data        : dict = None
+    files       : dict = None
 
 #------------------------------------------------------
 # Abstract ApiWrapper class
@@ -112,7 +112,7 @@ class ApiWrapperBase(IApiWrapper):
             auth    = (self.email, self.password),
             headers = CUSTOM_HEADER,
             data    = request_parms.data,
-            params  = request_parms.parms,
+            params  = request_parms.query_parms,
             files   = request_parms.files
         )
 
