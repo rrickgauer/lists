@@ -10,7 +10,7 @@ class ApiWrapper
         return await fetch(ApiWrapper.Urls.USERS, {
             method: ApiWrapper.Methods.POST,
             body: formData,
-        })
+        });
     }
 
     /**********************************************************
@@ -20,7 +20,17 @@ class ApiWrapper
         return await fetch(ApiWrapper.Urls.LOGIN, {
             method: ApiWrapper.Methods.POST,
             body: formData,
-        })
+        });
+    }
+
+    /**********************************************************
+    Create a new list
+    **********************************************************/
+    static async listsPost(requestBody) {
+        return await fetch(ApiWrapper.Urls.LISTS, {
+            method: ApiWrapper.Methods.POST,
+            body: requestBody,
+        });
     }
 }
 
@@ -37,4 +47,5 @@ ApiWrapper.Methods = {
 ApiWrapper.Urls = {
     USERS: '/api/users',
     LOGIN: '/api/login',
+    LISTS: '/api/lists',
 }

@@ -106,7 +106,7 @@ class ApiWrapperBase(IApiWrapper):
     # Base request method for all others to use.
     #------------------------------------------------------
     def _baseRequest(self, request_method, request_parms: RequestParms) -> requests.Response:
-        api_url = f'{URL_BASE}/{request_parms.url}'
+        api_url = f'{URL_BASE}{request_parms.url}'
 
         return request_method(
             url     = api_url,
