@@ -6,9 +6,10 @@ Purpose:    create all the routes related to users
 ********************************************************************************************
 """
 
-import uuid
 import flask
 from ..services import users as user_services
+from ..common import security
+
 
 # module blueprint
 bp_users = flask.Blueprint('users', __name__)
@@ -16,10 +17,10 @@ bp_users = flask.Blueprint('users', __name__)
 #------------------------------------------------------
 # Retrieve a single user
 #------------------------------------------------------
-@bp_users.get('<uuid:user_id>')
-def get(user_id: uuid.UUID):
-    return user_services.responseGet(user_id)
-
+@bp_users.get('')
+@security.login_required
+def get():
+    return user_services.responseGet(flask.g.client_id)
 
 #------------------------------------------------------
 # Create a new user

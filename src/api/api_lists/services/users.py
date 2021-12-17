@@ -12,16 +12,6 @@ from ..models import User
 from ..db_manager import commands as db_commands, DbOperationResult
 from ..common import responses
 
-#------------------------------------------------------
-# Response to a GET request for a single user
-#------------------------------------------------------
-def responseGet(user_id: UUID) -> flask.Response:
-    user_db_result = queryDb(user_id)
-
-    if user_db_result.successful:
-        return responses.get(user_db_result.data)
-    else:
-        return responses.notFound()
 
 #------------------------------------------------------
 # Response to a POST request for a single user
@@ -78,8 +68,19 @@ def _insertIntoDatabase(new_user: User) -> DbOperationResult:
     sql = 'INSERT INTO Users (id, email, password) VALUES (%s, %s, %s)'
     parms = (str(new_user.id), new_user.email, new_user.password)
 
-    return db_commands.modifyCmd(sql, parms)
+    return db_commands.modify(sql, parms)
 
+
+#------------------------------------------------------
+# Response to a GET request for a single user
+#------------------------------------------------------
+def responseGet(user_id: UUID) -> flask.Response:
+    user_db_result = queryDb(user_id)
+
+    if user_db_result.successful:
+        return responses.get(user_db_result.data)
+    else:
+        return responses.notFound()
 
 #------------------------------------------------------
 # Retrieve a single user dict from the database
@@ -88,4 +89,4 @@ def queryDb(user_id: UUID) -> DbOperationResult:
     sql = 'SELECT * FROM View_Users u WHERE u.id = %s LIMIT 1'
     parms = (str(user_id),)
 
-    return db_commands.selectSingle(sql, parms)
+    return db_commands.select(sql, parms, False)
