@@ -8,16 +8,11 @@ Purpose:    create all the routes for the api
 """
 
 import flask
-# from requests import api
-
 from .. import api_wrapper
 from ..common import security
 
-
 # module blueprint
 bp_api = flask.Blueprint('api', __name__)
-
-
 
 #------------------------------------------------------
 # Create a new account
