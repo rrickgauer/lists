@@ -14,6 +14,7 @@ const eForms = {
     buttons: {
         login: '#login-form-btn-submit',
         signup: '#signup-form-btn-submit',
+        class: '.form-btn-submit',
     }
 }
 
@@ -30,10 +31,36 @@ $(document).ready(function() {
 Add all the event listeners to the page
 **********************************************************/
 function addEventListeners() {
+    $('.form-control').on('keypress', function(e) {
+        if (e.keyCode == 13) {
+            e.preventDefault();
+            submitForm(this);
+        }
+    });
+
     $(eForms.buttons.signup).on('click', function() {
         attemptSignup();
     });
+
+    $(eForms.buttons.login).on('click', function() {
+        attemptLogin();
+    });
 }
+
+/**********************************************************
+Submit the form after user hits enter while typing in a form input.
+**********************************************************/
+function submitForm(activeInputElement) {
+    const parentForm = $(activeInputElement).closest('form');
+    const parentFormID = '#' + $(parentForm).attr('id');
+
+    if (parentFormID == eForms.selectors.signup) {
+        attemptSignup();
+    } else {
+        attemptLogin();
+    }
+}
+
 
 /**********************************************************
 Attempt to create a new user account
@@ -49,6 +76,27 @@ async function attemptSignup() {
     // if successful, redirect to the home page
     if (apiResponse.ok) {
         window.location.href = '/';
+    } else {
+        console.error(await apiResponse.text());
+    }
+}
+
+/**********************************************************
+Attempt to create a new user account
+**********************************************************/
+async function attemptLogin() {
+    // retrieve the input values and turn them into a form data object
+    const inputValues = getFormInputValues(eForms.selectors.login);
+    const formData = inputValuesToFormData(inputValues);
+
+    // send the request
+    const apiResponse = await ApiWrapper.login(formData);
+
+    // if successful, redirect to the home page
+    if (apiResponse.ok) {
+        window.location.href = '/';
+    } else {
+        console.error(await apiResponse.text());
     }
 }
 
@@ -75,5 +123,7 @@ function inputValuesToFormData(inputValuesDict) {
 
     return formData;
 }
+
+
 
 

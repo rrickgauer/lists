@@ -12,6 +12,16 @@ class ApiWrapper
             body: formData,
         })
     }
+
+    /**********************************************************
+    Login
+    **********************************************************/
+    static async login(formData) {
+        return await fetch(ApiWrapper.Urls.LOGIN, {
+            method: ApiWrapper.Methods.POST,
+            body: formData,
+        })
+    }
 }
 
 
@@ -26,4 +36,5 @@ ApiWrapper.Methods = {
 
 ApiWrapper.Urls = {
     USERS: '/api/users',
+    LOGIN: '/api/login',
 }
