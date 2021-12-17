@@ -1,3 +1,12 @@
+{#
+
+This is the top document for the home page.
+
+Incoming data (data):
+    - lists
+
+#}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,11 +16,18 @@
 </head>
 
 <body>
-    <div class="container">
-        <h1 class="my-5">Home page</h1>
+
+    <div class="d-flex" id="page">
+        {% include 'home/sidenav.html' %}
+
+        <section id="main" class="container-fluid">
+            <h3>Main</h3>
+            <button type="button" class="btn btn-primary" onclick="toggleSidenav()">Toggle sidenav</button>
+        </section>
     </div>
 
     {% include 'includes/footer.html' %}
+    <script src="/static/js/custom/pages/home/main.js"></script>
 </body>
 
 </html>

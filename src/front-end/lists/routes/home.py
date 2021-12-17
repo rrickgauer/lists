@@ -20,10 +20,13 @@ bp_home = flask.Blueprint('home', __name__)
 @bp_home.route('')
 @security.login_required
 def home():
+    api_lists_response = ApiWrapperLists(flask.g).get()
 
-    api_response = ApiWrapperLists(flask.g).get()
+    if not api_lists_response.ok:
+        return (api_lists_response.text, api_lists_response.status_code)
 
-    if not api_response.ok:
-        return (api_response.text, api_response.status_code)
+    outbound_data = dict(
+        lists = api_lists_response.json()
+    )
 
-    return flask.render_template('home/home.html', data=api_response.json())
+    return flask.render_template('home/home.html', data=outbound_data)

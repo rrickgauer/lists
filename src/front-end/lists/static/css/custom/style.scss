@@ -1,4 +1,4 @@
-
+$sidenav-lg-width: 400px;
 
 input[type=color],
 input[type=date],
@@ -36,7 +36,76 @@ textarea {
     }
 }
 
-
 .card-form-sm {
     max-width: 500px;
 }
+
+
+
+
+// ------------------------------------
+// Home page - sidebar
+// ------------------------------------
+#sidenav-container {
+    z-index: 110;
+    width: 0px;
+    margin-left: 0px;
+    background-color: white;
+    max-height: 100vh;
+    overflow-y: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+#page.sidenav-open #sidenav-container {
+    width: 100vw;
+}
+
+// sidenav: don't take up full screen width for larger screens
+@media screen and (min-width: 768px) {
+    #page.sidenav-open #sidenav-container {
+        width: $sidenav-lg-width;
+    }
+}
+
+#sidenav {
+    padding: 10px;
+}
+
+#lists-container {
+    height: 95vh;
+    overflow-y: auto;
+    padding-bottom: 50px;
+
+    .list-group-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+    }
+
+    .list-group-item-name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+// sidenav overlay
+.drawer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    overflow: hidden;
+    z-index: 109;
+    background-color: rgba(0,0,0,.2);
+    animation: animation-drawer-fade-in .3s ease-in-out 1;
+}
+
+#main {
+    padding: 10px;
+}
+
+

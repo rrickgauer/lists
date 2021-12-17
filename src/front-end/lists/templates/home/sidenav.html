@@ -1,0 +1,35 @@
+{#
+
+Sidenav component for the home page.
+
+Incoming data (called data):
+    - lists:
+        - id
+        - name
+        - created_on
+        - count_items
+
+#}
+
+<section id="sidenav-container">
+    <div id="sidenav">
+
+        <div class="d-flex align-baseline justify-content-between">
+            <h3>Lists</h3>
+            <!-- button to close the sidebar -->
+            <div><button type="button" class="btn btn-sm btn-secondary" id="sidenav-btn-close">X</button></div>
+        </div>
+
+        <!-- holds all the lists -->
+        <div class="list-group" id="lists-container">
+            
+            {% for list in data.lists %}
+                <button type="button" class="list-group-item list-group-item-action" data-list-id="{{ list.id }}">
+                    <div class="list-group-item-name">{{ list.name }}</div>
+                    <span class="badge badge-primary badge-pill">{{ list.count_items }}</span>
+                </button>
+            {% endfor %}
+        
+        </div>
+    </div>
+</section>
