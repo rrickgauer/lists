@@ -14,10 +14,11 @@ from ..services import items as item_services
 bp_items = flask.Blueprint('items', __name__)
 
 #------------------------------------------------------
-# Retrieve a single user
+# Retrieve all a user's list items
 #------------------------------------------------------
 @bp_items.get('')
 @security.login_required
 def getAll():
-    return item_services.getAllItems()
+    return item_services.getItems()
+
 

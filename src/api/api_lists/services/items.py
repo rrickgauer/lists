@@ -6,21 +6,38 @@ This module contains all the business logic for lists services.
 **********************************************************************************
 """
 
-from uuid import UUID, uuid4
-from datetime import datetime
 import flask
 from ..db_manager import commands as sql_engine, DbOperationResult
 from ..common import responses
-from ..models import List
 
 
 #------------------------------------------------------
 # Response to a GET request for a single user
 #------------------------------------------------------
-def getAllItems() -> flask.Response:
-    return responses.get('Items services')
+def getItems() -> flask.Response:
+    
+    db_result = _queryAll()
 
+    if not db_result.successful:
+        return responses.badRequest(db_result.error)
 
+    return responses.get(db_result.data)
     
 
-    
+#------------------------------------------------------
+# Get all a user's lists from the database
+#------------------------------------------------------
+def _queryAll() -> DbOperationResult:
+    sql = '''
+    SELECT * FROM View_Items vi
+    WHERE vi.list_id in (
+        SELECT l.id FROM Lists l WHERE l.user_id = %s
+    );
+    '''
+
+    parms = (str(flask.g.client_id),)
+
+    return sql_engine.select(sql, parms, True)
+
+
+
