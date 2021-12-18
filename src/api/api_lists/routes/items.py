@@ -19,6 +19,10 @@ bp_items = flask.Blueprint('items', __name__)
 @bp_items.get('')
 @security.login_required
 def getAll():
-    return item_services.getItems()
+
+    query_parms = flask.request.args.to_dict(False)
+    list_ids = query_parms.get('list_id') or None
+
+    return item_services.getItems(list_ids)
 
 
