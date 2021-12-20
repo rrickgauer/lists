@@ -41,7 +41,8 @@ textarea {
 }
 
 // no focus outline on a button
-.no-focus-outline {
+.no-focus-outline,
+.close {
     &,
     &:focus {
         outline: none;
@@ -69,7 +70,9 @@ textarea {
     width: 100vw;
 }
 
+// ------------------------------------
 // sidenav: don't take up full screen width for larger screens
+// ------------------------------------
 @media screen and (min-width: 768px) {
     #page.sidenav-open #sidenav-container {
         width: $sidenav-lg-width;
@@ -80,6 +83,10 @@ textarea {
     padding: 10px;
 }
 
+
+// ------------------------------------
+// Sidenav lists container
+// ------------------------------------
 #lists-container {
     height: 95vh;
     overflow-y: auto;
@@ -98,7 +105,9 @@ textarea {
     }
 }
 
+// ------------------------------------
 // sidenav overlay
+// ------------------------------------
 .drawer-overlay {
     position: fixed;
     top: 0;
@@ -114,5 +123,63 @@ textarea {
 #main {
     padding: 10px;
 }
+
+
+// ------------------------------------
+// Active lists board
+// ------------------------------------
+.active-lists-board {
+    display: flex;
+    overflow-x: auto;
+    padding: 10px;
+    scroll-snap-type: x mandatory;
+    align-items: flex-start;
+}
+
+// ------------------------------------
+// Single active list
+// ------------------------------------
+.active-list {
+    min-width: 100%;
+    margin: 10px 10px;
+    scroll-snap-align: center;
+
+    .card-header {
+        background-color: inherit;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+
+        .list-header-buttons {
+            display: flex;
+            align-items: center;
+        }
+    }
+}
+
+
+@media screen and (min-width: 768px) {
+    .active-list {
+        min-width: 400px;
+        padding: 20px;
+    }
+}
+
+
+.active-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+}
+
+.active-list-item.checked  {
+    .active-list-item-content {
+        text-decoration: line-through;
+    }
+}
+
+
+
 
 

@@ -32,6 +32,27 @@ class ApiWrapper
             body: requestBody,
         });
     }
+
+    /**********************************************************
+    Get a single list
+    **********************************************************/
+    static async listsGet(listID) {
+        const url = `${ApiWrapper.Urls.LISTS}/${listID}`;
+        return await fetch(url, {
+            method: ApiWrapper.Methods.GET,
+        });
+    }
+
+    /**********************************************************
+    Get the items that belong to the given list id
+    **********************************************************/
+    static async itemsGetByList(listID) {
+        let url = `${ApiWrapper.Urls.ITEMS}?list_id=${listID}`;
+
+        return await fetch(url, {
+            method: ApiWrapper.Methods.GET,
+        });
+    }
 }
 
 
@@ -48,4 +69,5 @@ ApiWrapper.Urls = {
     USERS: '/api/users',
     LOGIN: '/api/login',
     LISTS: '/api/lists',
+    ITEMS: '/api/items',
 }

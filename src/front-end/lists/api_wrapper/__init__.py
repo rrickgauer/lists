@@ -9,3 +9,4 @@ from .base_wrapper import *
 
 from .users import ApiWrapperUsers as ApiWrapperUsers
 from .lists import ApiWrapperLists as ApiWrapperLists
+from .items import ApiWrapperItems as ApiWrapperItems

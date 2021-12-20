@@ -16,6 +16,7 @@ URL_BASE = 'http://10.0.0.82:6000/'
 class ApiUrls(str, Enum):
     USERS = 'users'
     LISTS = 'lists'
+    ITEMS = 'items'
 
     
 
