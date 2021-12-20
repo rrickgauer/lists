@@ -69,7 +69,9 @@ textarea {
     width: 100vw;
 }
 
+// ------------------------------------
 // sidenav: don't take up full screen width for larger screens
+// ------------------------------------
 @media screen and (min-width: 768px) {
     #page.sidenav-open #sidenav-container {
         width: $sidenav-lg-width;
@@ -80,6 +82,10 @@ textarea {
     padding: 10px;
 }
 
+
+// ------------------------------------
+// Sidenav lists container
+// ------------------------------------
 #lists-container {
     height: 95vh;
     overflow-y: auto;
@@ -98,7 +104,9 @@ textarea {
     }
 }
 
+// ------------------------------------
 // sidenav overlay
+// ------------------------------------
 .drawer-overlay {
     position: fixed;
     top: 0;
@@ -116,7 +124,24 @@ textarea {
 }
 
 
+// ------------------------------------
+// Active lists board
+// ------------------------------------
+.active-lists-board {
+    display: flex;
+    overflow-x: auto;
+    padding: 10px;
+    scroll-snap-type: x mandatory;
+}
+
+// ------------------------------------
+// Single active list
+// ------------------------------------
 .active-list {
+    min-width: 100%;
+    margin: 10px 10px;
+    scroll-snap-align: center;
+
     .card-header {
         background-color: inherit;
         display: flex;
@@ -129,5 +154,16 @@ textarea {
         }
     }
 }
+
+
+@media screen and (min-width: 768px) {
+    .active-list {
+        min-width: 400px;
+        padding: 20px;
+    }
+}
+
+
+
 
 

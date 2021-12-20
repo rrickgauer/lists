@@ -13,6 +13,7 @@ class List
         this.fetchData = this.fetchData.bind(this);
         this.fetchListMetadata = this.fetchListMetadata.bind(this);
         this.fetchItems = this.fetchItems.bind(this);
+        this.renderHtml = this.renderHtml.bind(this);
         this.getHtml = this.getHtml.bind(this);
     }
 
@@ -87,6 +88,12 @@ class List
         return true;
     }
 
+    renderHtml(listBoardElement) {
+        const html = this.getHtml();
+        $(listBoardElement).append(html);
+
+    }
+
 
     /**********************************************************
     Generate the html for the list
@@ -94,9 +101,9 @@ class List
     getHtml() {
 
         let html = `
-        <div class="card active-list" data-list-id=${this.listID}>
+        <div class="active-list card my-shadow">
             <div class="card-header">
-                <div><h4>${'hey'}</h4></div>
+                <div><h4>sjdklfa;sdfa asdf</h4></div>
                 
                 <div class="list-header-buttons">
                     <div class="dropdown mr-2">

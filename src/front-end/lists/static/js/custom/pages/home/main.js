@@ -6,6 +6,8 @@ const eSidebar = {
     }
 }
 
+const eActiveListContainer = '.active-lists-board';
+
 
 const mSidenavFormList = new SidenavFormList();
 
@@ -16,6 +18,12 @@ $(document).ready(function() {
     addEventListeners();
     
     // toggleSidenav();    // open the sidebar initially
+
+    for (let i = 0; i < 5; i++) {
+        const list = new List(3);
+        // list.renderHtml(eActiveListContainer);
+    }
+
 });
 
 
@@ -64,7 +72,7 @@ async function activateList(sidebarListElement) {
         return;
     }
 
-    console.log(list);
+    list.renderHtml(eActiveListContainer);
 }
 
 /**********************************************************
