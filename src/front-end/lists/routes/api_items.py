@@ -1,9 +1,9 @@
 
 """
 ********************************************************************************************
-Module:     api_lists
-Prefix:     /api/lists
-Purpose:    create all the routes for the api-lists
+Module:     api_items
+Prefix:     /api/items
+Purpose:    create all the routes for the api-items
 ********************************************************************************************
 """
 import flask
@@ -11,19 +11,18 @@ from .. import api_wrapper
 from ..common import security
 
 # module blueprint
-bp_api_lists = flask.Blueprint('api_lists', __name__)
+bp_api_items = flask.Blueprint('api_items', __name__)
 
 #------------------------------------------------------
-# Create a new list
+# Get all items
 #------------------------------------------------------
-@bp_api_lists.post('')
+@bp_api_items.get('')
 @security.login_required
-def newList():
-    # redirect the request to the api
-    api = api_wrapper.ApiWrapperLists(flask.g)
-    response = api.post(flask.request.form)
+def getItems():
+    api = api_wrapper.ApiWrapperItems(flask.g)
+    api_response = api.get(flask.request.args)
 
-    return (response.text, response.status_code)
+    return (api_response.text, api_response.status_code)
 
 
 

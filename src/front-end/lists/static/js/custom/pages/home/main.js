@@ -48,6 +48,23 @@ function addEventListeners() {
     });
 }
 
+/**********************************************************
+Open a list from the sidebar
+**********************************************************/
+async function activateList(sidebarListElement) {
+    $(sidebarListElement).toggleClass('active');
+
+    const listID = $(sidebarListElement).attr('data-list-id');
+    const list = new List(listID);
+    
+    const successfulFetch = await list.fetchItems();
+
+    if (!successfulFetch) {
+        return;
+    }
+
+    console.log(list);
+}
 
 /**********************************************************
 Open/close the sidebar
@@ -65,9 +82,3 @@ function closeSidenav() {
     $('body .drawer-overlay').remove();
 }
 
-/**********************************************************
-Open a list from the sidebar
-**********************************************************/
-function activateList(sidebarListElement) {
-    $(sidebarListElement).toggleClass('active');
-}

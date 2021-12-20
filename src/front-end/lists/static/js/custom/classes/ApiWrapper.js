@@ -32,6 +32,14 @@ class ApiWrapper
             body: requestBody,
         });
     }
+
+    static async itemsGetByList(listID) {
+        let url = `${ApiWrapper.Urls.ITEMS}?list_id=${listID}`;
+
+        return await fetch(url, {
+            method: ApiWrapper.Methods.GET,
+        });
+    }
 }
 
 
@@ -48,4 +56,5 @@ ApiWrapper.Urls = {
     USERS: '/api/users',
     LOGIN: '/api/login',
     LISTS: '/api/lists',
+    ITEMS: '/api/items',
 }
