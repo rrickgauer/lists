@@ -1,7 +1,7 @@
 
 
 
-class List
+class ListHtml
 {
 
     constructor(listID) {
@@ -80,7 +80,7 @@ class List
         }
 
         try {
-            this.items = await apiResponse.json();    
+            this.items = await apiResponse.json();
         } catch (error) {
             this.items = [];    // no items in this list
         }
@@ -88,10 +88,12 @@ class List
         return true;
     }
 
+    /**********************************************************
+    Render this list's html to the given html element
+    **********************************************************/
     renderHtml(listBoardElement) {
         const html = this.getHtml();
         $(listBoardElement).append(html);
-
     }
 
 
@@ -99,11 +101,12 @@ class List
     Generate the html for the list
     **********************************************************/
     getHtml() {
+        const itemsHtml = this.getItemsHtml();
 
         let html = `
-        <div class="active-list card my-shadow">
+        <div class="active-list card my-shadow" data-list-id="${this.listID}">
             <div class="card-header">
-                <div><h4>sjdklfa;sdfa asdf</h4></div>
+                <div><h4>${this.metadata.name}</h4></div>
                 
                 <div class="list-header-buttons">
                     <div class="dropdown mr-2">
@@ -125,11 +128,29 @@ class List
                 <form>
                     <input class="form-control form-control-sm" type="text" placeholder="Add new item...">
                 </form>
+
+                <hr>
+
+                <div class="active-list-items-container">
+                    ${itemsHtml}
+                </div>
             </div>
         </div>`;
 
         return html;
 
+    }
+
+    /**********************************************************
+    Generate the html for all this list's items
+    **********************************************************/
+    getItemsHtml() {
+        let html = '';
+        for (const item of this.items) {
+            html += new ItemHtml(item).getHtml();
+        }
+
+        return html;
     }
 
 

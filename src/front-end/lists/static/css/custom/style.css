@@ -35,7 +35,9 @@ textarea {
   max-width: 500px;
 }
 
-.no-focus-outline, .no-focus-outline:focus {
+.no-focus-outline, .no-focus-outline:focus,
+.close,
+.close:focus {
   outline: none;
 }
 
@@ -101,6 +103,7 @@ textarea {
   overflow-x: auto;
   padding: 10px;
   scroll-snap-type: x mandatory;
+  align-items: flex-start;
 }
 
 .active-list {
@@ -124,6 +127,16 @@ textarea {
     min-width: 400px;
     padding: 20px;
   }
+}
+.active-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 10px;
+}
+
+.active-list-item.checked .active-list-item-content {
+  text-decoration: line-through;
 }
 
 /*# sourceMappingURL=style.css.map */

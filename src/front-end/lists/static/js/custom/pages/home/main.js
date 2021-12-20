@@ -20,7 +20,7 @@ $(document).ready(function() {
     // toggleSidenav();    // open the sidebar initially
 
     for (let i = 0; i < 5; i++) {
-        const list = new List(3);
+        const list = new ListHtml(3);
         // list.renderHtml(eActiveListContainer);
     }
 
@@ -63,7 +63,7 @@ async function activateList(sidebarListElement) {
     $(sidebarListElement).toggleClass('active');
 
     const listID = $(sidebarListElement).attr('data-list-id');
-    const list = new List(listID);
+    const list = new ListHtml(listID);
     
     // const successfulFetch = ;
 

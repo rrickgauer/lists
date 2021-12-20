@@ -41,7 +41,8 @@ textarea {
 }
 
 // no focus outline on a button
-.no-focus-outline {
+.no-focus-outline,
+.close {
     &,
     &:focus {
         outline: none;
@@ -132,6 +133,7 @@ textarea {
     overflow-x: auto;
     padding: 10px;
     scroll-snap-type: x mandatory;
+    align-items: flex-start;
 }
 
 // ------------------------------------
@@ -160,6 +162,20 @@ textarea {
     .active-list {
         min-width: 400px;
         padding: 20px;
+    }
+}
+
+
+.active-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+}
+
+.active-list-item.checked  {
+    .active-list-item-content {
+        text-decoration: line-through;
     }
 }
 

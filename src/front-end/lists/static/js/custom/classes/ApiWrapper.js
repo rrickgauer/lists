@@ -43,6 +43,9 @@ class ApiWrapper
         });
     }
 
+    /**********************************************************
+    Get the items that belong to the given list id
+    **********************************************************/
     static async itemsGetByList(listID) {
         let url = `${ApiWrapper.Urls.ITEMS}?list_id=${listID}`;
 
