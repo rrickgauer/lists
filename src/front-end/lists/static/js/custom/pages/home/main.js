@@ -15,7 +15,7 @@ Main logic
 $(document).ready(function() {
     addEventListeners();
     
-    toggleSidenav();    // open the sidebar initially
+    // toggleSidenav();    // open the sidebar initially
 });
 
 
@@ -57,9 +57,10 @@ async function activateList(sidebarListElement) {
     const listID = $(sidebarListElement).attr('data-list-id');
     const list = new List(listID);
     
-    const successfulFetch = await list.fetchItems();
+    // const successfulFetch = ;
 
-    if (!successfulFetch) {
+    if (!await list.fetchData()) {
+        console.error('could not fetch the list data from the api');
         return;
     }
 

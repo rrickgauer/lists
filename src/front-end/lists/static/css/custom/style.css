@@ -96,4 +96,15 @@ textarea {
   padding: 10px;
 }
 
+.active-list .card-header {
+  background-color: inherit;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.active-list .card-header .list-header-buttons {
+  display: flex;
+  align-items: center;
+}
+
 /*# sourceMappingURL=style.css.map */

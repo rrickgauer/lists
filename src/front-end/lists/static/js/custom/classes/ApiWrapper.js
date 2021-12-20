@@ -33,6 +33,16 @@ class ApiWrapper
         });
     }
 
+    /**********************************************************
+    Get a single list
+    **********************************************************/
+    static async listsGet(listID) {
+        const url = `${ApiWrapper.Urls.LISTS}/${listID}`;
+        return await fetch(url, {
+            method: ApiWrapper.Methods.GET,
+        });
+    }
+
     static async itemsGetByList(listID) {
         let url = `${ApiWrapper.Urls.ITEMS}?list_id=${listID}`;
 

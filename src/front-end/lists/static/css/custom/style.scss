@@ -116,3 +116,18 @@ textarea {
 }
 
 
+.active-list {
+    .card-header {
+        background-color: inherit;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+
+        .list-header-buttons {
+            display: flex;
+            align-items: center;
+        }
+    }
+}
+
+
