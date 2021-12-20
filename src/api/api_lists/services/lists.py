@@ -15,7 +15,7 @@ from ..models import List
 
 
 #------------------------------------------------------
-# Response to a GET request for a single user
+# Return all of a user's lists
 #------------------------------------------------------
 def getAllLists() -> flask.Response:
     db_result = _queryAll()

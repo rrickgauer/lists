@@ -7,7 +7,7 @@ Prefix:     /lists
 from uuid import UUID
 import flask
 from ..common import security
-from ..services import lists as list_services
+from ..services import lists as list_services, items as item_services
 
 # module blueprint
 bp_lists = flask.Blueprint('lists', __name__)
@@ -49,6 +49,12 @@ def put(list_id: UUID):
     return list_services.updateList(list_id, flask.request.form.to_dict())
 
 
-
+#------------------------------------------------------
+# Retrieve the items for a single list
+#------------------------------------------------------
+@bp_lists.get('<uuid:list_id>/items')
+@security.login_required
+def getListItems(list_id: UUID):
+    return item_services.getItems([list_id])
 
 
