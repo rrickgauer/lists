@@ -6,10 +6,13 @@ This module contains all the business logic for item services.
 **********************************************************************************
 """
 from __future__ import annotations
-from uuid import UUID
+from datetime import datetime
+from re import S
+from uuid import UUID, uuid4
 import flask
 from ..db_manager import commands as sql_engine, DbOperationResult
 from ..common import responses
+from ..models import Item, ItemComplete
 
 
 SQL_SELECT_INIT = '''
@@ -19,10 +22,9 @@ SQL_SELECT_INIT = '''
 
 
 #------------------------------------------------------
-# Response to a GET request for a single user
+# Response to a GET request for items
 #------------------------------------------------------
 def getItems(list_ids: list[UUID]=None) -> flask.Response:
-    
     if not list_ids:
         db_result = _queryAll()                     # return all the items
     else:
@@ -84,3 +86,79 @@ def _getQueryFilterParms(list_ids: list[UUID]) -> tuple:
     
     return (str(flask.g.client_id),) + tuple(id_string)
 
+
+
+def createNewItem(request_body: dict) -> flask.Response:
+    new_item = Item(
+        id          = uuid4(),
+        list_id     = request_body.get('list_id') or None,
+        content     = request_body.get('content') or None,
+        complete    = ItemComplete.NO,
+    )
+
+    # verify that the content and list_id fields are present
+    if None in [new_item.list_id, new_item.content]:
+        return responses.badRequest('Missing one of the required fields: list_id or content')
+    
+    # insert the item into the database
+    db_result = _modifyDbCommand(new_item)
+
+    if not db_result.successful:
+        return responses.badRequest(db_result.error)
+    
+    # retrieve the list object from the database that contains all the updated values
+    response_data = _query(new_item.id)
+
+    return responses.created(response_data.data)
+
+
+
+#------------------------------------------------------
+# SQL command that either inserts a new list, or updates
+# an exiting record's name if it already exists.
+#------------------------------------------------------
+def _modifyDbCommand(item: Item) -> DbOperationResult:
+    sql = '''
+        INSERT INTO Items (id, list_id, content, `rank`, complete) 
+        VALUES (%s, %s, %s, %s, %s)
+        ON DUPLICATE KEY UPDATE 
+        content  = VALUES(content),
+        complete = VALUES(complete),
+        `rank`     = VALUES(`rank`);
+    '''
+
+    parms = (
+        str(item.id),
+        str(item.list_id),
+        item.content,
+        item.rank,
+        item.complete.value,
+    )
+
+    return sql_engine.modify(sql, parms)
+
+
+#------------------------------------------------------
+# Response to a GET request for a single item
+#------------------------------------------------------
+def getItem(item_id: UUID) -> flask.Response:
+    db_result = _query(item_id)
+
+    if not db_result.successful:
+        return responses.badRequest(db_result.error)
+
+    return responses.get(db_result.data)
+
+
+#------------------------------------------------------
+# Retrieve the given item from the database
+#------------------------------------------------------
+def _query(item_id: UUID) -> DbOperationResult:
+    sql = f'{SQL_SELECT_INIT} AND vi.id = %s LIMIT 1;'
+    
+    parms = (
+        str(flask.g.client_id),
+        str(item_id)
+    )
+
+    return sql_engine.select(sql, parms, False)
