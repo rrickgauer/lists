@@ -30,6 +30,14 @@ def getAll():
 
 
 #------------------------------------------------------
+# Create a new item
+#------------------------------------------------------
+@bp_items.post('')
+@security.login_required
+def post():
+    return item_services.createNewItem(flask.request.form.to_dict())
+
+#------------------------------------------------------
 # Retrieve a single item
 #------------------------------------------------------
 @bp_items.get('<uuid:item_id>')
@@ -38,14 +46,17 @@ def get(item_id: UUID):
     return item_services.getItem(item_id)
 
 
-
 #------------------------------------------------------
-# Create a new item
+# Update an existing item or create a new one with the 
+# given item id
 #------------------------------------------------------
-@bp_items.post('')
+@bp_items.put('<uuid:item_id>')
 @security.login_required
-def post():
-    return item_services.createNewItem(flask.request.form.to_dict())
+def put(item_id: UUID):
+    return item_services.updateItem(item_id, flask.request.form.to_dict())
+
+
+
 
 
 
