@@ -2,6 +2,7 @@
 from dataclasses import dataclass
 import requests
 from enum import Enum
+import flask
 
 #------------------------------------------------------
 # Prefix for the api url
@@ -37,7 +38,7 @@ CUSTOM_HEADER = {
 @dataclass
 class RequestParms:
     url         : str  = None
-    query_parms: dict  = None
+    query_parms : dict = None
     data        : dict = None
     files       : dict = None
 
@@ -68,6 +69,8 @@ class IApiWrapper:
 #------------------------------------------------------
 class ApiWrapperBase(IApiWrapper):
 
+    URL = None
+
     #------------------------------------------------------
     # Constructor
     #
@@ -84,7 +87,7 @@ class ApiWrapperBase(IApiWrapper):
     #------------------------------------------------------
     def _get(self, request_parms: RequestParms) -> requests.Response:
         return self._baseRequest(requests.get, request_parms)
-    
+
     #------------------------------------------------------
     # Send a POST request
     #------------------------------------------------------
@@ -118,6 +121,15 @@ class ApiWrapperBase(IApiWrapper):
             files   = request_parms.files
         )
 
+    def _generateRequestParms(self, url: str, flask_request: flask.Request) -> RequestParms:
+        request_parms = RequestParms(
+            url         = url,
+            query_parms = flask_request.args,
+            data        = flask_request.form,
+            files       = flask_request.files,
+        )
+
+        return request_parms
 
 
 #------------------------------------------------------
@@ -129,3 +141,7 @@ def createAccount(new_user_form_data: dict) -> requests.Response:
         data    = new_user_form_data,
         headers = CUSTOM_HEADER
     )
+
+
+def pyResponseToFlaskResponse(py_response: requests.Response) -> flask.Response:
+    return (py_response.text, py_response.text)

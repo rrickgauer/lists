@@ -110,8 +110,12 @@ function createNewItem(inputElement) {
         return;
     }
 
-    console.log(itemCreator);
-
     itemCreator.assignNewItemID();
-    itemCreator.sendPostRequest();
+    
+    if (!itemCreator.sendPostRequest()) {
+        return;
+    }
+
+    itemCreator.appendToList();
+    itemCreator.clearInputValue();
 }

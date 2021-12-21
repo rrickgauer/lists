@@ -103,7 +103,7 @@ class ListHtml
         const itemsHtml = this.getItemsHtml();
 
         let html = `
-        <div class="active-list card my-shadow" data-list-id="${this.listID}">
+        <div class="${ListHtml.Elements.CONTAINER} card my-shadow" data-list-id="${this.listID}">
             <div class="card-header">
                 <div><h4>${this.metadata.name}</h4></div>
                 
@@ -157,4 +157,5 @@ class ListHtml
 
 ListHtml.Elements = {
     NEW_ITEM_FORM: 'active-list-form-new-item',
+    CONTAINER: 'active-list',
 }

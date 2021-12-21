@@ -130,7 +130,6 @@ def _modifyItemActions(item_id: UUID, request_body: dict) -> flask.Response:
     return response_function(response_data.data)
 
 
-
 #------------------------------------------------------
 # Given a dict, create an Item object whose properties
 # have the values provided in the dict.
@@ -205,7 +204,7 @@ def _modifyDbCommand(item: Item) -> DbOperationResult:
 # Returns a function.
 #------------------------------------------------------
 def _determineResponseFunction(rows_affected: int):
-    if rows_affected.data == 1:
+    if rows_affected == 1:
         return responses.created
     else:
         return responses.updated

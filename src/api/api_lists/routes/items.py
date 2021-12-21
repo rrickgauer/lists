@@ -52,7 +52,7 @@ def get(item_id: UUID):
 #------------------------------------------------------
 @bp_items.put('<uuid:item_id>')
 @security.login_required
-def put(item_id: UUID):
+def put(item_id: UUID):    
     return item_services.updateItem(item_id, flask.request.form.to_dict())
 
 
