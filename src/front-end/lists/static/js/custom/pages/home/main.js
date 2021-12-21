@@ -58,10 +58,14 @@ function addEventListeners() {
         }
     });
 
-
-    // update an item's content
+    // Display an item's update content form
     $(eActiveListContainer).on('click', `.${ItemHtml.Elements.CONTENT}`, function() {
         displayItemUpdateForm(this);
+    });
+
+    // Display an item's update content form
+    $(eActiveListContainer).on('click', `.${ItemContentUpdateForm.Elements.FORM} button`, function() {
+        performUpdateItemFormAction(this);
     });
 }
 
@@ -132,11 +136,21 @@ function createNewItem(inputElement) {
 }
 
 /**********************************************************
-Render an item's update content form
+Render an item's update content form.
 **********************************************************/
 function displayItemUpdateForm(eItemContent) {
     const eItemContainer = $(eItemContent).closest(`.${ItemHtml.Elements.TOP}`);
     
     const itemUpdateForm = new ItemContentUpdateForm(eItemContainer);
     itemUpdateForm.renderUpdateForm();
+}
+
+/**********************************************************
+Respond to an item's update content form action button being clicked.
+**********************************************************/
+function performUpdateItemFormAction(eUpdateItemFormActionButton) {
+    const eItemContainer = $(eUpdateItemFormActionButton).closest(`.${ItemHtml.Elements.TOP}`);
+    
+    const itemUpdateForm = new ItemContentUpdateForm(eItemContainer);
+    itemUpdateForm.respondToActionButton(eUpdateItemFormActionButton);
 }

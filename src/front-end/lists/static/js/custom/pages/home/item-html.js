@@ -21,7 +21,7 @@ class ItemHtml
         const checkedHtml = this.complete == "y" ? 'checked' : '';
 
         let html = `
-        <div class="${ItemHtml.Elements.TOP} ${checkedHtml}" data-item-id="${this.id}">
+        <div class="${ItemHtml.Elements.TOP} ${checkedHtml}" data-item-id="${this.id}" data-item-complete="${this.complete}">
             <div class="d-flex align-items-baseline">
                 <input type="checkbox" ${checkedHtml}>
                 <span class="ml-2 ${ItemHtml.Elements.CONTENT}">${this.content}</span>
