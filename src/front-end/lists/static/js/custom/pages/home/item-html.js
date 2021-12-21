@@ -18,11 +18,10 @@ class ItemHtml
     Returns the html for this list
     **********************************************************/
     getHtml() {
-
         const checkedHtml = this.complete == "y" ? 'checked' : '';
 
         let html = `
-        <div class="active-list-item ${checkedHtml}" data-item-id="${this.id}">
+        <div class="${ItemHtml.Elements.TOP} ${checkedHtml}" data-item-id="${this.id}">
             <div class="d-flex align-items-baseline">
                 <input type="checkbox" ${checkedHtml}>
                 <span class="ml-2 active-list-item-content">${this.content}</span>
@@ -37,8 +36,10 @@ class ItemHtml
 
         return html;
     }
+}
 
-
+ItemHtml.Elements = {
+    TOP: 'active-list-item',
 }
 
 

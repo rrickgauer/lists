@@ -53,6 +53,18 @@ class ApiWrapper
             method: ApiWrapper.Methods.GET,
         });
     }
+
+    /**********************************************************
+    PUT: /items/:item_id
+    **********************************************************/
+    static async itemsPut(itemID, formData) {
+        const url = `${ApiWrapper.Urls.ITEMS}/${itemID}`;
+
+        return await fetch(url, {
+            method: ApiWrapper.Methods.PUT,
+            body: formData,
+        });
+    }
 }
 
 

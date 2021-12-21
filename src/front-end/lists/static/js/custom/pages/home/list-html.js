@@ -96,7 +96,6 @@ class ListHtml
         $(listBoardElement).append(html);
     }
 
-
     /**********************************************************
     Generate the html for the list
     **********************************************************/
@@ -104,7 +103,7 @@ class ListHtml
         const itemsHtml = this.getItemsHtml();
 
         let html = `
-        <div class="active-list card my-shadow" data-list-id="${this.listID}">
+        <div class="${ListHtml.Elements.CONTAINER} card my-shadow" data-list-id="${this.listID}">
             <div class="card-header">
                 <div><h4>${this.metadata.name}</h4></div>
                 
@@ -125,7 +124,7 @@ class ListHtml
             </div>
 
             <div class="card-body">
-                <form>
+                <form class="${ListHtml.Elements.NEW_ITEM_FORM}">
                     <input class="form-control form-control-sm" type="text" placeholder="Add new item...">
                 </form>
 
@@ -152,6 +151,11 @@ class ListHtml
 
         return html;
     }
+}
 
 
+
+ListHtml.Elements = {
+    NEW_ITEM_FORM: 'active-list-form-new-item',
+    CONTAINER: 'active-list',
 }
