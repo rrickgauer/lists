@@ -41,7 +41,7 @@ def getItems(list_ids: list[UUID]=None) -> flask.Response:
 # Get all items from database
 #------------------------------------------------------
 def _queryAll() -> DbOperationResult:
-    sql = SQL_SELECT_INIT
+    sql = f'{SQL_SELECT_INIT} ORDER BY created_on DESC'
     parms = (str(flask.g.client_id),)
 
     return sql_engine.select(sql, parms, True)
