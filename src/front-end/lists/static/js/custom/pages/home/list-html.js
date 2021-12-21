@@ -96,7 +96,6 @@ class ListHtml
         $(listBoardElement).append(html);
     }
 
-
     /**********************************************************
     Generate the html for the list
     **********************************************************/
@@ -125,7 +124,7 @@ class ListHtml
             </div>
 
             <div class="card-body">
-                <form>
+                <form class="${ListHtml.Elements.NEW_ITEM_FORM}">
                     <input class="form-control form-control-sm" type="text" placeholder="Add new item...">
                 </form>
 
@@ -152,6 +151,10 @@ class ListHtml
 
         return html;
     }
+}
 
 
+
+ListHtml.Elements = {
+    NEW_ITEM_FORM: 'active-list-form-new-item',
 }
