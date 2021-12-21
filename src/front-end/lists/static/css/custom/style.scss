@@ -46,9 +46,15 @@ textarea {
     &,
     &:focus {
         outline: none;
+        box-shadow: none;
     }
 }
 
+.btn-xs {
+    padding: .125rem .25rem;
+    font-size: .75rem;
+    line-height: 1.25;
+}
 
 
 // ------------------------------------
@@ -180,6 +186,10 @@ textarea {
 }
 
 
+.active-list-item-content-form {
+    display: flex;
+    width: 100%;
+}
 
 
 

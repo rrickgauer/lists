@@ -17,7 +17,8 @@ Main logic
 $(document).ready(function() {
     addEventListeners();
     
-    toggleSidenav();    // open the sidebar initially
+    // toggleSidenav();    // open the sidebar initially
+    testingActivateFirstList();
 });
 
 
@@ -58,8 +59,18 @@ function addEventListeners() {
     });
 
 
-    
+    // update an item's content
+    $(eActiveListContainer).on('click', `.${ItemHtml.Elements.CONTENT}`, function() {
+        displayItemUpdateForm(this);
+    });
 }
+
+function testingActivateFirstList() {
+    const firstList = $('#lists-container').find('.list-group-item-action')[0];
+    activateList(firstList);
+}
+
+
 
 /**********************************************************
 Open a list from the sidebar
@@ -118,4 +129,14 @@ function createNewItem(inputElement) {
 
     itemCreator.appendToList();
     itemCreator.clearInputValue();
+}
+
+/**********************************************************
+Render an item's update content form
+**********************************************************/
+function displayItemUpdateForm(eItemContent) {
+    const eItemContainer = $(eItemContent).closest(`.${ItemHtml.Elements.TOP}`);
+    
+    const itemUpdateForm = new ItemContentUpdateForm(eItemContainer);
+    itemUpdateForm.renderUpdateForm();
 }
