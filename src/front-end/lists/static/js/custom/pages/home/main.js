@@ -8,7 +8,6 @@ const eSidebar = {
 
 const eActiveListContainer = '.active-lists-board';
 
-
 const mSidenavFormList = new SidenavFormList();
 
 /**********************************************************
@@ -17,7 +16,7 @@ Main logic
 $(document).ready(function() {
     addEventListeners();
     
-    toggleSidenav();    // open the sidebar initially
+    // toggleSidenav();    // open the sidebar initially
     // testingActivateFirstList();
 });
 
