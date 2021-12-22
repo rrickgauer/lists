@@ -23,7 +23,7 @@ class ItemHtml
         let html = `
         <div class="${ItemHtml.Elements.TOP} ${checkedHtml}" data-item-id="${this.id}" data-item-complete="${this.complete}">
             <div class="d-flex align-items-baseline">
-                <input type="checkbox" ${checkedHtml}>
+                <input type="checkbox" class="${ItemHtml.Elements.CHECKBOX}" ${checkedHtml}>
                 <span class="ml-2 ${ItemHtml.Elements.CONTENT}">${this.content}</span>
             </div>
 
@@ -41,6 +41,7 @@ class ItemHtml
 ItemHtml.Elements = {
     TOP: 'active-list-item',
     CONTENT: 'active-list-item-content',
+    CHECKBOX: 'active-list-item-checkbox',
 }
 
 

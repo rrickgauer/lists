@@ -237,3 +237,36 @@ def _query(item_id: UUID) -> DbOperationResult:
 
 
 
+#------------------------------------------------------
+# Update a single item's complete value.
+# If request method is put, mark the item as complete
+# If the request is delete, mark the item as not complete
+#------------------------------------------------------
+def updateItemComplete(item_id: UUID, request_method: str) -> flask.Response:
+    
+    if request_method == 'PUT':
+        item_complete = ItemComplete.YES
+        return_method = responses.updated
+    else:
+        item_complete = ItemComplete.NO
+        return_method = responses.deleted
+    
+
+    db_result = _cmdUpdateItemComplete(item_id, item_complete)
+
+    if not db_result.successful:
+        return responses.badRequest(db_result.error)
+    
+    return return_method()
+
+
+#------------------------------------------------------
+# Retrieve the given item from the database
+#------------------------------------------------------
+def _cmdUpdateItemComplete(item_id: UUID, complete: ItemComplete) -> DbOperationResult:
+    sql = 'UPDATE Items SET complete=%s WHERE id=%s'
+    parms = (complete.value, str(item_id))
+
+    return sql_engine.modify(sql, parms)
+
+
