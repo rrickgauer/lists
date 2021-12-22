@@ -17,8 +17,8 @@ Main logic
 $(document).ready(function() {
     addEventListeners();
     
-    // toggleSidenav();    // open the sidebar initially
-    testingActivateFirstList();
+    toggleSidenav();    // open the sidebar initially
+    // testingActivateFirstList();
 });
 
 
@@ -97,8 +97,8 @@ async function activateList(sidebarListElement) {
 
     const listID = $(sidebarListElement).attr('data-list-id');
     const list = new ListHtml(listID);
-    
-    // const successfulFetch = ;
+
+    list.displayLoadingCard(eActiveListContainer);
 
     if (!await list.fetchData()) {
         console.error('could not fetch the list data from the api');

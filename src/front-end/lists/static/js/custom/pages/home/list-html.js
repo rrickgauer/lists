@@ -15,6 +15,8 @@ class ListHtml
         this.fetchItems = this.fetchItems.bind(this);
         this.renderHtml = this.renderHtml.bind(this);
         this.getHtml = this.getHtml.bind(this);
+
+        this.displayLoadingCard = this.displayLoadingCard.bind(this);
     }
 
     /**********************************************************
@@ -137,7 +139,6 @@ class ListHtml
         </div>`;
 
         return html;
-
     }
 
     /**********************************************************
@@ -151,6 +152,20 @@ class ListHtml
 
         return html;
     }
+
+
+    displayLoadingCard(listBoardElement) {
+        const html = `
+            <div class="active-list card my-shadow" data-list-id="${this.listID}">
+                <div class="card-body d-flex justify-content-center w-100">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>`;
+
+        $(listBoardElement).append(html);
+    }
 }
 
 
@@ -159,3 +174,6 @@ ListHtml.Elements = {
     NEW_ITEM_FORM: 'active-list-form-new-item',
     CONTAINER: 'active-list',
 }
+
+
+
