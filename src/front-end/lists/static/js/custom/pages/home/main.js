@@ -17,7 +17,8 @@ Main logic
 $(document).ready(function() {
     addEventListeners();
     
-    toggleSidenav();    // open the sidebar initially
+    // toggleSidenav();    // open the sidebar initially
+    testingActivateFirstList();
 });
 
 
@@ -57,9 +58,36 @@ function addEventListeners() {
         }
     });
 
+    // Display an item's update content form
+    $(eActiveListContainer).on('click', `.${ItemHtml.Elements.CONTENT}`, function() {
+        displayItemUpdateForm(this);
+    });
 
-    
+    // When editing an item's content, either save or cancel update
+    $(eActiveListContainer).on('click', `.${ItemContentUpdateForm.Elements.FORM} button`, function() {
+        performUpdateItemFormAction(this);
+    });
+
+    // When editing an item's content, hits enter
+    $(eActiveListContainer).on('keypress', `.${ItemContentUpdateForm.Elements.FORM} input`, function(e) {
+        if (e.keyCode == 13) {
+            e.preventDefault();
+            updateItemContent(this);
+        }
+    });
+
+    // When editing an item's content, hits enter
+    $(eActiveListContainer).on('focusout', `.${ItemContentUpdateForm.Elements.FORM} input`, function() {
+        // cancelItemContentUpdate(this);
+    });
 }
+
+function testingActivateFirstList() {
+    const firstList = $('#lists-container').find('.list-group-item-action')[0];
+    activateList(firstList);
+}
+
+
 
 /**********************************************************
 Open a list from the sidebar
@@ -118,4 +146,44 @@ function createNewItem(inputElement) {
 
     itemCreator.appendToList();
     itemCreator.clearInputValue();
+}
+
+/**********************************************************
+Render an item's update content form.
+**********************************************************/
+function displayItemUpdateForm(eItemContent) {
+    const eItemContainer = $(eItemContent).closest(`.${ItemHtml.Elements.TOP}`);
+    
+    const itemUpdateForm = new ItemContentUpdateForm(eItemContainer);
+    itemUpdateForm.renderUpdateForm();
+}
+
+/**********************************************************
+Respond to an item's update content form action button being clicked.
+**********************************************************/
+function performUpdateItemFormAction(eUpdateItemFormActionButton) {
+    const eItemContainer = $(eUpdateItemFormActionButton).closest(`.${ItemHtml.Elements.TOP}`);
+    
+    const itemUpdateForm = new ItemContentUpdateForm(eItemContainer);
+    itemUpdateForm.respondToActionButton(eUpdateItemFormActionButton);
+}
+
+/**********************************************************
+Update an item's content
+**********************************************************/
+function updateItemContent(eItemUpdateFormInput) {
+    const eItemContainer = $(eItemUpdateFormInput).closest(`.${ItemHtml.Elements.TOP}`);
+    
+    const itemUpdateForm = new ItemContentUpdateForm(eItemContainer);
+    itemUpdateForm.updateContent();
+}
+
+/**********************************************************
+Cancel an item's content update
+**********************************************************/
+function cancelItemContentUpdate(eItemUpdateFormInput) {
+    const eItemContainer = $(eItemUpdateFormInput).closest(`.${ItemHtml.Elements.TOP}`);
+    
+    const itemUpdateForm = new ItemContentUpdateForm(eItemContainer);
+    itemUpdateForm.cancelUpdate();
 }

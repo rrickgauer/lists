@@ -39,6 +39,13 @@ textarea {
 .close,
 .close:focus {
   outline: none;
+  box-shadow: none;
+}
+
+.btn-xs {
+  padding: 0.125rem 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1.25;
 }
 
 #sidenav-container {
@@ -137,6 +144,11 @@ textarea {
 
 .active-list-item.checked .active-list-item-content {
   text-decoration: line-through;
+}
+
+.active-list-item-content-form {
+  display: flex;
+  width: 100%;
 }
 
 /*# sourceMappingURL=style.css.map */
