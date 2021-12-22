@@ -9,17 +9,21 @@ class ItemContentUpdateForm
         this.eItemContaier   = eItem;
         this.itemID          = $(this.eItemContaier).attr('data-item-id');
         this.itemComplete    = $(this.eItemContaier).attr('data-item-complete');
+        this.parentListID = $(this.eItemContaier).closest(`.${ListHtml.Elements.CONTAINER}`).attr('data-list-id');
 
         this.eItemContent    = null;
         this.originalContent = null;
 
-        this.renderUpdateForm         = this.renderUpdateForm.bind(this);
-        this._getFormHtml             = this._getFormHtml.bind(this);
-        this.respondToActionButton    = this.respondToActionButton.bind(this);
-        this._getActionButtonDataAttr = this._getActionButtonDataAttr.bind(this);
-        this.cancelUpdate             = this.cancelUpdate.bind(this);
-        this._getOriginalContentAttr  = this._getOriginalContentAttr.bind(this);
-
+        // bind all the methods
+        this.renderUpdateForm          = this.renderUpdateForm.bind(this);
+        this._getFormHtml              = this._getFormHtml.bind(this);
+        this.respondToActionButton     = this.respondToActionButton.bind(this);
+        this._getActionButtonDataAttr  = this._getActionButtonDataAttr.bind(this);
+        this.cancelUpdate              = this.cancelUpdate.bind(this);
+        this._getOriginalContentAttr   = this._getOriginalContentAttr.bind(this);
+        this.updateContent             = this.updateContent.bind(this);
+        this._getInputValue            = this._getInputValue.bind(this);
+        this._sendPutRequest           = this._sendPutRequest.bind(this);
         this._replaceItemContainerHtml = this._replaceItemContainerHtml.bind(this);
     }
 
@@ -61,6 +65,9 @@ class ItemContentUpdateForm
         if (action == ItemContentUpdateForm.Actions.CANCEL) {
             this.cancelUpdate();
         }
+        else {
+            this.updateContent();
+        }
     }
 
     /**********************************************************
@@ -95,6 +102,56 @@ class ItemContentUpdateForm
         return $(this.eItemContaier).find(`.${ItemContentUpdateForm.Elements.FORM}`).attr('data-original-content');
     }
 
+    /**********************************************************
+    Update the item's content
+    **********************************************************/
+    updateContent() {
+        // get the new content value from the input element
+        const requestItemObject = {
+            content: this._getInputValue(),
+            complete: this.itemComplete,
+            list_id: this.parentListID,
+        }
+
+        // send request to the api
+        this._sendPutRequest(requestItemObject);
+
+        // create a new ItemHtml object to replace the item's container html with
+        requestItemObject.id = this.itemID;
+        const newItemHtml = new ItemHtml(requestItemObject);
+        this._replaceItemContainerHtml(newItemHtml);
+    }
+
+    /**********************************************************
+    Get the form's input value
+    **********************************************************/
+    _getInputValue() {
+        return $(this.eItemContaier).find(`.${ItemContentUpdateForm.Elements.FORM} input`).val();
+    }
+
+    /**********************************************************
+    Send a PUT request to the api to save the new content's changes.
+
+    Args:
+        requestItemObject: object containing these fields:
+            list_id
+            content
+            complete
+    **********************************************************/
+    _sendPutRequest(requestItemObject) {
+        // transform the item object into a FormData object 
+        const requestFormData = Utilities.objectToFormData(requestItemObject);
+
+        try {
+            // send the request
+            ApiWrapper.itemsPut(this.itemID, requestFormData);
+            return true;
+        }
+        catch(error) {
+            console.error(error);
+            return false;
+        }
+    }
 
     /**********************************************************
     Replace the item container's html with the given ItemHtml
@@ -107,10 +164,6 @@ class ItemContentUpdateForm
         
         $(this.eItemContaier).replaceWith(html);
     }
-
-
-
-
 }
 
 ItemContentUpdateForm.Elements = {
