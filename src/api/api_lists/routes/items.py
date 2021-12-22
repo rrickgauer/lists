@@ -58,6 +58,19 @@ def put(item_id: UUID):
 
 
 
+#------------------------------------------------------
+# Update a single item's complete value as either complete or not
+#------------------------------------------------------
+@bp_items.route('<uuid:item_id>/complete', methods=['PUT', 'DELETE'])
+@security.login_required
+def completeItem(item_id: UUID):
+    return item_services.updateItemComplete(item_id, flask.request.method)
+
+    
+
+
+
+
 
 
 
