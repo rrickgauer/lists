@@ -120,7 +120,7 @@ class ListHtml
                         </div>
                     </div>
 
-                    <button type="button" class="close">
+                    <button type="button" class="close ${ListHtml.Elements.BTN_CLOSE}">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -177,6 +177,7 @@ class ListHtml
 ListHtml.Elements = {
     NEW_ITEM_FORM: 'active-list-form-new-item',
     CONTAINER: 'active-list',
+    BTN_CLOSE: 'active-list-btn-close',
 }
 
 

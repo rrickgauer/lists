@@ -17,7 +17,7 @@ $(document).ready(function() {
     addEventListeners();
     
     // toggleSidenav();    // open the sidebar initially
-    // testingActivateFirstList();
+    testingActivateFirstList();
 });
 
 
@@ -79,6 +79,11 @@ function addEventListeners() {
     $(eActiveListContainer).on('focusout', `.${ItemContentUpdateForm.Elements.FORM} input`, function() {
         // cancelItemContentUpdate(this);
     });
+
+    // close an active list
+    $(eActiveListContainer).on('click', `.${ListHtml.Elements.BTN_CLOSE}`, function() {
+        closeActiveList(this);
+    });
 }
 
 function testingActivateFirstList() {
@@ -92,7 +97,12 @@ function testingActivateFirstList() {
 Open a list from the sidebar
 **********************************************************/
 async function activateList(sidebarListElement) {
-    $(sidebarListElement).toggleClass('active');
+    // make sure the list isn't already active 
+    if ($(sidebarListElement).hasClass('active')) {
+        return;
+    }
+    
+    $(sidebarListElement).addClass('active');
 
     const listID = $(sidebarListElement).attr('data-list-id');
     const list = new ListHtml(listID);
@@ -185,4 +195,21 @@ function cancelItemContentUpdate(eItemUpdateFormInput) {
     
     const itemUpdateForm = new ItemContentUpdateForm(eItemContainer);
     itemUpdateForm.cancelUpdate();
+}
+
+
+
+/**********************************************************
+Close an active list
+**********************************************************/
+function closeActiveList(eClickedCloseButton) {
+    const eActiveList = $(eClickedCloseButton).closest(`.${ListHtml.Elements.CONTAINER}`);
+    const listID = $(eActiveList).attr('data-list-id');
+
+    // remove active list from the board
+    $(eActiveList).remove();    
+
+    // remove active class from sidenav list item
+    $(`#lists-container .list-group-item[data-list-id="${listID}"]`).removeClass('active');
+    
 }
