@@ -65,6 +65,32 @@ class ApiWrapper
             body: formData,
         });
     }
+
+
+    /**********************************************************
+    PUT: /items/:item_id/complete
+    **********************************************************/
+    static async itemCompletePut(itemID) {
+        return await ApiWrapper._itemCompleteUpdate(itemID, ApiWrapper.Methods.PUT);
+    }
+
+    /**********************************************************
+    DELETE: /items/:item_id/complete
+    **********************************************************/
+    static async itemCompleteDelete(itemID) {
+        return await ApiWrapper._itemCompleteUpdate(itemID, ApiWrapper.Methods.DELETE);
+    }
+
+
+    static async _itemCompleteUpdate(itemID, requestMethod) {
+        const url = `${ApiWrapper.Urls.ITEMS}/${itemID}/complete`;
+
+        return await fetch(url, {
+            method: requestMethod,
+        });
+    }
+
+
 }
 
 

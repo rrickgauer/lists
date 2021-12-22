@@ -84,6 +84,12 @@ function addEventListeners() {
     $(eActiveListContainer).on('click', `.${ListHtml.Elements.BTN_CLOSE}`, function() {
         closeActiveList(this);
     });
+
+
+    // mark item complete
+    $(eActiveListContainer).on('change', `.${ItemHtml.Elements.CHECKBOX}`, function() {
+        completeItem(this);
+    });
 }
 
 function testingActivateFirstList() {
@@ -212,4 +218,14 @@ function closeActiveList(eClickedCloseButton) {
     // remove active class from sidenav list item
     $(`#lists-container .list-group-item[data-list-id="${listID}"]`).removeClass('active');
     
+}
+
+
+
+/**********************************************************
+Item's complete checkbox was clicked
+**********************************************************/
+function completeItem(eCheckbox) {
+    const itemCompletor = new ItemCompletor(eCheckbox);
+    itemCompletor.save();
 }

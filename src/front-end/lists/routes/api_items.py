@@ -37,8 +37,21 @@ def put(item_id: UUID):
 
     return (api_response.text, api_response.status_code)
 
+#------------------------------------------------------
+# Update an item's complete value
+# /items/:item_id/complete
+#------------------------------------------------------
+@bp_api_items.route('<uuid:item_id>/complete', methods=['PUT', 'DELETE'])
+@security.login_required
+def updateComplete(item_id: UUID):
+    api = api_wrapper.ApiWrapperItemComplete(flask.g)
 
-
+    if flask.request.method == 'PUT':
+        api_response = api.put(item_id)
+    else:
+        api_response = api.delete(item_id)
+    
+    return (api_response.text, api_response.status_code)
 
 
 
