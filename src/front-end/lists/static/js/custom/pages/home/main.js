@@ -67,6 +67,14 @@ function addEventListeners() {
     $(eActiveListContainer).on('click', `.${ItemContentUpdateForm.Elements.FORM} button`, function() {
         performUpdateItemFormAction(this);
     });
+
+    // When editing an item's content, hits enter
+    $(eActiveListContainer).on('keypress', `.${ItemContentUpdateForm.Elements.FORM} input`, function(e) {
+        if (e.keyCode == 13) {
+            e.preventDefault();
+            updateItemContent(this);
+        }
+    });
 }
 
 function testingActivateFirstList() {
@@ -153,4 +161,11 @@ function performUpdateItemFormAction(eUpdateItemFormActionButton) {
     
     const itemUpdateForm = new ItemContentUpdateForm(eItemContainer);
     itemUpdateForm.respondToActionButton(eUpdateItemFormActionButton);
+}
+
+function updateItemContent(eItemUpdateFormInput) {
+    const eItemContainer = $(eItemUpdateFormInput).closest(`.${ItemHtml.Elements.TOP}`);
+    
+    const itemUpdateForm = new ItemContentUpdateForm(eItemContainer);
+    itemUpdateForm.updateContent();
 }
