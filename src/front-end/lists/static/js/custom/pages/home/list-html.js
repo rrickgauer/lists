@@ -10,11 +10,12 @@ class ListHtml
         this.metadata = null;
 
         // bind the object's methods
-        this.fetchData = this.fetchData.bind(this);
-        this.fetchListMetadata = this.fetchListMetadata.bind(this);
-        this.fetchItems = this.fetchItems.bind(this);
-        this.renderHtml = this.renderHtml.bind(this);
-        this.getHtml = this.getHtml.bind(this);
+        this.fetchData          = this.fetchData.bind(this);
+        this.fetchListMetadata  = this.fetchListMetadata.bind(this);
+        this.fetchItems         = this.fetchItems.bind(this);
+        this.renderHtml         = this.renderHtml.bind(this);
+        this.getHtml            = this.getHtml.bind(this);
+        this.displayLoadingCard = this.displayLoadingCard.bind(this);
     }
 
     /**********************************************************
@@ -93,7 +94,9 @@ class ListHtml
     **********************************************************/
     renderHtml(listBoardElement) {
         const html = this.getHtml();
-        $(listBoardElement).append(html);
+
+        // replace the loading card element with the complete card
+        $(listBoardElement).find(`.${ListHtml.Elements.CONTAINER}[data-list-id="${this.listID}"]`).replaceWith(html);
     }
 
     /**********************************************************
@@ -137,7 +140,6 @@ class ListHtml
         </div>`;
 
         return html;
-
     }
 
     /**********************************************************
@@ -151,6 +153,23 @@ class ListHtml
 
         return html;
     }
+
+    /**********************************************************
+    Display the loading card html prior to fetching the data 
+    from the api.
+    **********************************************************/
+    displayLoadingCard(listBoardElement) {
+        const html = `
+            <div class="active-list card my-shadow" data-list-id="${this.listID}">
+                <div class="card-body d-flex justify-content-center w-100">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>`;
+
+        $(listBoardElement).append(html);
+    }
 }
 
 
@@ -159,3 +178,6 @@ ListHtml.Elements = {
     NEW_ITEM_FORM: 'active-list-form-new-item',
     CONTAINER: 'active-list',
 }
+
+
+

@@ -8,7 +8,6 @@ const eSidebar = {
 
 const eActiveListContainer = '.active-lists-board';
 
-
 const mSidenavFormList = new SidenavFormList();
 
 /**********************************************************
@@ -18,7 +17,7 @@ $(document).ready(function() {
     addEventListeners();
     
     // toggleSidenav();    // open the sidebar initially
-    testingActivateFirstList();
+    // testingActivateFirstList();
 });
 
 
@@ -97,8 +96,8 @@ async function activateList(sidebarListElement) {
 
     const listID = $(sidebarListElement).attr('data-list-id');
     const list = new ListHtml(listID);
-    
-    // const successfulFetch = ;
+
+    list.displayLoadingCard(eActiveListContainer);
 
     if (!await list.fetchData()) {
         console.error('could not fetch the list data from the api');
