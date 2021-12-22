@@ -6,10 +6,10 @@ class ItemContentUpdateForm
 {
     
     constructor(eItem) {
-        this.eItemContaier   = eItem;
-        this.itemID          = $(this.eItemContaier).attr('data-item-id');
-        this.itemComplete    = $(this.eItemContaier).attr('data-item-complete');
-        this.parentListID = $(this.eItemContaier).closest(`.${ListHtml.Elements.CONTAINER}`).attr('data-list-id');
+        this.eItemContaier = eItem;
+        this.itemID        = $(this.eItemContaier).attr('data-item-id');
+        this.itemComplete  = $(this.eItemContaier).attr('data-item-complete');
+        this.parentListID  = $(this.eItemContaier).closest(`.${ListHtml.Elements.CONTAINER}`).attr('data-list-id');
 
         this.eItemContent    = null;
         this.originalContent = null;
@@ -34,9 +34,17 @@ class ItemContentUpdateForm
         this.eItemContent    = $(this.eItemContaier).find(`.${ItemHtml.Elements.CONTENT}`);
         this.originalContent = $(this.eItemContent).text();
 
+        // replace the html
         const formHtml = this._getFormHtml();
-
         $(this.eItemContaier).html(formHtml);
+
+        // set focus to the input
+        const input = $(this.eItemContaier).html(formHtml).find('input');
+
+        // move cursor to end of text
+        $(input).focus();
+        $(input).val('');
+        $(input).val(this.originalContent);
     }
 
     /**********************************************************

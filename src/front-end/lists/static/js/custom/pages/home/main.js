@@ -75,6 +75,11 @@ function addEventListeners() {
             updateItemContent(this);
         }
     });
+
+    // When editing an item's content, hits enter
+    $(eActiveListContainer).on('focusout', `.${ItemContentUpdateForm.Elements.FORM} input`, function() {
+        // cancelItemContentUpdate(this);
+    });
 }
 
 function testingActivateFirstList() {
@@ -163,9 +168,22 @@ function performUpdateItemFormAction(eUpdateItemFormActionButton) {
     itemUpdateForm.respondToActionButton(eUpdateItemFormActionButton);
 }
 
+/**********************************************************
+Update an item's content
+**********************************************************/
 function updateItemContent(eItemUpdateFormInput) {
     const eItemContainer = $(eItemUpdateFormInput).closest(`.${ItemHtml.Elements.TOP}`);
     
     const itemUpdateForm = new ItemContentUpdateForm(eItemContainer);
     itemUpdateForm.updateContent();
+}
+
+/**********************************************************
+Cancel an item's content update
+**********************************************************/
+function cancelItemContentUpdate(eItemUpdateFormInput) {
+    const eItemContainer = $(eItemUpdateFormInput).closest(`.${ItemHtml.Elements.TOP}`);
+    
+    const itemUpdateForm = new ItemContentUpdateForm(eItemContainer);
+    itemUpdateForm.cancelUpdate();
 }
