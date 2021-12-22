@@ -13,12 +13,14 @@ class ItemContentUpdateForm
         this.eItemContent    = null;
         this.originalContent = null;
 
-        this.renderUpdateForm        = this.renderUpdateForm.bind(this);
-        this._getFormHtml            = this._getFormHtml.bind(this);
-        this.respondToActionButton   = this.respondToActionButton.bind(this);
-        this._getUpdateButtonAction  = this._getUpdateButtonAction.bind(this);
-        this._cancelUpdate           = this._cancelUpdate.bind(this);
-        this._getOriginalContentAttr = this._getOriginalContentAttr.bind(this);
+        this.renderUpdateForm         = this.renderUpdateForm.bind(this);
+        this._getFormHtml             = this._getFormHtml.bind(this);
+        this.respondToActionButton    = this.respondToActionButton.bind(this);
+        this._getActionButtonDataAttr = this._getActionButtonDataAttr.bind(this);
+        this.cancelUpdate             = this.cancelUpdate.bind(this);
+        this._getOriginalContentAttr  = this._getOriginalContentAttr.bind(this);
+
+        this._replaceItemContainerHtml = this._replaceItemContainerHtml.bind(this);
     }
 
     /**********************************************************
@@ -49,26 +51,32 @@ class ItemContentUpdateForm
 
     /**********************************************************
     Respond to a form action button click
+
+    Args:
+        eButton: the update action button clicked
     **********************************************************/
     respondToActionButton(eButton) {
-        const action = this._getUpdateButtonAction(eButton);
+        const action = this._getActionButtonDataAttr(eButton);
 
         if (action == ItemContentUpdateForm.Actions.CANCEL) {
-            this._cancelUpdate();
+            this.cancelUpdate();
         }
     }
 
     /**********************************************************
-    Get the data-update-action value for the given update button
+    Get the data-update-action value for the given update button.
+
+    Args:
+        eButton: the action button whose 'data-update-action' value we want to get
     **********************************************************/
-    _getUpdateButtonAction(eButton) {
+    _getActionButtonDataAttr(eButton) {
         return $(eButton).attr('data-update-action');
     }
 
     /**********************************************************
     Steps to take for canceling an update
     **********************************************************/
-    _cancelUpdate() {
+    cancelUpdate() {
         // create a new ItemHtml object with this object's previous values
         const itemHtml = new ItemHtml({
             id: this.itemID,
@@ -77,7 +85,7 @@ class ItemContentUpdateForm
         });
 
         // replace the container with the original html
-        $(this.eItemContaier).replaceWith(itemHtml.getHtml());
+        this._replaceItemContainerHtml(itemHtml);
     }
 
     /**********************************************************
@@ -86,6 +94,22 @@ class ItemContentUpdateForm
     _getOriginalContentAttr() {
         return $(this.eItemContaier).find(`.${ItemContentUpdateForm.Elements.FORM}`).attr('data-original-content');
     }
+
+
+    /**********************************************************
+    Replace the item container's html with the given ItemHtml
+
+    Args:
+        newItemHtml: an ItemHtml object
+    **********************************************************/
+    _replaceItemContainerHtml(newItemHtml) {
+        const html = newItemHtml.getHtml();
+        
+        $(this.eItemContaier).replaceWith(html);
+    }
+
+
+
 
 }
 

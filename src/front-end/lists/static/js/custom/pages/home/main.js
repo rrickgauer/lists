@@ -63,7 +63,7 @@ function addEventListeners() {
         displayItemUpdateForm(this);
     });
 
-    // Display an item's update content form
+    // When editing an item's content, either save or cancel update
     $(eActiveListContainer).on('click', `.${ItemContentUpdateForm.Elements.FORM} button`, function() {
         performUpdateItemFormAction(this);
     });
