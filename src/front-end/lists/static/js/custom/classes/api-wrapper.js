@@ -68,6 +68,18 @@ class ApiWrapper
 
 
     /**********************************************************
+    DELETE: /items/:item_id
+    **********************************************************/
+    static async itemDelete(itemID) {
+        const url = `${ApiWrapper.Urls.ITEMS}/${itemID}`;
+
+        return await fetch(url, {
+            method: ApiWrapper.Methods.DELETE,
+        });
+    }
+
+
+    /**********************************************************
     PUT: /items/:item_id/complete
     **********************************************************/
     static async itemCompletePut(itemID) {
@@ -89,7 +101,6 @@ class ApiWrapper
             method: requestMethod,
         });
     }
-
 
 }
 

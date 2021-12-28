@@ -28,7 +28,7 @@ class ItemHtml
             </div>
 
             <div class="d-flex align-items-baseline">
-                <button type="button" class="close">
+                <button type="button" class="close ${ItemHtml.Elements.BTN_DELETE}">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -42,6 +42,7 @@ ItemHtml.Elements = {
     TOP: 'active-list-item',
     CONTENT: 'active-list-item-content',
     CHECKBOX: 'active-list-item-checkbox',
+    BTN_DELETE: 'active-list-item-btn-delete'
 }
 
 

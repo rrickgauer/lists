@@ -90,6 +90,11 @@ function addEventListeners() {
     $(eActiveListContainer).on('change', `.${ItemHtml.Elements.CHECKBOX}`, function() {
         completeItem(this);
     });
+
+    // delete an item
+    $(eActiveListContainer).on('click', `.${ItemHtml.Elements.BTN_DELETE}`, function() {
+        deleteItem(this);
+    });
 }
 
 function testingActivateFirstList() {
@@ -220,12 +225,20 @@ function closeActiveList(eClickedCloseButton) {
     
 }
 
-
-
 /**********************************************************
 Item's complete checkbox was clicked
 **********************************************************/
 function completeItem(eCheckbox) {
     const itemCompletor = new ItemCompletor(eCheckbox);
     itemCompletor.save();
+}
+
+/**********************************************************
+Delete an item
+**********************************************************/
+function deleteItem(eDeleteButton) {
+    const itemRemove = new ItemRemove(eDeleteButton);
+
+    itemRemove.remove();
+    itemRemove.updateListItemCount('#sidenav');
 }

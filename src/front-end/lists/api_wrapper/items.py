@@ -25,11 +25,18 @@ class ApiWrapperItems(ApiWrapperBase):
 
         return self._put(request_parms)
 
+    #------------------------------------------------------
+    # Send a delete request
+    #------------------------------------------------------
+    def delete(self, flask_request: flask.Request, item_id: UUID) -> requests.Response:
+        url = f'{self.URL}/{item_id}'
+        parms = self._generateRequestParms(url, flask_request)
 
+        return self._delete(parms)
 
 
 class ApiWrapperItemComplete(ApiWrapperBase):
-    URL = f'{ApiUrls.ITEMS}/{{}}/complete'
+    URL = f'{ApiUrls.ITEMS}/{{}}/complete'      # items/:item_id/complete
 
     #------------------------------------------------------
     # Mark an item complete
