@@ -114,9 +114,8 @@ class ListHtml
                     <div class="dropdown mr-2">
                         <button class="close" type="button" data-toggle="dropdown"><i class='bx bx-dots-horizontal'></i></button>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <button class="dropdown-item" type="button">Action</button>
-                            <button class="dropdown-item" type="button">Another action</button>
-                            <button class="dropdown-item" type="button">Something else here</button>
+                            <button class="dropdown-item" type="button" data-list-action="rename">Rename</button>
+                            <button class="dropdown-item" type="button" data-list-action="delete">Delete</button>
                         </div>
                     </div>
 
@@ -178,6 +177,7 @@ ListHtml.Elements = {
     NEW_ITEM_FORM: 'active-list-form-new-item',
     CONTAINER: 'active-list',
     BTN_CLOSE: 'active-list-btn-close',
+    ACTION_BUTTONS: 'list-header-buttons'
 }
 
 

@@ -95,6 +95,11 @@ function addEventListeners() {
     $(eActiveListContainer).on('click', `.${ItemHtml.Elements.BTN_DELETE}`, function() {
         deleteItem(this);
     });
+
+    // close an active list
+    $(eActiveListContainer).on('click', `.${ListHtml.Elements.ACTION_BUTTONS} .dropdown-item`, function() {
+        performListAction(this);
+    });
 }
 
 function testingActivateFirstList() {
@@ -241,4 +246,11 @@ function deleteItem(eDeleteButton) {
 
     itemRemove.remove();
     itemRemove.updateListItemCount('#sidenav');
+}
+
+
+function performListAction(eListActionButton) {
+    alert('hi');
+
+    // perform the list action
 }
