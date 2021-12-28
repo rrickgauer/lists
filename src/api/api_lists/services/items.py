@@ -270,3 +270,36 @@ def _cmdUpdateItemComplete(item_id: UUID, complete: ItemComplete) -> DbOperation
     return sql_engine.modify(sql, parms)
 
 
+#------------------------------------------------------
+# Delete the given item
+#------------------------------------------------------
+def deleteItem(item_id: UUID) -> flask.Response:
+    db_result = _cmdDeleteItem(item_id)
+
+    if not db_result.successful:
+        return responses.badRequest(db_result.error)
+
+    # make sure the item exists and belongs to the client
+    if db_result.data != 1:
+        return responses.notFound()
+
+    return responses.deleted()
+
+#------------------------------------------------------
+# Execute a sql command to delete the given item
+#------------------------------------------------------
+def _cmdDeleteItem(item_id: UUID) -> DbOperationResult:
+    sql = '''
+        DELETE FROM Items WHERE id=%s
+        AND EXISTS (SELECT 1 FROM Lists l WHERE l.user_id=%s)
+    '''
+
+    parms = (
+        str(item_id), 
+        str(flask.g.client_id)
+    )
+
+    return sql_engine.modify(sql, parms)
+
+
+
