@@ -37,6 +37,19 @@ def put(item_id: UUID):
 
     return (api_response.text, api_response.status_code)
 
+
+#------------------------------------------------------
+# Delete an item
+# /items/:item_id
+#------------------------------------------------------
+@bp_api_items.delete('<uuid:item_id>')
+@security.login_required
+def delete(item_id: UUID):
+    api = api_wrapper.ApiWrapperItems(flask.g)
+    response = api.delete(flask.request, item_id)
+
+    return (response.text, response.status_code)
+
 #------------------------------------------------------
 # Update an item's complete value
 # /items/:item_id/complete

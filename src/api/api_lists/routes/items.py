@@ -57,6 +57,14 @@ def put(item_id: UUID):
 
 
 
+#------------------------------------------------------
+# Delete the item that has the given item id
+#------------------------------------------------------
+@bp_items.delete('<uuid:item_id>')
+@security.login_required
+def delete(item_id: UUID):    
+    return item_services.deleteItem(item_id)
+
 
 #------------------------------------------------------
 # Update a single item's complete value as either complete or not
