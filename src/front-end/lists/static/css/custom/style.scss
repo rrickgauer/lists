@@ -122,7 +122,8 @@ textarea {
     right: 0;
     overflow: hidden;
     z-index: 109;
-    background-color: rgba(0,0,0,.2);
+    background-color: rgba(0,0,0,.3);
+    // opacity: .5;
     animation: animation-drawer-fade-in .3s ease-in-out 1;
 }
 

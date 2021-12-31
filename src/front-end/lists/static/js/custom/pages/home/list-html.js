@@ -108,7 +108,7 @@ class ListHtml
         let html = `
         <div class="${ListHtml.Elements.CONTAINER} card my-shadow" data-list-id="${this.listID}">
             <div class="card-header">
-                <div><h4>${this.metadata.name}</h4></div>
+                <div><h4 class="${ListHtml.Elements.LIST_NAME}">${this.metadata.name}</h4></div>
                 
                 <div class="list-header-buttons">
                     <div class="dropdown mr-2">
@@ -177,7 +177,8 @@ ListHtml.Elements = {
     NEW_ITEM_FORM: 'active-list-form-new-item',
     CONTAINER: 'active-list',
     BTN_CLOSE: 'active-list-btn-close',
-    ACTION_BUTTONS: 'list-header-buttons'
+    ACTION_BUTTONS: 'list-header-buttons',
+    LIST_NAME: 'active-list-name',
 }
 
 

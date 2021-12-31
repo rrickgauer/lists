@@ -100,6 +100,10 @@ function addEventListeners() {
     $(eActiveListContainer).on('click', `.${ListHtml.Elements.ACTION_BUTTONS} .dropdown-item`, function() {
         performListAction(this);
     });
+
+
+
+
 }
 
 function testingActivateFirstList() {
@@ -249,8 +253,25 @@ function deleteItem(eDeleteButton) {
 }
 
 
+/**********************************************************
+Determine which list action to take
+**********************************************************/
 function performListAction(eListActionButton) {
-    alert('hi');
+    const listActionValue = $(eListActionButton).attr('data-list-action');
+    
+    // determine which button was clicked
+    switch(listActionValue)
+    {
+        case "rename":
+            openListRenameModal(eListActionButton);
+            break;
+    }
+}
 
-    // perform the list action
+
+/**********************************************************
+Open the rename list modal
+**********************************************************/
+function openListRenameModal(eListActionButton) {
+    ListRename.openModal(eListActionButton);
 }
