@@ -101,6 +101,11 @@ function addEventListeners() {
         performListAction(this);
     });
 
+    // save the list rename
+    $(ListRename.Elements.BTN_SAVE).on('click', function() {
+        saveListRename();
+    });
+
 
 
 
@@ -274,4 +279,11 @@ Open the rename list modal
 **********************************************************/
 function openListRenameModal(eListActionButton) {
     ListRename.openModal(eListActionButton);
+}
+
+
+function saveListRename() {
+    const listRename = new ListRename();
+
+    console.log(listRename);
 }

@@ -3,16 +3,20 @@
 class ListRename
 {
 
-    constructor(eListActionButton) {
-        this.eListActionButton = eListActionButton;
-        this.eListContainer    = $(eListActionButton).closest(`.${ListHtml.Elements.CONTAINER}`);
-        this.listID            = $(this.eListContainer).attr('data-list-id');
-        this.eNameHeader       = $(this.eListContainer).find(`.${ListHtml.Elements.LIST_NAME}`);
-        this.originalName      = $(this.eNameHeader).text();
+    constructor() {
 
-        // bind the object's methods
-        // this.openModal = this.openModal.bind(this);
+        this.newName = $(ListRename.Elements.INPUT).val();
+        this.listID = $(ListRename.Elements.MODAL).attr('data-list-id');
+
     }
+
+
+
+
+
+    
+
+
 
     /**********************************************************
     Open the modal that has the rename list form
@@ -45,5 +49,6 @@ class ListRename
 ListRename.Elements = {
     MODAL: '#modal-list-rename',
     INPUT: '#list-rename-form-input',
+    BTN_SAVE: '#list-rename-form-save',
 }
 
