@@ -200,6 +200,7 @@ textarea {
 @media screen and (min-width: 768px) {
     .active-list {
         min-width: 400px;
+        width: 400px;
         padding: 20px;
     }
 }
@@ -220,6 +221,10 @@ textarea {
     }
 }
 
+.active-list-item-content {
+    word-break: break-word;
+}
+
 
 .active-list-item-content-form {
     display: flex;
@@ -227,11 +232,10 @@ textarea {
 }
 
 
-
-
-
-.top-row-buttons {
-    
+// ------------------------------------
+// Buttons at the top of the main secion
+// ------------------------------------
+.top-row-buttons { 
     display: flex;
     align-items: center;
     justify-content: space-between;
