@@ -36,6 +36,22 @@ class ItemHtml
 
         return html;
     }
+
+    // retrieve the item element with a data-item-id that matches the itemID
+    static getItemWithID(itemID) {
+        const eItem = $(`.${ItemHtml.Elements.TOP}[data-item-id="${itemID}"]`);
+
+        return eItem;
+    }
+
+    // Retrieve the id of the given item html element
+    static getItemID(eItem) {
+        return $(eItem).attr('data-item-id');
+    }
+
+    static getContainerItem(eChildElement) {
+        return $(eChildElement).closest(`.${ItemHtml.Elements.TOP}`);
+    }
 }
 
 ItemHtml.Elements = {
