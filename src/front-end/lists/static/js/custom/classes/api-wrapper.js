@@ -76,6 +76,22 @@ class ApiWrapper
     }
 
     /**********************************************************
+    PATCH: /items
+    **********************************************************/
+    static async itemsPatch(bodyData) {
+        const url = `${ApiWrapper.Urls.ITEMS}`;
+
+        return await fetch(url, {
+            method: ApiWrapper.Methods.PATCH,
+            body: bodyData,
+            headers: {
+                'Content-Type': 'application/json'
+              },
+            
+        });
+    }
+
+    /**********************************************************
     PUT: /items/:item_id
     **********************************************************/
     static async itemsPut(itemID, formData) {

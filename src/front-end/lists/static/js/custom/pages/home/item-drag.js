@@ -39,7 +39,7 @@ class ItemDrag
     
     }
     
-    static drop(e) {
+    static async drop(e) {
         // get the element container that is the drop location
         let eDroppedItem = ItemHtml.getContainerItem(e.target);
         const droppedItemID = ItemHtml.getItemID(eDroppedItem);
@@ -55,6 +55,13 @@ class ItemDrag
         // determine the new rank values the 2 items now have
         const newItemRanks = ItemDrag.getRanks(droppedItemID, draggedItemID);
         console.table(newItemRanks);
+
+        // send the request to the api
+        
+        const apiResponse = await ApiWrapper.itemsPatch(JSON.stringify(newItemRanks));
+
+
+
     }
 
     // given 2 item elements, swap them
@@ -69,7 +76,7 @@ class ItemDrag
         $(eItem1).replaceWith(eItem2Clone);
         $(eItem2).replaceWith(eItem1Clone);
     }
-    
+
     /**********************************************************
     Generate the html for all this list's items
     **********************************************************/

@@ -59,6 +59,9 @@ class IApiWrapper:
     
     def delete(self) -> requests.Response:
         raise NotImplementedError
+    
+    def patch(self) -> requests.Response:
+        raise NotImplementedError
 
 
 #------------------------------------------------------
@@ -106,6 +109,12 @@ class ApiWrapperBase(IApiWrapper):
     def _delete(self, request_parms: RequestParms) -> requests.Response:
         return self._baseRequest(requests.delete, request_parms)
     
+    #------------------------------------------------------
+    # Send a DELETE request
+    #------------------------------------------------------
+    def _patch(self, request_parms: RequestParms) -> requests.Response:
+        return self._baseRequest(requests.patch, request_parms)
+
     #------------------------------------------------------
     # Base request method for all others to use.
     #------------------------------------------------------

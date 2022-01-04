@@ -2,7 +2,7 @@ from __future__ import annotations
 from uuid import UUID
 import requests
 import flask
-from .base_wrapper import ApiWrapperBase, ApiUrls, RequestParms
+from .base_wrapper import ApiWrapperBase, ApiUrls, RequestParms, CUSTOM_HEADER, URL_BASE
 
 
 class ApiWrapperItems(ApiWrapperBase):
@@ -33,6 +33,29 @@ class ApiWrapperItems(ApiWrapperBase):
         parms = self._generateRequestParms(url, flask_request)
 
         return self._delete(parms)
+
+
+
+    
+    def patch(self, flask_request: flask.Request) -> requests.Response:
+        custom_headers = CUSTOM_HEADER
+        custom_headers.setdefault('content-type', 'application/json')
+        
+        return requests.patch(
+            url = f'{URL_BASE}{self.URL}',
+            auth = (self.email, self.password),
+            headers = custom_headers,
+            data = flask_request.data,   
+        )
+
+
+
+
+
+
+
+
+
 
 
 class ApiWrapperItemComplete(ApiWrapperBase):
