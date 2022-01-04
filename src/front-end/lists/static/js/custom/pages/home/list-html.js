@@ -169,6 +169,15 @@ class ListHtml
 
         $(listBoardElement).append(html);
     }
+
+
+    /**********************************************************
+    Given the list id, return the active list element with the
+    matching 'data-list-id' attribute.
+    **********************************************************/
+    static getActiveListElement(listID) {
+        return $(`.${ListHtml.Elements.CONTAINER}[data-list-id="${listID}"]`);
+    }
 }
 
 
