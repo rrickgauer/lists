@@ -17,6 +17,8 @@ Main logic
 **********************************************************/
 $(document).ready(function() {
     addEventListeners();
+
+    addDragEventListeners();
     
     // toggleSidenav();    // open the sidebar initially
     testingActivateFirstList();
@@ -299,3 +301,114 @@ function saveListRename() {
     const listRename = new ListRename();
     listRename.save();
 }
+
+
+
+
+
+
+
+
+
+var dragSrcEl = null;
+
+function handleDragStart(e) {
+    // Target (this) element is the source node.
+    dragSrcEl = this;
+
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', this.outerHTML);
+
+    this.classList.add('dragElem');
+}
+function handleDragOver(e) {
+    if (e.preventDefault) {
+        e.preventDefault(); // Necessary. Allows us to drop.
+    }
+    this.classList.add('over');
+
+    e.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
+
+    return false;
+}
+
+function handleDragEnter(e) {
+    // this / e.target is the current hover target.
+}
+
+function handleDragLeave(e) {
+    this.classList.remove('over');  // this / e.target is previous target element.
+}
+
+function handleDrop(e) {
+    // this/e.target is current target element.
+
+    console.log(e);
+
+    if (e.stopPropagation) {
+        e.stopPropagation(); // Stops some browsers from redirecting.
+    }
+
+    // Don't do anything if dropping the same column we're dragging.
+    if (dragSrcEl != this) {
+        // Set the source column's HTML to the HTML of the column we dropped on.
+        //alert(this.outerHTML);
+        //dragSrcEl.innerHTML = this.innerHTML;
+        //this.innerHTML = e.dataTransfer.getData('text/html');
+        this.parentNode.removeChild(dragSrcEl);
+        var dropHTML = e.dataTransfer.getData('text/html');
+        this.insertAdjacentHTML('beforebegin', dropHTML);
+        var dropElem = this.previousSibling;
+        
+        
+        
+        // addDnDHandlers(dropElem); - i commented this out!!!!!! rmr
+
+    }
+    this.classList.remove('over');
+    return false;
+}
+
+function handleDragEnd(e) {
+    // this/e.target is the source node.
+    this.classList.remove('over');
+}
+
+
+function addDragEventListeners() {
+    
+    const listContainer = document.querySelector(eActiveListContainer);
+
+    // listContainer.addEventListener('dragstart', function(e) {
+    //     handleDragStart(e);
+    // });
+    
+    // listContainer.addEventListener('dragenter', function(e) {
+    //     handleDragEnter(e);
+    // });
+    
+    // listContainer.addEventListener('dragover', function(e) {
+    //     handleDragOver(e);
+    // });
+    
+    // listContainer.addEventListener('dragleave', function(e) {
+    //     handleDragLeave(e);
+    // });
+    
+    // listContainer.addEventListener('drop', function(e) {
+    //     handleDrop(e);
+    // });
+    
+    // listContainer.addEventListener('dragend', function(e) {
+    //     handleDragEnd(e.target);
+    // });
+
+    listContainer.addEventListener('dragstart', handleDragStart, false);
+    listContainer.addEventListener('dragenter', handleDragEnter, false)
+    listContainer.addEventListener('dragover', handleDragOver, false);
+    listContainer.addEventListener('dragleave', handleDragLeave, false);
+    listContainer.addEventListener('drop', handleDrop, false);
+    listContainer.addEventListener('dragend', handleDragEnd, false);
+}
+
+
