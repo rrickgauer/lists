@@ -227,13 +227,24 @@ textarea {
 }
 
 
-// show sidenav button
-#btn-show-sidenav {
-    font-size: 30px;
-}
 
-@media screen and (min-width: 768px) {
-    #btn-show-sidenav {
-        font-size: 40px;
+
+
+.top-row-buttons {
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+
+    .top-row-button {
+        font-size: 30px;
+    }
+
+    @media screen and (min-width: 768px) {
+        .top-row-button {
+            font-size: 40px;
+        }
     }
 }
+

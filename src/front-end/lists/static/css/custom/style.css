@@ -174,12 +174,16 @@ textarea {
   width: 100%;
 }
 
-#btn-show-sidenav {
+.top-row-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.top-row-buttons .top-row-button {
   font-size: 30px;
 }
-
 @media screen and (min-width: 768px) {
-  #btn-show-sidenav {
+  .top-row-buttons .top-row-button {
     font-size: 40px;
   }
 }
