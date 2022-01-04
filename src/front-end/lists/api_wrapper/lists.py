@@ -1,5 +1,6 @@
 from uuid import UUID
 import requests
+import flask
 from .base_wrapper import ApiWrapperBase, ApiUrls, RequestParms
 
 
@@ -33,6 +34,16 @@ class ApiWrapperLists(ApiWrapperBase):
         )
 
         return self._post(request_parms)
+
+    
+    #------------------------------------------------------
+    # Send put request
+    #------------------------------------------------------
+    def put(self, flask_request: flask.Request, list_id: UUID) -> requests.Response:
+        url = f'{self.URL}/{str(list_id)}'
+        parms = self._generateRequestParms(url, flask_request)
+
+        return self._put(parms)
 
 
 

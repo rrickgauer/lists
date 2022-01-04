@@ -25,19 +25,23 @@ def newList():
     response = api.post(flask.request.form)
 
     return (response.text, response.status_code)
-
-
+    
 #------------------------------------------------------
-# Fetch a single list
+# Send an api request for existing lists
 #------------------------------------------------------
-@bp_api_lists.get('<uuid:list_id>')
+@bp_api_lists.route('<uuid:list_id>', methods=['GET', 'PUT'])
 @security.login_required
-def getList(list_id: UUID):
+def existingList(list_id: UUID):
     # redirect the request to the api
     api = api_wrapper.ApiWrapperLists(flask.g)
-    response = api.get(list_id)
-    return (response.text, response.status_code)
 
+    if flask.request.method == 'GET':
+        response = api.get(list_id)                     # get a list
+    elif flask.request.method == 'PUT':
+        response = api.put(flask.request, list_id)      # put: list
+    
+    return (response.text, response.status_code)
+    
 
 
 

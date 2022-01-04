@@ -4,15 +4,37 @@ class ListRename
 {
 
     constructor() {
-
         this.newName = $(ListRename.Elements.INPUT).val();
         this.listID = $(ListRename.Elements.MODAL).attr('data-list-id');
 
+        this.save = this.save.bind(this);
+        this._sendPutRequest = this._sendPutRequest.bind(this);
     }
 
+    async save() {
+        // send api request
+        this._sendPutRequest();
+    }
 
+    async _sendPutRequest() {
+        // create a formdata oject for the request
+        const formData = Utilities.objectToFormData({
+            name: this.newName,
+        });
 
+        let result = true;
 
+        try {
+            const apiResponse = await ApiWrapper.listsPut(this.listID, formData);
+            
+            console.log(await apiResponse.text());
+        } catch (error) {
+            console.error(error);
+            result = false;
+        }
+
+        return result;
+    }
 
     
 

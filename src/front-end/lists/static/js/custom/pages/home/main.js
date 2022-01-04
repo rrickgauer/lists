@@ -284,6 +284,5 @@ function openListRenameModal(eListActionButton) {
 
 function saveListRename() {
     const listRename = new ListRename();
-
-    console.log(listRename);
+    listRename.save();
 }
