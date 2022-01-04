@@ -7,8 +7,6 @@ This module contains all the business logic for item services.
 """
 from __future__ import annotations
 from datetime import datetime
-from re import S
-import re
 from uuid import UUID, uuid4
 import flask
 from ..db_manager import commands as sql_engine, DbOperationResult
@@ -51,9 +49,8 @@ def _queryAll() -> DbOperationResult:
 # Get the items that are children of the given lists
 #------------------------------------------------------
 def _queryFilterByLists(list_ids: list[UUID]) -> DbOperationResult:
-    sql = _getQueryFilterStmt(len(list_ids))
+    sql = _getQueryFilterStmt(len(list_ids)) + ' ORDER BY created_on DESC'
     parms = _getQueryFilterParms(list_ids)
-
     return sql_engine.select(sql, parms, True)
 
 
@@ -136,9 +133,10 @@ def _modifyItemActions(item_id: UUID, request_body: dict) -> flask.Response:
 #------------------------------------------------------
 def _parseItemFromDict(item_dict: dict) -> Item:
     item = Item(
-        list_id  = item_dict.get('list_id') or None,
-        content  = item_dict.get('content') or None,
-        complete = _parseCompleteDictFIeld(item_dict)
+        list_id    = item_dict.get('list_id') or None,
+        content    = item_dict.get('content') or None,
+        created_on = datetime.now(),
+        complete   = _parseCompleteDictFIeld(item_dict)
     )
 
     return item
@@ -175,8 +173,8 @@ def _parseCompleteDictFIeld(item_dict: dict) -> ItemComplete:
 #------------------------------------------------------
 def _modifyDbCommand(item: Item) -> DbOperationResult:
     sql = '''
-        INSERT INTO Items (id, list_id, content, `rank`, complete) 
-        VALUES (%s, %s, %s, %s, %s)
+        INSERT INTO Items (id, list_id, content, `rank`, complete, created_on) 
+        VALUES (%s, %s, %s, %s, %s, %s)
         ON DUPLICATE KEY UPDATE 
         content  = VALUES(content),
         complete = VALUES(complete),
@@ -189,6 +187,7 @@ def _modifyDbCommand(item: Item) -> DbOperationResult:
         item.content,
         item.rank,
         item.complete.value,
+        item.created_on.isoformat()
     )
 
     return sql_engine.modify(sql, parms)
