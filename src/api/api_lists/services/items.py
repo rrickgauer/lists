@@ -49,9 +49,8 @@ def _queryAll() -> DbOperationResult:
 # Get the items that are children of the given lists
 #------------------------------------------------------
 def _queryFilterByLists(list_ids: list[UUID]) -> DbOperationResult:
-    sql = _getQueryFilterStmt(len(list_ids))
+    sql = _getQueryFilterStmt(len(list_ids)) + ' ORDER BY created_on DESC'
     parms = _getQueryFilterParms(list_ids)
-
     return sql_engine.select(sql, parms, True)
 
 
