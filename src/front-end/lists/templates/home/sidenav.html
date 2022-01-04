@@ -39,15 +39,20 @@ Incoming data (called data):
         <hr>
         
         <!-- holds all the lists -->
-        <div class="list-group" id="lists-container">
+
+        <div id="lists-container-wrapper">
+            <div class="list-group" id="lists-container">
             
-            {% for list in data.lists %}
-                <button type="button" class="list-group-item list-group-item-action no-focus-outline" data-list-id="{{ list.id }}">
-                    <div class="list-group-item-name">{{ list.name }}</div>
-                    <span class="badge badge-secondary badge-pill">{{ list.count_items }}</span>
-                </button>
-            {% endfor %}
-        
+                {% for list in data.lists %}
+                    <button type="button" class="list-group-item list-group-item-action no-focus-outline" data-list-id="{{ list.id }}">
+                        <div class="list-group-item-name">{{ list.name }}</div>
+                        <span class="badge badge-secondary badge-pill">{{ list.count_items }}</span>
+                    </button>
+                {% endfor %}
+            
+            </div>
         </div>
+
+
     </div>
 </section>

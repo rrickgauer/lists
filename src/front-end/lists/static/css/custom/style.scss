@@ -65,7 +65,7 @@ textarea {
     width: 0px;
     margin-left: 0px;
     background-color: white;
-    max-height: 100vh;
+    height: 100vh;
     overflow-y: hidden;
     position: fixed;
     top: 0;
@@ -91,12 +91,16 @@ textarea {
 
 
 // ------------------------------------
-// Sidenav lists container
+// Sidenav: lists container
 // ------------------------------------
-#lists-container {
-    height: 95vh;
+#lists-container-wrapper {
+    max-height: 85vh;
     overflow-y: auto;
-    padding-bottom: 50px;
+}
+
+#lists-container {
+    overflow-y: auto;
+    margin-bottom: 50px;
 
     .list-group-item {
         display: flex;
