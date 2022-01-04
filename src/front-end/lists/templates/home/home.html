@@ -12,7 +12,7 @@ Incoming data (data):
 
 <head>
     {% include 'includes/header.html' %}
-    <title>Home page</title>
+    <title>Lists</title>
 </head>
 
 <body>
@@ -21,8 +21,15 @@ Incoming data (data):
         {% include 'home/sidenav.html' %}
 
         <section id="main" class="container-fluid">
-            <h3>Main</h3>
-            <button type="button" class="btn btn-primary" onclick="toggleSidenav()">Toggle sidenav</button>
+            
+            <div class="top-row-buttons">
+                <!-- button to open the sidenav -->
+                <button type="button" class="top-row-button btn no-focus-outline" id="btn-show-sidenav"><i class='bx bx-menu'></i></button>
+                <!-- link to github repo -->
+                <a href="https://github.com/rrickgauer/lists" class="top-row-button" target="_blank"><i class='bx bxl-github' ></i></a>
+            </div>
+
+            <hr class="m-0">
 
             <!-- active lists container -->
             <div class="container-fluid board-wrapper">

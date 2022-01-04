@@ -19,8 +19,9 @@ textarea {
     font-size: 16px;
 }
 
-
+// ------------------------------------
 // card bg shadow
+// ------------------------------------
 .my-shadow,
 .card {
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.18);
@@ -30,6 +31,9 @@ textarea {
     background-color: inherit;
 }
 
+// ------------------------------------
+// Stretch button
+// ------------------------------------
 @media screen and (max-width: 768px) {
     .btn-stretch-sm {
         width: 100%;
@@ -40,7 +44,10 @@ textarea {
     max-width: 500px;
 }
 
+
+// ------------------------------------
 // no focus outline on a button
+// ------------------------------------
 .no-focus-outline,
 .close {
     &,
@@ -56,6 +63,27 @@ textarea {
     line-height: 1.25;
 }
 
+// ------------------------------------
+// Scrollbar
+// ------------------------------------
+::-webkit-scrollbar {
+    width: 20px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #d6dee1;
+    border-radius: 20px;
+    border: 6px solid transparent;
+    background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #a8bbbf;
+}
 
 // ------------------------------------
 // Home page - sidebar
@@ -65,7 +93,7 @@ textarea {
     width: 0px;
     margin-left: 0px;
     background-color: white;
-    max-height: 100vh;
+    height: 100vh;
     overflow-y: hidden;
     position: fixed;
     top: 0;
@@ -91,12 +119,16 @@ textarea {
 
 
 // ------------------------------------
-// Sidenav lists container
+// Sidenav: lists container
 // ------------------------------------
-#lists-container {
-    height: 95vh;
+#lists-container-wrapper {
+    max-height: 85vh;
     overflow-y: auto;
-    padding-bottom: 50px;
+}
+
+#lists-container {
+    overflow-y: auto;
+    margin-bottom: 50px;
 
     .list-group-item {
         display: flex;
@@ -135,6 +167,10 @@ textarea {
 // ------------------------------------
 // Active lists board
 // ------------------------------------
+.board-wrapper {
+    padding: 0px;
+}
+
 .active-lists-board {
     display: flex;
     overflow-x: auto;
@@ -168,6 +204,7 @@ textarea {
 @media screen and (min-width: 768px) {
     .active-list {
         min-width: 400px;
+        width: 400px;
         padding: 20px;
     }
 }
@@ -188,6 +225,10 @@ textarea {
     }
 }
 
+.active-list-item-content {
+    word-break: break-word;
+}
+
 
 .active-list-item-content-form {
     display: flex;
@@ -195,4 +236,23 @@ textarea {
 }
 
 
+// ------------------------------------
+// Buttons at the top of the main secion
+// ------------------------------------
+.top-row-buttons { 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+
+    .top-row-button {
+        font-size: 30px;
+    }
+
+    @media screen and (min-width: 768px) {
+        .top-row-button {
+            font-size: 40px;
+        }
+    }
+}
 
