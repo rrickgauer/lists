@@ -175,8 +175,24 @@ class ListHtml
     Given the list id, return the active list element with the
     matching 'data-list-id' attribute.
     **********************************************************/
-    static getActiveListElement(listID) {
+    static getActiveListElementByID(listID) {
         return $(`.${ListHtml.Elements.CONTAINER}[data-list-id="${listID}"]`);
+    }
+
+    /**********************************************************
+    Given an element within an active list, find the closest 
+    parent active list container element.
+    **********************************************************/
+    static getParentActiveListElement(eChild) {
+        return $(eChild).closest(`.${ListHtml.Elements.CONTAINER}`);
+    }
+
+    /**********************************************************
+    Get the given active list element's id from its data-list-id 
+    attribute.
+    **********************************************************/
+    static getActiveListElementID(eActiveList) {
+        return $(eActiveList).attr('data-list-id');
     }
 }
 

@@ -45,5 +45,14 @@ class ApiWrapperLists(ApiWrapperBase):
 
         return self._put(parms)
 
+    #------------------------------------------------------
+    # Send delete request
+    #------------------------------------------------------
+    def delete(self, flask_request: flask.Request, list_id: UUID) -> requests.Response:
+        url = f'{self.URL}/{str(list_id)}'
+        parms = self._generateRequestParms(url, flask_request)
+
+        return self._delete(parms)
+
 
 

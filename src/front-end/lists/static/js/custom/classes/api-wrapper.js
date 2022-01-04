@@ -43,7 +43,9 @@ class ApiWrapper
         });
     }
 
-    
+    /**********************************************************
+    Update a list
+    **********************************************************/
     static async listsPut(listID, formData) {
         const url = `${ApiWrapper.Urls.LISTS}/${listID}`;
 
@@ -52,6 +54,15 @@ class ApiWrapper
             body: formData,
         });
     }
+
+    static async listsDelete(listID) {
+        const url = `${ApiWrapper.Urls.LISTS}/${listID}`;
+
+        return await fetch(url, {
+            method: ApiWrapper.Methods.DELETE,
+        });
+    }
+
 
     /**********************************************************
     Get the items that belong to the given list id

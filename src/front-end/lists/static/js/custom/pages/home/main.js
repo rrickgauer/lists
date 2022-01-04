@@ -96,7 +96,7 @@ function addEventListeners() {
         deleteItem(this);
     });
 
-    // close an active list
+    // list action button
     $(eActiveListContainer).on('click', `.${ListHtml.Elements.ACTION_BUTTONS} .dropdown-item`, function() {
         performListAction(this);
     });
@@ -106,8 +106,13 @@ function addEventListeners() {
         saveListRename();
     });
 
-
-
+    // save the list rename for typing enter key while input is in focus
+    $(ListRename.Elements.INPUT).on('keypress', function(e) {
+        if (e.keyCode == 13) {
+            e.preventDefault();
+            saveListRename();
+        }
+    });
 
 }
 
@@ -268,20 +273,20 @@ function performListAction(eListActionButton) {
     switch(listActionValue)
     {
         case "rename":
-            openListRenameModal(eListActionButton);
+            ListRename.openModal(eListActionButton);
             break;
+        case "delete":
+            const listDelete = new ListDelete(eListActionButton);
+            console.log(listDelete);
+            listDelete.delete();
+            break;
+
     }
 }
 
-
 /**********************************************************
-Open the rename list modal
+Action listener for saving a list rename
 **********************************************************/
-function openListRenameModal(eListActionButton) {
-    ListRename.openModal(eListActionButton);
-}
-
-
 function saveListRename() {
     const listRename = new ListRename();
     listRename.save();

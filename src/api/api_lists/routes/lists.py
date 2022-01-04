@@ -50,6 +50,14 @@ def put(list_id: UUID):
 
 
 #------------------------------------------------------
+# Delete an existing list
+#------------------------------------------------------
+@bp_lists.delete('<uuid:list_id>')
+@security.login_required
+def delete(list_id: UUID):
+    return list_services.deleteList(list_id)
+
+#------------------------------------------------------
 # Retrieve the items for a single list
 #------------------------------------------------------
 @bp_lists.get('<uuid:list_id>/items')
