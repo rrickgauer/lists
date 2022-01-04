@@ -268,20 +268,20 @@ function performListAction(eListActionButton) {
     switch(listActionValue)
     {
         case "rename":
-            openListRenameModal(eListActionButton);
+            ListRename.openModal(eListActionButton);
             break;
+        case "delete":
+            const listDelete = new ListDelete(eListActionButton);
+            console.log(listDelete);
+            listDelete.delete();
+            break;
+
     }
 }
 
-
 /**********************************************************
-Open the rename list modal
+Action listener for saving a list rename
 **********************************************************/
-function openListRenameModal(eListActionButton) {
-    ListRename.openModal(eListActionButton);
-}
-
-
 function saveListRename() {
     const listRename = new ListRename();
     listRename.save();

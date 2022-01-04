@@ -1,4 +1,7 @@
 
+/**
+ * This class handles all the actions needed to rename a list
+ */
 
 class ListRename
 {
@@ -66,7 +69,7 @@ class ListRename
     Update the active list's name text to the new name from the input
     **********************************************************/
     _updateActiveListText() {
-        const eActiveList = ListHtml.getActiveListElement(this.listID);
+        const eActiveList = ListHtml.getActiveListElementByID(this.listID);
         $(eActiveList).find(`.${ListHtml.Elements.LIST_NAME}`).text(this.newName);
     }
 

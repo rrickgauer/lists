@@ -143,6 +143,26 @@ def _modifyDbCommand(list_: List) -> DbOperationResult:
     return sql_engine.modify(sql, parms)
 
 
-    
+#------------------------------------------------------
+# Delete a list
+#------------------------------------------------------
+def deleteList(list_id: UUID) -> flask.Response:
+    db_result = _cmdDeleteList(List(id=list_id))
 
+    if not db_result.successful:
+        return responses.badRequest(db_result.error)
+
+    # if the rows affected is not 1 the list does not exist or is not owned by the client
+    if db_result.data != 1:
+        return responses.forbidden()
+
+    return responses.deleted()
     
+#------------------------------------------------------
+# SQL command that deletes the given list from the database
+#------------------------------------------------------
+def _cmdDeleteList(list_: List) -> DbOperationResult:
+    sql = 'DELETE FROM Lists WHERE id=%s AND user_id=%s'
+    parms = (str(list_.id), str(flask.g.client_id))
+
+    return sql_engine.modify(sql, parms)
