@@ -10,6 +10,8 @@ const eActiveListContainer = '.active-lists-board';
 
 const mSidenavFormList = new SidenavFormList();
 
+const eBtnShowSidenavBtn = '#btn-show-sidenav';
+
 /**********************************************************
 Main logic
 **********************************************************/
@@ -25,6 +27,12 @@ $(document).ready(function() {
 Add all the event listeners to the page
 **********************************************************/
 function addEventListeners() {
+
+    // open sidenav
+    $(eBtnShowSidenavBtn).on('click', function() {
+        toggleSidenav();
+    }); 
+
     // sidebar clicking on a list
     $('#lists-container').on('click', '.list-group-item-action', function() {
         activateList(this);

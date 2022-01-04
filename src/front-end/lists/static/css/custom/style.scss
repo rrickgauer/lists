@@ -226,3 +226,14 @@ textarea {
     width: 100%;
 }
 
+
+// show sidenav button
+#btn-show-sidenav {
+    font-size: 30px;
+}
+
+@media screen and (min-width: 768px) {
+    #btn-show-sidenav {
+        font-size: 40px;
+    }
+}

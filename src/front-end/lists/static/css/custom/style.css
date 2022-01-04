@@ -174,4 +174,14 @@ textarea {
   width: 100%;
 }
 
+#btn-show-sidenav {
+  font-size: 30px;
+}
+
+@media screen and (min-width: 768px) {
+  #btn-show-sidenav {
+    font-size: 40px;
+  }
+}
+
 /*# sourceMappingURL=style.css.map */
