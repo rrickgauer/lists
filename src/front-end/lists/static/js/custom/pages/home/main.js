@@ -95,6 +95,20 @@ function addEventListeners() {
     $(eActiveListContainer).on('click', `.${ItemHtml.Elements.BTN_DELETE}`, function() {
         deleteItem(this);
     });
+
+    // close an active list
+    $(eActiveListContainer).on('click', `.${ListHtml.Elements.ACTION_BUTTONS} .dropdown-item`, function() {
+        performListAction(this);
+    });
+
+    // save the list rename
+    $(ListRename.Elements.BTN_SAVE).on('click', function() {
+        saveListRename();
+    });
+
+
+
+
 }
 
 function testingActivateFirstList() {
@@ -241,4 +255,34 @@ function deleteItem(eDeleteButton) {
 
     itemRemove.remove();
     itemRemove.updateListItemCount('#sidenav');
+}
+
+
+/**********************************************************
+Determine which list action to take
+**********************************************************/
+function performListAction(eListActionButton) {
+    const listActionValue = $(eListActionButton).attr('data-list-action');
+    
+    // determine which button was clicked
+    switch(listActionValue)
+    {
+        case "rename":
+            openListRenameModal(eListActionButton);
+            break;
+    }
+}
+
+
+/**********************************************************
+Open the rename list modal
+**********************************************************/
+function openListRenameModal(eListActionButton) {
+    ListRename.openModal(eListActionButton);
+}
+
+
+function saveListRename() {
+    const listRename = new ListRename();
+    listRename.save();
 }

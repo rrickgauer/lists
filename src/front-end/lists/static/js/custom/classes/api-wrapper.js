@@ -43,6 +43,16 @@ class ApiWrapper
         });
     }
 
+    
+    static async listsPut(listID, formData) {
+        const url = `${ApiWrapper.Urls.LISTS}/${listID}`;
+
+        return await fetch(url, {
+            method: ApiWrapper.Methods.PUT,
+            body: formData,
+        });
+    }
+
     /**********************************************************
     Get the items that belong to the given list id
     **********************************************************/
