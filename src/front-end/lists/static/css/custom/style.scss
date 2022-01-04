@@ -167,6 +167,10 @@ textarea {
 // ------------------------------------
 // Active lists board
 // ------------------------------------
+.board-wrapper {
+    padding: 0px;
+}
+
 .active-lists-board {
     display: flex;
     overflow-x: auto;

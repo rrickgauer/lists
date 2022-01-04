@@ -128,6 +128,10 @@ textarea {
   padding: 10px;
 }
 
+.board-wrapper {
+  padding: 0px;
+}
+
 .active-lists-board {
   display: flex;
   overflow-x: auto;
