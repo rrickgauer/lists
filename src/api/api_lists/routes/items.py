@@ -50,9 +50,8 @@ def batch():
     body = flask.request.json
     print(flask.json.dumps(body, indent=4))
 
-    return 'batch update'
 
-    return item_services.createNewItem(flask.request.form.to_dict())
+    return item_services.patchItems(flask.request)
 
 
 #------------------------------------------------------

@@ -6,13 +6,15 @@ This module contains all the business logic for item services.
 **********************************************************************************
 """
 from __future__ import annotations
+from typing import Tuple
 from datetime import datetime
 from uuid import UUID, uuid4
 import flask
-from ..db_manager import commands as sql_engine, DbOperationResult
-from ..common import responses
-from ..models import Item, ItemComplete
+from ...db_manager import commands as sql_engine, DbOperationResult
+from ...common import responses
+from ...models import Item, ItemComplete
 
+from .parser import BatchItemParser, ParseReturnCodes
 
 SQL_SELECT_INIT = '''
     SELECT * FROM View_Items vi
@@ -301,4 +303,46 @@ def _cmdDeleteItem(item_id: UUID) -> DbOperationResult:
     return sql_engine.modify(sql, parms)
 
 
+def patchItems(flask_request: flask.Request) -> flask.Response:
+    parsing_result, items = _parseRequestData(flask_request)
 
+    # if data was invalid, reply with an invalid response
+    if parsing_result != ParseReturnCodes.SUCCESS:
+        return responses.badRequest(parsing_result.name)
+
+    # return a response here if there are no items to be updated
+    if len(items) < 1:
+        return responses.updated()
+
+
+
+    # now take the list of items and generate the update sql statement
+
+
+    return responses.updated()
+
+
+
+#------------------------------------------------------
+# Given the flask request, parse the data into a list of Item objects
+#
+# Returns a tuple:
+#   - parser return code
+#   - list of parsed Item objects
+#------------------------------------------------------
+def _parseRequestData(flask_request: flask.Request) -> Tuple[ParseReturnCodes, list[Item]]:
+    # be sure the request data was valid
+    parser = BatchItemParser(flask_request)
+    parsing_result = parser.isValid()
+
+    # transform the incoming json data into a list of Item objects
+    if parsing_result == ParseReturnCodes.SUCCESS:
+        parser.parseData()
+
+    return (parsing_result, parser.items)
+
+    
+
+
+def _generateBatchUpdateSqlStatement(items: list[Item]) -> str:
+    pass
