@@ -303,6 +303,9 @@ def _cmdDeleteItem(item_id: UUID) -> DbOperationResult:
     return sql_engine.modify(sql, parms)
 
 
+#------------------------------------------------------
+# Execute a sql command to delete the given item
+#------------------------------------------------------
 def patchItems(flask_request: flask.Request) -> flask.Response:
     parsing_result, items = _parseRequestData(flask_request)
 
@@ -315,9 +318,11 @@ def patchItems(flask_request: flask.Request) -> flask.Response:
         return responses.updated()
 
 
+    # save updates in the database
+    db_result = _cmdBatchUpdateItemRanks(items)
 
-    # now take the list of items and generate the update sql statement
-
+    if not db_result.successful:
+        return responses.badRequest(db_result.error)
 
     return responses.updated()
 
@@ -341,8 +346,66 @@ def _parseRequestData(flask_request: flask.Request) -> Tuple[ParseReturnCodes, l
 
     return (parsing_result, parser.items)
 
-    
+   
+#------------------------------------------------------
+# Execute the sql command to batch update item ranks
+#------------------------------------------------------
+def _cmdBatchUpdateItemRanks(items: list[Item]) -> DbOperationResult:
+    # generate the update sql statement
+    sql = _generateBatchUpdateSqlStatement(items)
+
+    # transform the list of items into a tuple
+    parms = _itemsListToTuple(items)
+
+    return sql_engine.modify(sql, parms)
 
 
+#------------------------------------------------------
+# Generate the sql batch rank update statement
+#------------------------------------------------------
 def _generateBatchUpdateSqlStatement(items: list[Item]) -> str:
-    pass
+    # generate the string with all the tuples in it
+    parms_str = _getBatchParmSqlString(items)
+    
+    sql = f'INSERT INTO Items (id, `rank`) VALUES {parms_str} ON DUPLICATE KEY UPDATE `rank`=values(`rank`);'
+
+    return sql
+
+
+#------------------------------------------------------
+# Generate a the parameter portion (%s, %s) of the batch 
+# update sql string with the given number of items
+#
+# Args:
+#   num_items: number of (%s, %s) elements to add to the string
+#------------------------------------------------------
+def _getBatchParmSqlString(items: list[Item]) -> str:
+    first = True
+    sql = ''
+
+    for i in items:
+        if not first:
+            sql += ', '
+        else:
+            first = False
+        
+        sql += '(%s, %s)'
+
+
+    return sql
+
+
+#------------------------------------------------------
+# Transform the given list of items into a tuple 
+# for the batch update sql statement.
+#------------------------------------------------------
+def _itemsListToTuple(items: list[Item]) -> tuple:
+    tuple_list = []
+
+    for item in items:
+        tuple_list.append(str(item.id))
+        tuple_list.append(item.rank)
+
+    return tuple(tuple_list)
+
+
