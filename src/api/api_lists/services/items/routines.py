@@ -6,13 +6,15 @@ This module contains all the business logic for item services.
 **********************************************************************************
 """
 from __future__ import annotations
+from typing import Tuple
 from datetime import datetime
 from uuid import UUID, uuid4
 import flask
-from ..db_manager import commands as sql_engine, DbOperationResult
-from ..common import responses
-from ..models import Item, ItemComplete
+from ...db_manager import commands as sql_engine, DbOperationResult
+from ...common import responses
+from ...models import Item, ItemComplete
 
+from .parser import BatchItemParser, ParseReturnCodes
 
 SQL_SELECT_INIT = '''
     SELECT * FROM View_Items vi
@@ -49,7 +51,7 @@ def _queryAll() -> DbOperationResult:
 # Get the items that are children of the given lists
 #------------------------------------------------------
 def _queryFilterByLists(list_ids: list[UUID]) -> DbOperationResult:
-    sql = _getQueryFilterStmt(len(list_ids)) + ' ORDER BY created_on DESC'
+    sql = _getQueryFilterStmt(len(list_ids)) + ' ORDER BY -`rank` DESC, modified_on DESC;'
     parms = _getQueryFilterParms(list_ids)
     return sql_engine.select(sql, parms, True)
 
@@ -300,5 +302,110 @@ def _cmdDeleteItem(item_id: UUID) -> DbOperationResult:
 
     return sql_engine.modify(sql, parms)
 
+
+#------------------------------------------------------
+# Execute a sql command to delete the given item
+#------------------------------------------------------
+def patchItems(flask_request: flask.Request) -> flask.Response:
+    parsing_result, items = _parseRequestData(flask_request)
+
+    # if data was invalid, reply with an invalid response
+    if parsing_result != ParseReturnCodes.SUCCESS:
+        return responses.badRequest(parsing_result.name)
+
+    # return a response here if there are no items to be updated
+    if len(items) < 1:
+        return responses.updated()
+
+
+    # save updates in the database
+    db_result = _cmdBatchUpdateItemRanks(items)
+
+    if not db_result.successful:
+        return responses.badRequest(db_result.error)
+
+    return responses.updated()
+
+
+
+#------------------------------------------------------
+# Given the flask request, parse the data into a list of Item objects
+#
+# Returns a tuple:
+#   - parser return code
+#   - list of parsed Item objects
+#------------------------------------------------------
+def _parseRequestData(flask_request: flask.Request) -> Tuple[ParseReturnCodes, list[Item]]:
+    # be sure the request data was valid
+    parser = BatchItemParser(flask_request)
+    parsing_result = parser.isValid()
+
+    # transform the incoming json data into a list of Item objects
+    if parsing_result == ParseReturnCodes.SUCCESS:
+        parser.parseData()
+
+    return (parsing_result, parser.items)
+
+   
+#------------------------------------------------------
+# Execute the sql command to batch update item ranks
+#------------------------------------------------------
+def _cmdBatchUpdateItemRanks(items: list[Item]) -> DbOperationResult:
+    # generate the update sql statement
+    sql = _generateBatchUpdateSqlStatement(items)
+
+    # transform the list of items into a tuple
+    parms = _itemsListToTuple(items)
+
+    return sql_engine.modify(sql, parms)
+
+
+#------------------------------------------------------
+# Generate the sql batch rank update statement
+#------------------------------------------------------
+def _generateBatchUpdateSqlStatement(items: list[Item]) -> str:
+    # generate the string with all the tuples in it
+    parms_str = _getBatchParmSqlString(items)
+    
+    sql = f'INSERT INTO Items (id, `rank`) VALUES {parms_str} ON DUPLICATE KEY UPDATE `rank`=values(`rank`);'
+
+    return sql
+
+
+#------------------------------------------------------
+# Generate a the parameter portion (%s, %s) of the batch 
+# update sql string with the given number of items
+#
+# Args:
+#   num_items: number of (%s, %s) elements to add to the string
+#------------------------------------------------------
+def _getBatchParmSqlString(items: list[Item]) -> str:
+    first = True
+    sql = ''
+
+    for i in items:
+        if not first:
+            sql += ', '
+        else:
+            first = False
+        
+        sql += '(%s, %s)'
+
+
+    return sql
+
+
+#------------------------------------------------------
+# Transform the given list of items into a tuple 
+# for the batch update sql statement.
+#------------------------------------------------------
+def _itemsListToTuple(items: list[Item]) -> tuple:
+    tuple_list = []
+
+    for item in items:
+        tuple_list.append(str(item.id))
+        tuple_list.append(item.rank)
+
+    return tuple(tuple_list)
 
 

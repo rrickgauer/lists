@@ -122,6 +122,9 @@ function addEventListeners() {
         }
     });
 
+    // listen for item drag/drop actions
+    ItemDrag.listen(eActiveListContainer);
+
 }
 
 function testingActivateFirstList() {

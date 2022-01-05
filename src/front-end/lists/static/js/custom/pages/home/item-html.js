@@ -21,7 +21,7 @@ class ItemHtml
         const checkedHtml = this.complete == "y" ? 'checked' : '';
 
         let html = `
-        <div class="${ItemHtml.Elements.TOP} ${checkedHtml}" data-item-id="${this.id}" data-item-complete="${this.complete}">
+        <div class="${ItemHtml.Elements.TOP} ${checkedHtml}" data-item-id="${this.id}" data-item-complete="${this.complete}" draggable="true">
             <div class="d-flex align-items-baseline">
                 <input type="checkbox" class="${ItemHtml.Elements.CHECKBOX}" ${checkedHtml}>
                 <span class="ml-2 ${ItemHtml.Elements.CONTENT}">${this.content}</span>
@@ -35,6 +35,22 @@ class ItemHtml
         </div>`;
 
         return html;
+    }
+
+    // retrieve the item element with a data-item-id that matches the itemID
+    static getItemWithID(itemID) {
+        const eItem = $(`.${ItemHtml.Elements.TOP}[data-item-id="${itemID}"]`);
+
+        return eItem;
+    }
+
+    // Retrieve the id of the given item html element
+    static getItemID(eItem) {
+        return $(eItem).attr('data-item-id');
+    }
+
+    static getContainerItem(eChildElement) {
+        return $(eChildElement).closest(`.${ItemHtml.Elements.TOP}`);
     }
 }
 

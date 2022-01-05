@@ -25,6 +25,32 @@ def getItems():
 
     return (api_response.text, api_response.status_code)
 
+
+
+
+#------------------------------------------------------
+# Patch items
+#------------------------------------------------------
+@bp_api_items.patch('')
+@security.login_required
+def batchUpdate():
+    api = api_wrapper.ApiWrapperItems(flask.g)
+    api_response = api.patch(flask.request)
+
+
+    return 'hello'
+    return (api_response.text, api_response.status_code)
+
+
+
+
+
+
+
+
+
+
+
 #------------------------------------------------------
 # Update an existing item
 # /items/:item_id
