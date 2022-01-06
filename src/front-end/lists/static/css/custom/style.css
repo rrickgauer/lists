@@ -169,6 +169,9 @@ textarea {
   align-items: baseline;
   margin-bottom: 10px;
 }
+.active-list-item:hover {
+  cursor: move;
+}
 
 .active-list-item.checked .active-list-item-content {
   text-decoration: line-through;
@@ -176,6 +179,9 @@ textarea {
 
 .active-list-item-content {
   word-break: break-word;
+}
+.active-list-item-content:hover {
+  cursor: text;
 }
 
 .active-list-item-content-form {

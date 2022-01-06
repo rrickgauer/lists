@@ -217,6 +217,11 @@ textarea {
     justify-content: space-between;
     align-items: baseline;
     margin-bottom: 10px;
+
+
+    &:hover {
+        cursor: move;
+    }
 }
 
 .active-list-item.checked  {
@@ -227,6 +232,10 @@ textarea {
 
 .active-list-item-content {
     word-break: break-word;
+
+    &:hover {
+        cursor: text;
+    }
 }
 
 
