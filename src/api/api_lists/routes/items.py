@@ -45,12 +45,6 @@ def post():
 @bp_items.patch('')
 @security.login_required
 def batch():
-
-
-    body = flask.request.json
-    print(flask.json.dumps(body, indent=4))
-
-
     return item_services.patchItems(flask.request)
 
 
