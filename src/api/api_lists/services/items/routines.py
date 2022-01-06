@@ -119,7 +119,7 @@ def _modifyItemActions(item_id: UUID, request_body: dict) -> flask.Response:
 
     if not db_result.successful:
         return responses.badRequest(db_result.error)
-    
+
     # retrieve the list object from the database that contains all the updated values
     response_data = _query(new_item.id)
 
