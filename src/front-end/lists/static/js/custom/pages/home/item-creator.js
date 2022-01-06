@@ -99,7 +99,8 @@ class ItemCreator
 
         const html = itemHtml.getHtml();
 
-        $(this.eParentList).find('.active-list-items-container').prepend(html);
+        // $(this.eParentList).find('.active-list-items-container').prepend(html);
+        $(this.eParentList).find('.active-list-items-container').append(html);
     }
 
 }
