@@ -167,7 +167,12 @@ textarea {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  padding: 10px 0px;
+}
+
+.active-list-item:hover {
+  cursor: move;
 }
 
 .active-list-item.checked .active-list-item-content {
@@ -176,6 +181,9 @@ textarea {
 
 .active-list-item-content {
   word-break: break-word;
+}
+.active-list-item-content:hover {
+  cursor: text;
 }
 
 .active-list-item-content-form {
