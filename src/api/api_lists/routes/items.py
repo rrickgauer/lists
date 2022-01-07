@@ -6,6 +6,9 @@ Prefix:     /items
 """
 from uuid import UUID
 import flask
+
+from lists_common import flaskutil
+
 from ..common import security
 from ..services import items as item_services
 
@@ -62,13 +65,10 @@ def get(item_id: UUID):
 # given item id
 #------------------------------------------------------
 @bp_items.put('<uuid:item_id>')
+@flaskutil.dump_flask_request('form', 'headers')
 @security.login_required
 def put(item_id: UUID):    
-
     d = flask.request.form.to_dict()
-
-    print(flask.json.dumps(d, indent=4))
-
     return item_services.updateItem(item_id, flask.request.form.to_dict())
 
 
