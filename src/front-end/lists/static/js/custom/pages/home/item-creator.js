@@ -16,6 +16,7 @@ class ItemCreator
         this.parentListID = $(this.eParentList).attr('data-list-id');
         this.content      = null;
         this.itemID       = null;
+        this.rank         = $(this.eParentList).find(`.${ItemHtml.Elements.TOP}`).length;
 
         this.loadInputValue   = this.loadInputValue.bind(this);
         this.assignNewItemID  = this.assignNewItemID.bind(this);
@@ -78,6 +79,7 @@ class ItemCreator
         return Utilities.objectToFormData({
             content: this.content,
             list_id: this.parentListID,
+            rank: this.rank,
         });
     }
 
