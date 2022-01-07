@@ -20,10 +20,12 @@ class ApiWrapperItems(ApiWrapperBase):
     # Update an item
     #------------------------------------------------------
     def put(self, flask_request: flask.Request, item_id: UUID) -> requests.Response:
-        url           = f'{self.URL}/{item_id}'
-        request_parms = self._generateRequestParms(url, flask_request)
-
-        return self._put(request_parms)
+        return requests.put(
+            url = f'{URL_BASE}{self.URL}/{item_id}',
+            auth = (self.email, self.password),
+            data = flask_request.form.to_dict(),
+            headers = CUSTOM_HEADER
+        )
 
     #------------------------------------------------------
     # Send a delete request

@@ -25,9 +25,6 @@ def getItems():
 
     return (api_response.text, api_response.status_code)
 
-
-
-
 #------------------------------------------------------
 # Patch items
 #------------------------------------------------------
@@ -37,18 +34,7 @@ def batchUpdate():
     api = api_wrapper.ApiWrapperItems(flask.g)
     api_response = api.patch(flask.request)
 
-
-    return 'hello'
     return (api_response.text, api_response.status_code)
-
-
-
-
-
-
-
-
-
 
 
 #------------------------------------------------------

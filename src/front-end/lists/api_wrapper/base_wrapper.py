@@ -133,8 +133,8 @@ class ApiWrapperBase(IApiWrapper):
     def _generateRequestParms(self, url: str, flask_request: flask.Request) -> RequestParms:
         request_parms = RequestParms(
             url         = url,
-            query_parms = flask_request.args,
-            data        = flask_request.form,
+            query_parms = flask_request.args.to_dict(),
+            data        = flask_request.form.to_dict(),
             files       = flask_request.files,
         )
 
