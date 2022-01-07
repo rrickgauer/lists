@@ -138,7 +138,8 @@ def _parseItemFromDict(item_dict: dict) -> Item:
         list_id    = item_dict.get('list_id') or None,
         content    = item_dict.get('content') or None,
         created_on = datetime.now(),
-        complete   = _parseCompleteDictFIeld(item_dict)
+        complete   = _parseCompleteDictFIeld(item_dict),
+        rank       = item_dict.get('rank') or None
     )
 
     return item

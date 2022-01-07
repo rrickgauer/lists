@@ -15,15 +15,17 @@ class ApiWrapperItems(ApiWrapperBase):
         request_parms = self._generateRequestParms(self.URL, flask_request)
         return self._get(request_parms)
 
-
     #------------------------------------------------------
     # Update an item
     #------------------------------------------------------
     def put(self, flask_request: flask.Request, item_id: UUID) -> requests.Response:
-        url           = f'{self.URL}/{item_id}'
-        request_parms = self._generateRequestParms(url, flask_request)
+        
+        parms = self._generateRequestParms(
+            url = f'{self.URL}/{item_id}',
+            flask_request = flask_request
+        )
 
-        return self._put(request_parms)
+        return self._put(parms)
 
     #------------------------------------------------------
     # Send a delete request
@@ -34,29 +36,17 @@ class ApiWrapperItems(ApiWrapperBase):
 
         return self._delete(parms)
 
-
-
     
+    #------------------------------------------------------
+    # Send a path request /items
+    #------------------------------------------------------
     def patch(self, flask_request: flask.Request) -> requests.Response:
-        custom_headers = CUSTOM_HEADER
-        custom_headers.setdefault('content-type', 'application/json')
-        
         return requests.patch(
             url = f'{URL_BASE}{self.URL}',
             auth = (self.email, self.password),
-            headers = custom_headers,
-            data = flask_request.data,   
+            headers = CUSTOM_HEADER,
+            json = flask_request.get_json(force=True),   
         )
-
-
-
-
-
-
-
-
-
-
 
 class ApiWrapperItemComplete(ApiWrapperBase):
     URL = f'{ApiUrls.ITEMS}/{{}}/complete'      # items/:item_id/complete
@@ -66,7 +56,6 @@ class ApiWrapperItemComplete(ApiWrapperBase):
     #------------------------------------------------------
     def put(self, item_id: UUID) -> requests.Response:
         return self._response(item_id, self._put)
-
 
     #------------------------------------------------------
     # Mark an item incomplete
