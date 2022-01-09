@@ -108,21 +108,36 @@ class ListHtml
         let html = `
         <div class="${ListHtml.Elements.CONTAINER} card my-shadow" data-list-id="${this.listID}">
             <div class="card-header">
-                <div><h4 class="${ListHtml.Elements.LIST_NAME}">${this.metadata.name}</h4></div>
-                
-                <div class="list-header-buttons">
-                    <div class="dropdown mr-2">
-                        <button class="close" type="button" data-toggle="dropdown"><i class='bx bx-dots-horizontal'></i></button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <button class="dropdown-item" type="button" data-list-action="rename">Rename</button>
-                            <button class="dropdown-item" type="button" data-list-action="delete">Delete</button>
-                        </div>
-                    </div>
 
-                    <button type="button" class="close ${ListHtml.Elements.BTN_CLOSE}">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                <div class="d-flex justify-content-between align-items-baseline">
+                    <h4 class="${ListHtml.Elements.LIST_NAME}">${this.metadata.name}</h4>
+                    
+                    <div class="list-header-buttons">
+                        <div class="dropdown mr-2">
+                            <button class="close" type="button" data-toggle="dropdown"><i class='bx bx-dots-horizontal'></i></button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <button class="dropdown-item" type="button" data-list-action="rename">Rename</button>
+                                <button class="dropdown-item" type="button" data-list-action="delete">Delete</button>
+                            </div>
+                        </div>
+
+                        <button type="button" class="close ${ListHtml.Elements.BTN_CLOSE}">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                 </div>
+
+                <div class="mt-2">
+                    
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input ${ListHtml.Elements.TOGGLE_COMPLETE}" type="checkbox" checked>
+                            Completed
+                        </label>
+                    </div>
+                </div>
+
+
             </div>
 
             <div class="card-body">
@@ -204,6 +219,7 @@ ListHtml.Elements = {
     BTN_CLOSE: 'active-list-btn-close',
     ACTION_BUTTONS: 'list-header-buttons',
     LIST_NAME: 'active-list-name',
+    TOGGLE_COMPLETE: 'list-header-toggle-complete',
 }
 
 

@@ -125,6 +125,11 @@ function addEventListeners() {
     // listen for item drag/drop actions
     ItemDrag.listen(eActiveListContainer);
 
+    // toggle complete items visibility
+    $(eActiveListContainer).on('change', `.${ListHtml.Elements.TOGGLE_COMPLETE}`, function() {
+        toggleCompleteItemsVisibility(this);
+    });
+
 }
 
 function testingActivateFirstList() {
@@ -301,4 +306,13 @@ Action listener for saving a list rename
 function saveListRename() {
     const listRename = new ListRename();
     listRename.save();
+}
+
+
+/**********************************************************
+Toggle complete items' visibility
+**********************************************************/
+function toggleCompleteItemsVisibility(eClickedCheckbox) {
+    const eListContainer = ListHtml.getParentActiveListElement(eClickedCheckbox);
+    $(eListContainer).toggleClass('hide-completed');
 }
