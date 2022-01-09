@@ -147,9 +147,6 @@ textarea {
 }
 .active-list .card-header {
   background-color: inherit;
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
 }
 .active-list .card-header .list-header-buttons {
   display: flex;
@@ -163,6 +160,10 @@ textarea {
     padding: 20px;
   }
 }
+.active-list.hide-completed .active-list-item.checked {
+  display: none;
+}
+
 .active-list-item {
   display: flex;
   justify-content: space-between;

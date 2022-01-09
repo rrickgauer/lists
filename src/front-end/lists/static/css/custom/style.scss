@@ -189,9 +189,6 @@ textarea {
 
     .card-header {
         background-color: inherit;
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
 
         .list-header-buttons {
             display: flex;
@@ -210,6 +207,13 @@ textarea {
         
     }
 }
+
+
+.active-list.hide-completed .active-list-item.checked {
+    display: none;
+}
+
+
 
 // ------------------------------------
 // Active list item
