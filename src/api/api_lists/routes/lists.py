@@ -18,7 +18,8 @@ bp_lists = flask.Blueprint('lists', __name__)
 @bp_lists.get('')
 @security.login_required
 def getAll():
-    return list_services.getAllLists()
+    request_args = flask.request.args.to_dict()
+    return list_services.getAllLists(request_args)
 
 
 #------------------------------------------------------
