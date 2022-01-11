@@ -3,6 +3,21 @@ import requests
 import flask
 from .base_wrapper import ApiWrapperBase, ApiUrls, RequestParms
 
+#------------------------------------------------------
+# Helper function to call the api to get all list types owned by the user
+#------------------------------------------------------
+def getAllTypeLists(flask_g) -> requests.Response:
+    api = ApiWrapperLists(flask_g)
+
+    list_type = dict(
+        type = 'list'
+    )
+
+    response = api.get(list_type=list_type)
+
+    return response
+
+
 
 class ApiWrapperLists(ApiWrapperBase):
     URL = ApiUrls.LISTS     #/lists
@@ -10,18 +25,24 @@ class ApiWrapperLists(ApiWrapperBase):
     #------------------------------------------------------
     # Get all lists
     #------------------------------------------------------
-    def get(self, list_id: UUID=None) -> requests.Response:
-        url = self._getUrlGET(list_id)
-        request_parms = RequestParms(url)
+    def get(self, list_id: UUID=None, list_type: dict=None) -> requests.Response:
+        request_parms = RequestParms(
+            url         = self._getUrlGET(list_id),
+            query_parms = list_type
+        )
         
         return self._get(request_parms)
 
-
+    #------------------------------------------------------
+    # Generate the url for the api
+    #------------------------------------------------------
     def _getUrlGET(self, list_id: UUID=None) -> str:
         if not list_id:
-            return self.URL
+            url = self.URL
         else:
-            return f'{self.URL}/{str(list_id)}'
+            url = f'{self.URL}/{str(list_id)}'
+
+        return url
     
 
     #------------------------------------------------------

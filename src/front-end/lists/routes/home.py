@@ -8,7 +8,8 @@ Purpose:    Home page routing
 
 import flask
 from ..common import security
-from ..api_wrapper import ApiWrapperLists
+from ..api_wrapper import lists as api_wrapper_lists
+
 
 
 # module blueprint
@@ -20,13 +21,13 @@ bp_home = flask.Blueprint('home', __name__)
 @bp_home.route('')
 @security.login_required
 def home():
-    api_lists_response = ApiWrapperLists(flask.g).get()
+    response = api_wrapper_lists.getAllTypeLists(flask.g)
 
-    if not api_lists_response.ok:
-        return (api_lists_response.text, api_lists_response.status_code)
+    if not response.ok:
+        return (response.text, response.status_code)
 
     outbound_data = dict(
-        lists = api_lists_response.json()
+        lists = response.json()
     )
 
     return flask.render_template('home/home.html', data=outbound_data)
