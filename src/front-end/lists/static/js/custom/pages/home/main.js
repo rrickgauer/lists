@@ -20,6 +20,9 @@ $(document).ready(function() {
     
     // toggleSidenav();    // open the sidebar initially
     testingActivateFirstList();
+
+
+    $('#modal-templates').modal('show');
 });
 
 

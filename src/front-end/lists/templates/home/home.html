@@ -22,6 +22,8 @@ Incoming data (data):
 
         <section id="main" class="container-fluid">
 
+            
+
             <div class="top-row-buttons">
                 <!-- button to open the sidenav -->
                 <button type="button" class="top-row-button btn no-focus-outline" id="btn-show-sidenav" title="Show list menu"><i class='bx bx-menu'></i></button>
@@ -38,6 +40,8 @@ Incoming data (data):
 
             <hr class="m-0">
 
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-templates">Templates</button>
+
             <!-- active lists container -->
             <div class="container-fluid board-wrapper">
                 <div class="active-lists-board">
@@ -51,6 +55,7 @@ Incoming data (data):
     </div>
 
     {% include 'home/rename-list-modal.html' %}
+    {% include 'home/templates-modal.html' %}
 
     {% include 'includes/footer.html' %}
     <script src="/static/js/custom/pages/home/sidenav-form-list.js"></script>
