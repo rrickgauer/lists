@@ -11,7 +11,7 @@ from datetime import datetime
 import flask
 from ..db_manager import commands as sql_engine, DbOperationResult
 from ..common import responses
-from ..models import List
+from ..models import List, ListType
 
 
 #------------------------------------------------------
@@ -97,7 +97,8 @@ def _modifyList(list_id: UUID, request_body: dict) -> flask.Response:
         id         = list_id,
         user_id    = flask.g.client_id,
         name       = request_body.get('name') or None,
-        created_on = datetime.now()
+        created_on = datetime.now(),
+        type       = ListType(request_body.get('type'))
     )
 
     # make sure the request body contained a name field
@@ -127,10 +128,11 @@ def _modifyList(list_id: UUID, request_body: dict) -> flask.Response:
 #------------------------------------------------------
 def _modifyDbCommand(list_: List) -> DbOperationResult:
     sql = '''
-        INSERT INTO Lists (id, user_id, name, created_on) 
-        VALUES (%s, %s, %s, %s)
+        INSERT INTO Lists (id, user_id, name, created_on, `type`) 
+        VALUES (%s, %s, %s, %s, %s)
         ON DUPLICATE KEY UPDATE 
-        name=VALUES(name);
+        name   = VALUES(name),
+        `type` = VALUES (`type`);
     '''
 
     parms = (
@@ -138,6 +140,7 @@ def _modifyDbCommand(list_: List) -> DbOperationResult:
         str(list_.user_id),
         list_.name,
         list_.created_on,
+        list_.type
     )
 
     return sql_engine.modify(sql, parms)

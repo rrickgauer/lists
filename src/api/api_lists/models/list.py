@@ -14,6 +14,10 @@ class ListType(str, Enum):
     LIST    : str = 'list'
     TEMPLATE: str = 'template'
 
+    @classmethod
+    def _missing_(cls, value):
+        return ListType.LIST
+
 
 @dataclass
 class List:
