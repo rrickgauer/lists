@@ -8,6 +8,7 @@ This module contains all the business logic for lists services.
 from enum import Enum
 from uuid import UUID, uuid4
 from datetime import datetime
+import uuid
 import flask
 from ..db_manager import commands as sql_engine, DbOperationResult
 from ..common import responses
@@ -92,6 +93,38 @@ def getList(list_id: UUID) -> flask.Response:
         return responses.badRequest(query_result.error)
 
     return responses.get(query_result.data)
+
+#------------------------------------------------------
+# Generate response for cloning a list
+#------------------------------------------------------
+def cloneListResponse(list_id: UUID) -> flask.Response:
+    new_list_id = uuid.uuid4()
+    clone_db_result = cmdCloneList(list_id, new_list_id)
+
+    if not clone_db_result.successful:
+        return responses.badRequest(clone_db_result.error)
+
+    db_select = _query(new_list_id)
+
+    return responses.created(db_select.data) 
+
+
+#------------------------------------------------------
+# Execute sql to clone the given list
+#
+# Args:
+#   existing_list_id: id of the existing list
+#   new_list_id: designated ID to give the newly created list
+#------------------------------------------------------
+def cmdCloneList(existing_list_id: UUID, new_list_id: UUID) -> DbOperationResult:
+    sql = 'CALL Clone_List(%s, %s);'
+    
+    parms = (
+        str(existing_list_id),
+        str(new_list_id),
+    )
+
+    return sql_engine.modify(sql, parms)
 
 #------------------------------------------------------
 # Fetch a single list from the database

@@ -67,3 +67,10 @@ def getListItems(list_id: UUID):
     return item_services.getItems([list_id])
 
 
+#------------------------------------------------------
+# Clone the given list
+#------------------------------------------------------
+@bp_lists.post('<uuid:list_id>/clones')
+@security.login_required
+def cloneList(list_id: UUID):
+    return list_services.cloneListResponse(list_id)

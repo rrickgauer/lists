@@ -2,29 +2,6 @@ from .structs import DbOperationResult as DbOperationResult
 from .db import DB
 import json
 
-# #------------------------------------------------------
-# # Execute a select statement for a single record
-# #
-# # Args:
-# #   sql_stmt: sql statement to execute
-# #   parms: sql parms to pass to the engine
-# #------------------------------------------------------
-# def selectSingle(sql_stmt: str, parms: tuple=None) -> DbOperationResult:
-#     return _selectAny(True, sql_stmt, parms)
-
-
-# #------------------------------------------------------
-# # Execute a select statement for mulitple records
-# #
-# # Args:
-# #   sql_stmt: sql statement to execute
-# #   parms: sql parms to pass to the engine
-# #------------------------------------------------------
-# def selectMultiple(sql_stmt: str, parms: tuple=None) -> DbOperationResult:
-#     return _selectAny(False, sql_stmt, parms)
-
-
-
 #------------------------------------------------------
 # Execute a select statement for mulitple records
 #
@@ -82,10 +59,7 @@ def modify(sql_stmt: str, parms: tuple=None) -> DbOperationResult:
         db_result.successful = True
         db_result.data = cursor.rowcount
     except Exception as e:
-
-        
         print(json.dumps((e.msg, e.errno, e.sqlstate), indent=4))
-
         db_result.error = str(e)
     finally:
         db.close()
