@@ -1,7 +1,17 @@
+from __future__ import annotations
+from re import split
 from uuid import UUID
 import requests
 import flask
 from .base_wrapper import ApiWrapperBase, ApiUrls, RequestParms
+
+
+#------------------------------------------------------
+# Helper function to call the api to get all lists owned by the user
+#------------------------------------------------------
+def getAllLists(flask_g) -> requests.Response:
+    api = ApiWrapperLists(flask_g)
+    return api.get()
 
 #------------------------------------------------------
 # Helper function to call the api to get all list types owned by the user
@@ -13,9 +23,32 @@ def getAllTypeLists(flask_g) -> requests.Response:
         type = 'list'
     )
 
-    response = api.get(list_type=list_type)
+    return api.get(list_type=list_type)
 
-    return response
+
+#------------------------------------------------------
+# Takes the given lists collection and splits them by their type:
+#   lists
+#   templates
+#------------------------------------------------------
+def splitListsByType(lists: list[dict]) -> dict:
+    list_types     = []
+    template_types = []
+
+    for l in lists:
+        if l.get('type') == 'template':
+            template_types.append(l)
+        else:
+            list_types.append(l)
+
+
+    # sort the templates by name
+    template_types = sorted(template_types, key=lambda x: x['name'].lower())     
+    
+    return dict(
+        lists     = list_types,
+        templates = template_types
+    )
 
 
 

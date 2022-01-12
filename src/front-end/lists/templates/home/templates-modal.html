@@ -1,6 +1,6 @@
 <!-- Modal -->
 <div class="modal fade" id="modal-templates" tabindex="-1" data-list-id>
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Templates</h5>
@@ -10,24 +10,11 @@
             </div>
             <div class="modal-body">
 
-                <!-- select which template -->
+                <!-- template select input-->
                 <select class="form-control" id="modal-templates-select">
-                    <option value="171a08df-f6e5-4578-a5ae-4263d17d75b2">Flowdesk</option>
-                    <option value="28f8a143-6ce8-491c-872b-04866780dec2">Lotstring</option>
-                    <option value="6ba8b3b8-d775-4d6f-9448-4372fb29680b">Bamity</option>
-                    <option value="553e1220-0167-4561-b622-f22af692d3d4">Trippledex</option>
-                    <option value="a6282013-85f6-48aa-b3ae-52f629256ad1">Aerified</option>
-                    <option value="69762ab2-f3ab-41f6-86f7-69306a3c9913">Prodder</option>
-                    <option value="97f48f56-c691-4a7b-a08d-3bf91b502b05">Konklux</option>
-                    <option value="d757dfcc-2d19-4900-8893-bac9900d88a1">Zathin</option>
-                    <option value="21a8fcdc-cbc2-4c09-b153-5ccee19813f6">Rank</option>
-                    <option value="edd28974-b1a1-43df-96b1-c93eaebed182">Tin</option>
-                    <option value="39cb1f9d-6d1d-4e52-a87f-57b19cf5704e">Stringtough</option>
-                    <option value="f7f13f4f-9c73-4b35-88a6-79440fd427b6">Mat Lam Tam</option>
-                    <option value="a31c4783-a202-4415-92f5-24aa4059db20">Duobam</option>
-                    <option value="d8a54ed6-1f25-450f-9e35-9135bc091b57">Sub-Ex</option>
-                    <option value="9e463dc6-7537-47ed-97d0-71869b130936">Zontrax</option>
-                    <option value="f00f9c45-7595-4e19-bdd6-5943e3513f10">Latlux</option>
+                    {% for template in data.templates %}
+                        <option value="{{template.id}}">{{template.name}}</option>
+                    {% endfor %}
                 </select>
 
                 <hr>
@@ -40,9 +27,8 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-secondary">Clone</button>
                 <button type="button" class="btn btn-sm btn-secondary">Rename</button>
+                <button type="button" class="btn btn-sm btn-secondary">New</button>
                 <button type="button" class="btn btn-sm btn-outline-danger">Delete</button>
-
-
             </div>
         </div>
     </div>
