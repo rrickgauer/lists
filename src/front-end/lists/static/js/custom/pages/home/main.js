@@ -133,6 +133,10 @@ function addEventListeners() {
         toggleCompleteItemsVisibility(this);
     });
 
+
+    // fetch the template's items in the modal
+    $(TemplateModal.Elements.SELECT).on('change', TemplateModal.fetchCurrentTemplateItems);
+
 }
 
 function testingActivateFirstList() {
