@@ -206,6 +206,11 @@ textarea {
   }
 }
 
+#modal-templates.initial #modal-templates-body-items,
+#modal-templates.initial .modal-footer {
+  display: none;
+}
+
 #modal-templates.loading #modal-templates-body-items,
 #modal-templates.loading .modal-footer {
   display: none;

@@ -11,6 +11,7 @@ class TemplateModal
     **********************************************************/
     static async fetchCurrentTemplateItems() {
         // show the loading spinner screen
+        TemplateModal.removeInitialClass();
         TemplateModal.toggleLoading(false);
         
         // fetch the template items from the api
@@ -31,6 +32,10 @@ class TemplateModal
 
         // show the items and remove the loading spinner
         TemplateModal.toggleLoading(true);
+    }
+
+    static removeInitialClass() {
+        $(TemplateModal.Elements.MODAL).removeClass('initial');
     }
 
     /**********************************************************
