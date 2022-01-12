@@ -279,29 +279,28 @@ textarea {
 // ------------------------------------
 // Templates modal
 // ------------------------------------
+#modal-templates {
 
-
-#modal-templates.initial {
-    #modal-templates-body-items,
-    .modal-footer {
-        display: none;
+    &.initial {
+        #modal-templates-body-items,
+        .modal-footer {
+            display: none;
+        }
     }
-}
 
-#modal-templates.loading {
-    #modal-templates-body-items,
-    .modal-footer {
-        display: none;
+    &.loading {
+        #modal-templates-body-items,
+        .modal-footer {
+            display: none;
+        }
+    
+        #modal-templates-body-loading {
+            display: flex;
+            justify-content: space-around;
+        }
     }
 
     #modal-templates-body-loading {
-        display: flex;
-        justify-content: space-around;
+        display: none;
     }
 }
-
-#modal-templates #modal-templates-body-loading  {
-    display: none;
-}
-
-
