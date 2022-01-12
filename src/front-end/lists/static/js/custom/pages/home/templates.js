@@ -103,3 +103,19 @@ TemplateModal.Elements = {
     BODY_ITEMS: '#modal-templates-body-items',
     BODY_LOADING: '#modal-templates-body-loading'
 }
+
+TemplateModal.Elements.Buttons = {
+    CLONE: '#modal-templates-footer-btn-clone',
+    RENAME: '#modal-templates-footer-btn-rename',
+    NEW: '#modal-templates-footer-btn-new',
+    DELETE: '#modal-templates-footer-btn-delete',
+}
+
+// spinner buttons
+TemplateModal.SpinnerButtons = {
+    CLONE: new SpinnerButton(TemplateModal.Elements.Buttons.CLONE),
+    RENAME: new SpinnerButton(TemplateModal.Elements.Buttons.RENAME),
+    NEW: new SpinnerButton(TemplateModal.Elements.Buttons.NEW),
+    DELETE: new SpinnerButton(TemplateModal.Elements.Buttons.DELETE),
+}
+
