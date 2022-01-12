@@ -53,12 +53,7 @@ class TemplateModal
     }
 
 
-    /**********************************************************
-    Retrieve the value of the current selected option
-    **********************************************************/
-    static getCurrentTemplateID() {
-        return $(TemplateModal.Elements.SELECT).val();
-    }
+
 
 
     /**********************************************************
@@ -97,6 +92,32 @@ class TemplateModal
 
         $(TemplateModal.Elements.ITEMS_CONTAINER).html(html);
     }
+
+
+    static async cloneList() {
+        
+        TemplateModal.SpinnerButtons.CLONE.showSpinner();
+        
+        // send api request to clone
+        const listID = TemplateModal.getCurrentTemplateID();
+        const apiResponse = await ApiWrapper.listsClone(listID);
+
+        // make sure the request was successful
+        if (!apiResponse.ok) {
+            TemplateModal.SpinnerButtons.CLONE.reset();
+            return;
+        }
+
+        // refresh the page
+        window.location.href = window.location.href;
+    }
+
+    /**********************************************************
+    Retrieve the value of the current selected option
+    **********************************************************/
+    static getCurrentTemplateID() {
+        return $(TemplateModal.Elements.SELECT).val();
+    }
 }
 
 
@@ -106,21 +127,22 @@ TemplateModal.Elements = {
     SELECT: '#modal-templates-select',
     ITEMS_CONTAINER: '#modal-templates-items-container',
     BODY_ITEMS: '#modal-templates-body-items',
-    BODY_LOADING: '#modal-templates-body-loading'
+    BODY_LOADING: '#modal-templates-body-loading',
+    
+    BUTTONS: {
+        CLONE: '#modal-templates-footer-btn-clone',
+        RENAME: '#modal-templates-footer-btn-rename',
+        NEW: '#modal-templates-footer-btn-new',
+        DELETE: '#modal-templates-footer-btn-delete',
+    }
 }
 
-TemplateModal.Elements.Buttons = {
-    CLONE: '#modal-templates-footer-btn-clone',
-    RENAME: '#modal-templates-footer-btn-rename',
-    NEW: '#modal-templates-footer-btn-new',
-    DELETE: '#modal-templates-footer-btn-delete',
-}
 
 // spinner buttons
 TemplateModal.SpinnerButtons = {
-    CLONE: new SpinnerButton(TemplateModal.Elements.Buttons.CLONE),
-    RENAME: new SpinnerButton(TemplateModal.Elements.Buttons.RENAME),
-    NEW: new SpinnerButton(TemplateModal.Elements.Buttons.NEW),
-    DELETE: new SpinnerButton(TemplateModal.Elements.Buttons.DELETE),
+    CLONE: new SpinnerButton(TemplateModal.Elements.BUTTONS.CLONE),
+    RENAME: new SpinnerButton(TemplateModal.Elements.BUTTONS.RENAME),
+    NEW: new SpinnerButton(TemplateModal.Elements.BUTTONS.NEW),
+    DELETE: new SpinnerButton(TemplateModal.Elements.BUTTONS.DELETE),
 }
 

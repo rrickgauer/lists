@@ -109,4 +109,15 @@ class ApiWrapperLists(ApiWrapperBase):
         return self._delete(parms)
 
 
+    
+class ApiWrapperListsClones(ApiWrapperBase):
+    URL = f'{ApiUrls.LISTS}/{{}}/clones'
+
+    def post(self, list_id: UUID) -> requests.Response:
+        url = self.URL.format(str(list_id))
+        parms = RequestParms(url)
+
+        return self._post(parms)
+
+
 

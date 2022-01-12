@@ -66,6 +66,17 @@ class ApiWrapper
         });
     }
 
+    /**********************************************************
+    Delete a list
+    **********************************************************/
+    static async listsClone(listID) {
+        const url = `${ApiWrapper.Urls.LISTS}/${listID}/clones`;
+
+        return await fetch(url, {
+            method: ApiWrapper.Methods.POST,
+        });
+    }
+
 
     /**********************************************************
     Get the items that belong to the given list id

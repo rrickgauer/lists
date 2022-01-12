@@ -137,6 +137,9 @@ function addEventListeners() {
     // fetch the template's items in the modal
     $(TemplateModal.Elements.SELECT).on('change', TemplateModal.fetchCurrentTemplateItems);
 
+    // clone the selected template
+    $(TemplateModal.Elements.BUTTONS.CLONE).on('click', TemplateModal.cloneList);
+
 }
 
 function testingActivateFirstList() {
