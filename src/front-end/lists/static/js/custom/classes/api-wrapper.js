@@ -55,6 +55,9 @@ class ApiWrapper
         });
     }
 
+    /**********************************************************
+    Delete a list
+    **********************************************************/
     static async listsDelete(listID) {
         const url = `${ApiWrapper.Urls.LISTS}/${listID}`;
 

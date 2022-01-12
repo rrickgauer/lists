@@ -10,22 +10,41 @@ class TemplateModal
     Fetch the items of the selected template
     **********************************************************/
     static async fetchCurrentTemplateItems() {
+        // show the loading spinner screen
+        TemplateModal.toggleLoading(false);
+        
+        // fetch the template items from the api
         const templateID = TemplateModal.getCurrentTemplateID();
-
         const apiResponse = await TemplateModal.sendGetRequest(templateID);
 
         if (!apiResponse.successful) {
+            TemplateModal.toggleLoading(true);
             return;
         }
 
         if (apiResponse.items == null || apiResponse.items.length == 0) {
-            return;
+            apiResponse.items = [];
         }
 
-        const items = apiResponse.items;
+        // render the items to the screen
+        TemplateModal.renderItems(apiResponse.items);
 
-        console.table(items);
+        // show the items and remove the loading spinner
+        TemplateModal.toggleLoading(true);
+    }
 
+    /**********************************************************
+    Show or hide the loading screen
+
+    Args:
+        showItems: bool - true=show items, false = show loading screen
+    **********************************************************/
+    static toggleLoading(showItems) {
+        if (showItems) {
+            $(TemplateModal.Elements.MODAL).removeClass('loading');
+        } else {
+            $(TemplateModal.Elements.MODAL).addClass('loading');
+        }
     }
 
 
@@ -41,7 +60,6 @@ class TemplateModal
     Send a get request to the api to fetch the template items
     **********************************************************/
     static async sendGetRequest(templateID) {
-
         const result = {
             successful: true,
             items: null,
@@ -62,6 +80,18 @@ class TemplateModal
         
         return result;
     }
+
+
+    static renderItems(items) {
+        let html = '';
+
+        for (const item of items) {
+            const itemHtml = new ItemHtml(item);
+            html += itemHtml.getHtml();
+        }
+
+        $(TemplateModal.Elements.ITEMS_CONTAINER).html(html);
+    }
 }
 
 
@@ -69,4 +99,7 @@ class TemplateModal
 TemplateModal.Elements = {
     MODAL: '#modal-templates',
     SELECT: '#modal-templates-select',
+    ITEMS_CONTAINER: '#modal-templates-items-container',
+    BODY_ITEMS: '#modal-templates-body-items',
+    BODY_LOADING: '#modal-templates-body-loading'
 }
