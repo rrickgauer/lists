@@ -2,9 +2,6 @@
 
 class TemplateModal
 {
-    constructor() {
-
-    }
 
     /**********************************************************
     Fetch the items of the selected template
@@ -13,6 +10,9 @@ class TemplateModal
         // show the loading spinner screen
         TemplateModal.removeInitialClass();
         TemplateModal.toggleLoading(false);
+
+        // set the value of the rename form input element to the name of the selected list
+        TemplateModal.initRenameFormValue();
         
         // fetch the template items from the api
         const templateID = TemplateModal.getCurrentTemplateID();
@@ -34,6 +34,9 @@ class TemplateModal
         TemplateModal.toggleLoading(true);
     }
 
+    /**********************************************************
+    Remove the initial css class from the modal
+    **********************************************************/
     static removeInitialClass() {
         $(TemplateModal.Elements.MODAL).removeClass('initial');
     }
@@ -52,8 +55,20 @@ class TemplateModal
         }
     }
 
+    /**********************************************************
+    Set the rename form's input value to the name of the current template
+    **********************************************************/
+    static initRenameFormValue() {
+        const templateName = TemplateModal.getCurrentTemplateName();
+        $(TemplateModal.Elements.RENAME_FORM.INPUT).val(templateName);
+    }
 
-
+    /**********************************************************
+    Returns the name of the current template
+    **********************************************************/
+    static getCurrentTemplateName() {
+        return $(TemplateModal.Elements.SELECT).find('option:checked').text();
+    }
 
 
     /**********************************************************
@@ -81,7 +96,9 @@ class TemplateModal
         return result;
     }
 
-
+    /**********************************************************
+    Render the given list of items as checklist items on the screen
+    **********************************************************/
     static renderItems(items) {
         let html = '';
 
@@ -93,9 +110,10 @@ class TemplateModal
         $(TemplateModal.Elements.ITEMS_CONTAINER).html(html);
     }
 
-
+    /**********************************************************
+    Send a request to clone current template into a new list
+    **********************************************************/
     static async cloneList() {
-        
         TemplateModal.SpinnerButtons.CLONE.showSpinner();
         
         // send api request to clone
@@ -128,6 +146,11 @@ TemplateModal.Elements = {
     ITEMS_CONTAINER: '#modal-templates-items-container',
     BODY_ITEMS: '#modal-templates-body-items',
     BODY_LOADING: '#modal-templates-body-loading',
+
+    RENAME_FORM: {
+        INPUT: '#modal-templates-footer-rename-input',
+        SAVE_BTN: '#modal-templates-footer-rename-btn',
+    },
     
     BUTTONS: {
         CLONE: '#modal-templates-footer-btn-clone',
@@ -136,6 +159,8 @@ TemplateModal.Elements = {
         DELETE: '#modal-templates-footer-btn-delete',
     }
 }
+
+
 
 
 // spinner buttons
