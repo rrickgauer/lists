@@ -303,4 +303,18 @@ textarea {
     #modal-templates-body-loading {
         display: none;
     }
+
+    .modal-content {
+        overflow: visible;
+    }
+
+    #modal-templates-rename-dropdown {
+        form {
+            width: 95vw;
+            max-width: 500px;
+        }
+    }
 }
+
+
+

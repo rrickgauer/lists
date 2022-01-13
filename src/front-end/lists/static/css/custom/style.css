@@ -221,5 +221,12 @@ textarea {
 #modal-templates #modal-templates-body-loading {
   display: none;
 }
+#modal-templates .modal-content {
+  overflow: visible;
+}
+#modal-templates #modal-templates-rename-dropdown form {
+  width: 95vw;
+  max-width: 500px;
+}
 
 /*# sourceMappingURL=style.css.map */
