@@ -1,7 +1,6 @@
 
 
-class TemplateModal
-{
+class TemplateModal {
 
     /**********************************************************
     Fetch the items of the selected template
@@ -13,7 +12,7 @@ class TemplateModal
 
         // set the value of the rename form input element to the name of the selected list
         TemplateModal.initRenameFormValue();
-        
+
         // fetch the template items from the api
         const templateID = TemplateModal.getCurrentTemplateID();
         const apiResponse = await TemplateModal.sendGetRequest(templateID);
@@ -92,7 +91,7 @@ class TemplateModal
         } catch (error) {
             result.items = [];  // api returned an empty list
         }
-        
+
         return result;
     }
 
@@ -115,7 +114,7 @@ class TemplateModal
     **********************************************************/
     static async cloneList() {
         TemplateModal.SpinnerButtons.CLONE.showSpinner();
-        
+
         // send api request to clone
         const listID = TemplateModal.getCurrentTemplateID();
         const apiResponse = await ApiWrapper.listsClone(listID);
@@ -136,6 +135,79 @@ class TemplateModal
     static getCurrentTemplateID() {
         return $(TemplateModal.Elements.SELECT).val();
     }
+    
+    /**********************************************************
+    Save the new name of the current template
+    **********************************************************/
+    static async saveRename() {
+        // show loading spinner on the submit button
+        TemplateModal.SpinnerButtons.RENAME.showSpinner();
+
+        // send the api request
+        const newName = $(TemplateModal.Elements.RENAME_FORM.INPUT).val();
+        const apiResponse = await TemplateModal.sendPutRequest();
+
+        // once we have a response, enable the save button
+        TemplateModal.SpinnerButtons.RENAME.reset();
+
+        // make sure the response was successful
+        if (!apiResponse.ok) {
+            await TemplateModal.logBadApiRequest(apiResponse);
+            return;
+        }
+
+        // update the selected option's text display to the new name
+        $(TemplateModal.Elements.SELECT).find('option:checked').text(newName);
+
+        // close the dropdown
+        $(TemplateModal.Elements.RENAME_FORM.DROPDOWN).dropdown('hide');
+
+        // sort the select options
+        TemplateModal.sortSelectOptions();
+
+    }
+
+    /**********************************************************
+    Send a put request to the api
+    **********************************************************/
+    static async sendPutRequest() {
+        // fetch all the required data for the api request
+        const listID = TemplateModal.getCurrentTemplateID();
+        const newName = $(TemplateModal.Elements.RENAME_FORM.INPUT).val();
+
+        const formData = Utilities.objectToFormData({
+            name: newName,
+            type: 'template',
+        });
+
+        // send the api request
+        const apiResponse = await ApiWrapper.listsPut(listID, formData);
+
+        return apiResponse;
+    }
+
+    /**********************************************************
+    Log an api response to the error console
+    **********************************************************/
+    static async logBadApiRequest(apiResponse) {
+        const responseText = await apiResponse.text();
+        console.error(responseText);
+    }
+
+    /**********************************************************
+    Sort the select options 
+    **********************************************************/
+    static sortSelectOptions() {
+        const eOptions = $(TemplateModal.Elements.SELECT).find('option');
+
+        const eSortedOptions = eOptions.sort(function (a, b) {
+            var nameA = $(a).text().toUpperCase();
+            var nameB = $(b).text().toUpperCase();
+            return (nameA < nameB) ? -1 : 1;
+        });
+
+        $(TemplateModal.Elements.SELECT).html(eSortedOptions);
+    }
 }
 
 
@@ -150,11 +222,11 @@ TemplateModal.Elements = {
     RENAME_FORM: {
         INPUT: '#modal-templates-footer-rename-input',
         SAVE_BTN: '#modal-templates-footer-rename-btn',
+        DROPDOWN: '#modal-templates-rename-dropdown',
     },
-    
+
     BUTTONS: {
         CLONE: '#modal-templates-footer-btn-clone',
-        RENAME: '#modal-templates-footer-btn-rename',
         NEW: '#modal-templates-footer-btn-new',
         DELETE: '#modal-templates-footer-btn-delete',
     }
@@ -166,7 +238,7 @@ TemplateModal.Elements = {
 // spinner buttons
 TemplateModal.SpinnerButtons = {
     CLONE: new SpinnerButton(TemplateModal.Elements.BUTTONS.CLONE),
-    RENAME: new SpinnerButton(TemplateModal.Elements.BUTTONS.RENAME),
+    RENAME: new SpinnerButton(TemplateModal.Elements.RENAME_FORM.SAVE_BTN),
     NEW: new SpinnerButton(TemplateModal.Elements.BUTTONS.NEW),
     DELETE: new SpinnerButton(TemplateModal.Elements.BUTTONS.DELETE),
 }

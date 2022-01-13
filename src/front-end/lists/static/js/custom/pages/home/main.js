@@ -133,14 +133,35 @@ function addEventListeners() {
         toggleCompleteItemsVisibility(this);
     });
 
+    addTemplateModalListeners();
+}
 
+/**********************************************************
+Register all the event listeners for the templates modal
+**********************************************************/
+function addTemplateModalListeners() {
     // fetch the template's items in the modal
     $(TemplateModal.Elements.SELECT).on('change', TemplateModal.fetchCurrentTemplateItems);
 
     // clone the selected template
     $(TemplateModal.Elements.BUTTONS.CLONE).on('click', TemplateModal.cloneList);
 
+    // When the rename form dropdown is closed, reset the input's value to the name of the current template
+    $(TemplateModal.Elements.RENAME_FORM.DROPDOWN).on('hidden.bs.dropdown', TemplateModal.initRenameFormValue);
+
+    // rename the current template
+    $(TemplateModal.Elements.RENAME_FORM.SAVE_BTN).on('click', TemplateModal.saveRename);
+
+    // rename the current template
+    $(TemplateModal.Elements.RENAME_FORM.INPUT).on('keypress', function(e) {
+        if (e.keyCode == 13) {
+            e.preventDefault();
+            TemplateModal.saveRename();
+        }
+    });
 }
+
+
 
 function testingActivateFirstList() {
     const firstList = $('#lists-container').find('.list-group-item-action')[0];
