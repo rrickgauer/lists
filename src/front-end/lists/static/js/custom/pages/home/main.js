@@ -140,8 +140,10 @@ function addEventListeners() {
 Register all the event listeners for the templates modal
 **********************************************************/
 function addTemplateModalListeners() {
-    // fetch the template's items in the modal
-    $(TemplateModal.Elements.SELECT).on('change', TemplateModal.fetchCurrentTemplateItems);
+    // user chose a different template
+    $(TemplateModal.Elements.SELECT).on('select2:select', function(e) {
+        TemplateModal.changeTemplate(e);
+    });
 
     // clone the selected template
     $(TemplateModal.Elements.BUTTONS.CLONE).on('click', TemplateModal.cloneList);

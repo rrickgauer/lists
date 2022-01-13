@@ -2,23 +2,86 @@
 
 class TemplateModal {
 
+
     /**********************************************************
-    Fetch the items of the selected template
+    Event response handler for user selecting a new option from the select element
     **********************************************************/
-    static async fetchCurrentTemplateItems() {
+    static async changeTemplate(actionEvent) {
         // show the loading spinner screen
         TemplateModal.removeInitialClass();
         TemplateModal.toggleLoading(false);
 
         // set the value of the rename form input element to the name of the selected list
         TemplateModal.initRenameFormValue();
+    
+        // if selected option is a new template, first we need to tell the api to create a new template
+        if ('isNewTemplate' in actionEvent.params.data) {
+            await TemplateModal.createNewTemplate(actionEvent.params.data);
+        } 
 
+        await TemplateModal.fetchCurrentTemplateItems();
+
+        // show the items and remove the loading spinner
+        TemplateModal.toggleLoading(true);
+    }
+
+
+    /**********************************************************
+    Create a new template out of the given newSelectOptionDataOption
+
+    Args:
+        value of a newly created Select2 data tag object
+    **********************************************************/
+    static async createNewTemplate(newSelectOptionDataOption) {
+        // retrieve all the required data values for the api request
+        const listID = newSelectOptionDataOption.id;
+
+        const newListObject = {
+            name: newSelectOptionDataOption.text,
+            type: 'template',
+        }
+
+        // // append the new option to the list of templates
+        TemplateModal.addSelectOption(newListObject);
+    
+        // sort the options
+        TemplateModal.sortSelectOptions();
+    
+        // now send the api request
+        const formData = Utilities.objectToFormData(newListObject);
+        await ApiWrapper.listsPut(listID, formData);
+    }
+
+    /**********************************************************
+    Append the given option object to the list select element options
+    **********************************************************/
+    static addSelectOption(newListObject) {
+        const listID = TemplateModal.getCurrentTemplateID();
+        
+        // append the new option to the list of templates
+        const newOption = new Option(newListObject.name, listID, false, false);
+        $(TemplateModal.Elements.SELECT).append(newOption);
+    
+        // remove the first option since it was created by select2 automatically
+        // if this does not happen, then new options are added twice to the option list
+        const eOptionsWithSameID = $(TemplateModal.Elements.SELECT).find(`option[value="${listID}"]`);
+        $(eOptionsWithSameID[0]).remove();
+    
+        // select the newest option
+        $(TemplateModal.Elements.SELECT).val(listID);
+    }
+
+    /**********************************************************
+    Fetch the items of the selected template
+    **********************************************************/
+    static async fetchCurrentTemplateItems() {
         // fetch the template items from the api
         const templateID = TemplateModal.getCurrentTemplateID();
         const apiResponse = await TemplateModal.sendGetRequest(templateID);
 
         if (!apiResponse.successful) {
             TemplateModal.toggleLoading(true);
+            TemplateModal.logBadApiRequest(apiResponse);
             return;
         }
 
@@ -28,10 +91,8 @@ class TemplateModal {
 
         // render the items to the screen
         TemplateModal.renderItems(apiResponse.items);
-
-        // show the items and remove the loading spinner
-        TemplateModal.toggleLoading(true);
     }
+
 
     /**********************************************************
     Remove the initial css class from the modal
@@ -242,4 +303,19 @@ TemplateModal.SpinnerButtons = {
     NEW: new SpinnerButton(TemplateModal.Elements.BUTTONS.NEW),
     DELETE: new SpinnerButton(TemplateModal.Elements.BUTTONS.DELETE),
 }
+
+
+
+TemplateModal.Select = $(TemplateModal.Elements.SELECT).select2({
+    theme: 'bootstrap4',
+    tags: true,
+    createTag: function (params) {
+        return {
+          id: Utilities.getNewUUID(),
+          text: params.term,
+          isNewTemplate: true,
+        }
+    },
+});
+
 
