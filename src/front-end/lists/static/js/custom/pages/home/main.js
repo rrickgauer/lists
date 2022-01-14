@@ -22,7 +22,7 @@ $(document).ready(function() {
     testingActivateFirstList();
 
 
-    $('#modal-templates').modal('show');
+    // $('#modal-templates').modal('show');
 });
 
 
@@ -31,34 +31,7 @@ Add all the event listeners to the page
 **********************************************************/
 function addEventListeners() {
 
-    // open sidenav
-    $(eBtnShowSidenavBtn).on('click', function() {
-        toggleSidenav();
-    }); 
-
-    // sidebar clicking on a list
-    $('#lists-container').on('click', '.list-group-item-action', function() {
-        activateList(this);
-    });
-
-    // clicking on overlay when sidebar is active
-    $('body').on('click', '.drawer-overlay', closeSidenav);
-
-    // close sidebar button clicked
-    $(eSidebar.buttons.close).on('click', closeSidenav);
-
-    // add value to sidebar new list form input
-    $(SidenavFormList.elements.input).on('keyup change', mSidenavFormList.toggleSubmitButton);
-
-    // create a new list from the sidenav
-    $(SidenavFormList.elements.submit).on('click', mSidenavFormList.saveNewList);
-
-    $(SidenavFormList.elements.input).on('keypress', function(e) {
-        if (e.keyCode == 13) {
-            e.preventDefault();
-            mSidenavFormList.saveNewList();
-        }
-    });
+    addSidenavListeners();
 
     // create new item
     $(eActiveListContainer).on('keypress', `.${ListHtml.Elements.NEW_ITEM_FORM} input`, function(e) {
@@ -135,6 +108,49 @@ function addEventListeners() {
 
     addTemplateModalListeners();
 }
+
+
+
+
+
+function addSidenavListeners() {
+    // open sidenav
+    $(eBtnShowSidenavBtn).on('click', function() {
+        toggleSidenav();
+    }); 
+
+    // sidebar clicking on a list
+    $('#lists-container').on('click', '.list-group-item-action', function() {
+        activateList(this);
+    });
+
+    // clicking on overlay when sidebar is active
+    $('body').on('click', '.drawer-overlay', closeSidenav);
+
+    // close sidebar button clicked
+    $(eSidebar.buttons.close).on('click', closeSidenav);
+
+    // begin typing into the new list input
+    $(SidenavFormList.elements.input).on('keyup change', mSidenavFormList.toggleForm);
+
+    // create a new list from the sidenav
+    $(SidenavFormList.elements.submit).on('click', mSidenavFormList.saveNewList);
+
+    // create a new list from the sidenav
+    $(SidenavFormList.elements.input).on('keypress', function(e) {
+        if (e.keyCode == 13) {
+            e.preventDefault();
+            mSidenavFormList.saveNewList();
+        }
+    });
+}
+
+
+
+
+
+
+
 
 /**********************************************************
 Register all the event listeners for the templates modal
