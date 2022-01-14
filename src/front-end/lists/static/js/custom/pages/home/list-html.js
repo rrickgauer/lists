@@ -105,7 +105,8 @@ class ListHtml
     getHtml() {
         const itemsHtml = this.getItemsHtml();
 
-        const typeIcon = this.metadata.type == ListHtml.Types.LIST ? ListHtml.TypeIcons.LIST : ListHtml.TypeIcons.TEMPLATE;
+        // determine which type icon to display
+        const typeIcon = ListHtml.getTypeIcon(this.metadata.type);
 
         let html = `
         <div class="${ListHtml.Elements.CONTAINER} card my-shadow" data-list-id="${this.listID}" data-list-type="${this.metadata.type}">
@@ -156,6 +157,7 @@ class ListHtml
         return html;
     }
 
+
     /**********************************************************
     Generate the html for all this list's items
     **********************************************************/
@@ -169,8 +171,7 @@ class ListHtml
     }
 
     /**********************************************************
-    Display the loading card html prior to fetching the data 
-    from the api.
+    Display the loading card html prior to fetching the data from the api.
     **********************************************************/
     displayLoadingCard(listBoardElement) {
         const html = `
@@ -183,6 +184,27 @@ class ListHtml
             </div>`;
 
         $(listBoardElement).append(html);
+    }
+
+    
+    /**********************************************************
+    Set the given list's icon class to the one provided
+
+    Args:
+        listID: list id
+        typeIconClass: ListHtml.TypeIcons value
+    **********************************************************/
+    static setActiveListTypeIcon(listID, typeIconClass) {
+        // gather the icon element
+        const eActiveList = ListHtml.getActiveListElementByID(listID);
+        const eIcon = $(eActiveList).find(`.${ListHtml.Elements.TYPE_ICON} i`);
+
+        // drop both icon classes from the list element since we don't know which one it currently has
+        $(eIcon).removeClass(ListHtml.TypeIcons.LIST);
+        $(eIcon).removeClass(ListHtml.TypeIcons.TEMPLATE);
+
+        // now add the given icon class
+        $(eIcon).addClass(typeIconClass);
     }
 
 
@@ -208,6 +230,22 @@ class ListHtml
     **********************************************************/
     static getActiveListElementID(eActiveList) {
         return $(eActiveList).attr('data-list-id');
+    }
+
+    /**********************************************************
+    Return the appropriate type icon that should be displayed 
+    for the given listType.
+
+    Args:
+        listType: ListHtml.Types member
+    **********************************************************/
+    static getTypeIcon(listType) {
+        if (listType == ListHtml.Types.LIST) {
+            return ListHtml.TypeIcons.LIST;
+        } 
+        else {
+            return ListHtml.TypeIcons.TEMPLATE;
+        }
     }
 }
 
