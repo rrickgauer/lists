@@ -105,18 +105,20 @@ class ListHtml
     getHtml() {
         const itemsHtml = this.getItemsHtml();
 
+        const typeIcon = this.metadata.type == ListHtml.Types.LIST ? ListHtml.TypeIcons.LIST : ListHtml.TypeIcons.TEMPLATE;
+
         let html = `
-        <div class="${ListHtml.Elements.CONTAINER} card my-shadow" data-list-id="${this.listID}">
+        <div class="${ListHtml.Elements.CONTAINER} card my-shadow" data-list-id="${this.listID}" data-list-type="${this.metadata.type}">
             <div class="card-header">
 
                 <div class="d-flex justify-content-between align-items-baseline">
                     <h4 class="${ListHtml.Elements.LIST_NAME}">${this.metadata.name}</h4>
-                    
+
                     <div class="list-header-buttons">
                         <div class="dropdown mr-2">
                             <button class="close" type="button" data-toggle="dropdown"><i class='bx bx-dots-horizontal'></i></button>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <button class="dropdown-item" type="button" data-list-action="rename">Rename</button>
+                                <button class="dropdown-item" type="button" data-list-action="rename">Settings</button>
                                 <button class="dropdown-item" type="button" data-list-action="delete">Delete</button>
                             </div>
                         </div>
@@ -127,17 +129,15 @@ class ListHtml
                     </div>
                 </div>
 
-                <div class="mt-2">
+                <div class="mt-2 d-flex justify-content-between">
+                    <div class="${ListHtml.Elements.TYPE_ICON}"><i class='bx ${typeIcon} bx-border-circle'></i></div>
                     
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input class="form-check-input ${ListHtml.Elements.TOGGLE_COMPLETE}" type="checkbox" checked>
-                            Completed
+                            <input class="form-check-input ${ListHtml.Elements.TOGGLE_COMPLETE}" type="checkbox" checked> Completed
                         </label>
                     </div>
                 </div>
-
-
             </div>
 
             <div class="card-body">
@@ -220,6 +220,18 @@ ListHtml.Elements = {
     ACTION_BUTTONS: 'list-header-buttons',
     LIST_NAME: 'active-list-name',
     TOGGLE_COMPLETE: 'list-header-toggle-complete',
+    TYPE_ICON: 'list-header-type-icon'
+}
+
+
+ListHtml.Types = {
+    LIST: 'list',
+    TEMPLATE: 'tempalte',
+}
+
+ListHtml.TypeIcons = {
+    LIST:     'bx-checkbox-checked',
+    TEMPLATE: 'bx-book',
 }
 
 

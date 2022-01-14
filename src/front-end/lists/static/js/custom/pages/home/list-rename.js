@@ -103,9 +103,19 @@ class ListRename
         const eInput = $(ListRename.Elements.INPUT);
         $(eInput).val(originalName);
 
+        // set the related type radio input to checked
+        const listType = $(eActiveListContainer).attr('data-list-type');
+        ListRename.setTypeOptionChecked(listType);
+
         // show the modal
         $(eModal).modal('show');
     }
+
+    // mark the type radio option as checked 
+    static setTypeOptionChecked(listType) {
+        $(ListRename.Elements.MODAL).find(`[name="${ListRename.Elements.TYPE_OPTIONS}"][value="${listType}"]`).prop('checked', true);
+    }
+
 
     /**********************************************************
     Close the open modal
