@@ -32,7 +32,6 @@ function addEventListeners() {
     addActiveListItemElementListeners();
     addListRenameModalListeners();
     ItemDrag.listen(eActiveListContainer);  // listen for item drag/drop actions
-    addTemplateModalListeners();
 }
 
 
@@ -327,33 +326,6 @@ Action listener for saving a list rename
 function saveListRename() {
     const listRename = new ListRename();
     listRename.save();
-}
-
-/**********************************************************
-TEMPLATES MODAL: Register all the event listeners for the 
-**********************************************************/
-function addTemplateModalListeners() {
-    // user chose a different template
-    $(TemplateModal.Elements.SELECT).on('select2:select', function(e) {
-        TemplateModal.changeTemplate(e);
-    });
-
-    // clone the selected template
-    $(TemplateModal.Elements.BUTTONS.CLONE).on('click', TemplateModal.cloneList);
-
-    // When the rename form dropdown is closed, reset the input's value to the name of the current template
-    $(TemplateModal.Elements.RENAME_FORM.DROPDOWN).on('hidden.bs.dropdown', TemplateModal.initRenameFormValue);
-
-    // rename the current template
-    $(TemplateModal.Elements.RENAME_FORM.SAVE_BTN).on('click', TemplateModal.saveRename);
-
-    // rename the current template
-    $(TemplateModal.Elements.RENAME_FORM.INPUT).on('keypress', function(e) {
-        if (e.keyCode == 13) {
-            e.preventDefault();
-            TemplateModal.saveRename();
-        }
-    });
 }
 
 
