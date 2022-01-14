@@ -1,0 +1,21 @@
+
+<!-- holds all the lists -->
+<div id="lists-container-wrapper">
+    <div class="list-group" id="lists-container">
+
+        {% for list in data.lists %}
+        <button type="button" class="list-group-item list-group-item-action no-focus-outline" data-list-id="{{ list.id }}" data-list-type="{{list.type}}">
+            <div class="d-flex justify-content-start align-items-center">
+                <!-- type icon -->
+                <span class="list-group-item-type mr-2"><i class='bx {{ list.type_icon }} bx-border-circle'></i></span>
+                <!-- name -->
+                <div class="list-group-item-name">{{ list.name }}</div>
+            </div>
+
+            <!-- item count -->
+            <span class="badge badge-secondary badge-pill list-group-item-count">{{ list.count_items }}</span>
+        </button>
+        {% endfor %}
+
+    </div>
+</div>

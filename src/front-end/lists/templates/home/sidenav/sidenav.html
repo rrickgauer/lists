@@ -1,0 +1,37 @@
+{#
+
+Sidenav component for the home page.
+
+Incoming data (called data):
+- lists:
+- id
+- name
+- created_on
+- count_items
+- type
+- type_icon
+
+#}
+
+<section id="sidenav-container">
+    <div id="sidenav">
+        <div class="pt-3">
+            <div class="d-flex align-baseline justify-content-between">
+                <h3>Lists <span class="badge badge-secondary">{{ data.lists|length}}</span></h3>
+
+                <!-- button to close the sidebar -->
+                <button type="button" class="close no-focus-outline" id="sidenav-btn-close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+
+        {% include 'home/sidenav/new-list-form.html' %}
+
+        <hr>
+
+        {% include 'home/sidenav/collapses.html' %}
+
+        {% include 'home/sidenav/lists-container.html' %}
+    </div>
+</section>

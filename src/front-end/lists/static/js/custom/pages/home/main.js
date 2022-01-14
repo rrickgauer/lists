@@ -3,7 +3,9 @@ const eOverlay = '<div style="z-index: 109;" class="drawer-overlay"></div>';
 const eSidebar = {
     buttons: {
         close: '#sidenav-btn-close',
-    }
+    },
+
+    filterForm: '#sidenav-collapse-sections-filter-form',
 }
 
 const eActiveListContainer = '.active-lists-board';
@@ -11,6 +13,9 @@ const eActiveListContainer = '.active-lists-board';
 const mSidenavFormList = new SidenavFormList();
 
 const eBtnShowSidenavBtn = '#btn-show-sidenav';
+
+const eListsContainer = '#lists-container';
+
 
 /**********************************************************
 Main logic
@@ -67,6 +72,12 @@ function addSidenavListeners() {
             e.preventDefault();
             mSidenavFormList.saveNewList();
         }
+    });
+
+    // filter lists
+    $(eSidebar.filterForm).find(`.form-check-input`).on('change', function(e) {
+        const checkboxValue = $(this).val();
+        $(eListsContainer).find(`[data-list-type="${checkboxValue}"]`).toggleClass('d-none');
     });
 }
 
