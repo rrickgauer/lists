@@ -10,10 +10,11 @@ class ListRename
         this.newName = $(ListRename.Elements.INPUT).val();
         this.listID = $(ListRename.Elements.MODAL).attr('data-list-id');
 
-        this.save = this.save.bind(this);
-        this._sendRequest = this._sendRequest.bind(this);
-        this._updateActiveListText = this._updateActiveListText.bind(this);
-        this._updateSidenavListText = this._updateSidenavListText.bind(this);
+        // bind the object methods
+        this.save                      = this.save.bind(this);
+        this._sendRequest              = this._sendRequest.bind(this);
+        this._updateActiveListElement  = this._updateActiveListElement.bind(this);
+        this._updateSidenavListElement = this._updateSidenavListElement.bind(this);
     }
 
     /**********************************************************
@@ -28,8 +29,8 @@ class ListRename
         
         // update the active list name text if request was successful
         if (successfulRequest) {
-            this._updateActiveListText();
-            this._updateSidenavListText();
+            this._updateActiveListElement();
+            this._updateSidenavListElement();
         }
 
         // enable the save button
@@ -50,6 +51,7 @@ class ListRename
         // create a formdata oject for the request
         const formData = Utilities.objectToFormData({
             name: this.newName,
+            type: ListRename.getListTypeValue(),
         });
 
         let result = true;
@@ -66,20 +68,47 @@ class ListRename
     }
 
     /**********************************************************
-    Update the active list's name text to the new name from the input
+    Update the active list's name text and type icon to the new name from the input
     **********************************************************/
-    _updateActiveListText() {
+    _updateActiveListElement() {
+        // name
         const eActiveList = ListHtml.getActiveListElementByID(this.listID);
         $(eActiveList).find(`.${ListHtml.Elements.LIST_NAME}`).text(this.newName);
+
+        // type - data attribute
+        const newType = ListRename.getListTypeValue();
+        $(eActiveList).attr('data-list-type', newType);
+
+        // type - icon
+        const eNewIcon = ListHtml.getTypeIcon(newType);
+        ListHtml.setActiveListTypeIcon(this.listID, eNewIcon);
+
     }
 
     
     /**********************************************************
     Update the sidenav list's name text to the new name from the input
     **********************************************************/
-    _updateSidenavListText() {
+    _updateSidenavListElement() {
+        // name
         const eSidenavListItem = $(`#sidenav .list-group-item[data-list-id="${this.listID}"]`);
         $(eSidenavListItem).find('.list-group-item-name').text(this.newName);
+
+
+        // type - icon
+        const newType = ListRename.getListTypeValue();
+        const newIconClass = ListHtml.getTypeIcon(newType);
+        const eIcon = $(eSidenavListItem).find('.list-group-item-type i');
+
+        // drop both icon classes from the list element since we don't know which one it currently has
+        $(eIcon).removeClass(ListHtml.TypeIcons.LIST);
+        $(eIcon).removeClass(ListHtml.TypeIcons.TEMPLATE);
+
+        // now add the given icon class
+        $(eIcon).addClass(newIconClass);
+
+        // type - data attribute
+        $(eSidenavListItem).attr('data-list-type', newType);
     }
 
 
@@ -103,15 +132,36 @@ class ListRename
         const eInput = $(ListRename.Elements.INPUT);
         $(eInput).val(originalName);
 
+        // set the related type radio input to checked
+        const listType = $(eActiveListContainer).attr('data-list-type');
+        ListRename.setTypeOptionChecked(listType);
+
         // show the modal
         $(eModal).modal('show');
     }
+
+
+    /**********************************************************
+    Mark the type radio option as checked 
+    **********************************************************/
+    static setTypeOptionChecked(listType) {
+        $(ListRename.Elements.MODAL).find(`[name="${ListRename.Elements.TYPE_OPTIONS}"][value="${listType}"]`).prop('checked', true);
+    }
+
 
     /**********************************************************
     Close the open modal
     **********************************************************/
     static closeModal() {
         $(ListRename.Elements.MODAL).modal('hide');
+    }
+
+    
+    /**********************************************************
+    Get the value of the checked list type radio input
+    **********************************************************/
+    static getListTypeValue() {
+        return $(`[name="${ListRename.Elements.TYPE_OPTIONS}"]:checked`).val();
     }
 }
 
@@ -121,6 +171,7 @@ ListRename.Elements = {
     MODAL: '#modal-list-rename',
     INPUT: '#list-rename-form-input',
     BTN_SAVE: '#list-rename-form-save',
+    TYPE_OPTIONS: 'list-rename-form-type-radio-option',
 }
 
 

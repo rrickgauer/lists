@@ -3,7 +3,9 @@ const eOverlay = '<div style="z-index: 109;" class="drawer-overlay"></div>';
 const eSidebar = {
     buttons: {
         close: '#sidenav-btn-close',
-    }
+    },
+
+    filterForm: '#sidenav-collapse-sections-filter-form',
 }
 
 const eActiveListContainer = '.active-lists-board';
@@ -12,17 +14,17 @@ const mSidenavFormList = new SidenavFormList();
 
 const eBtnShowSidenavBtn = '#btn-show-sidenav';
 
+const eListsContainer = '#lists-container';
+
+
 /**********************************************************
 Main logic
 **********************************************************/
 $(document).ready(function() {
     addEventListeners();
-    
-    // toggleSidenav();    // open the sidebar initially
+    toggleSidenav();    // open the sidebar initially
     testingActivateFirstList();
-
-
-    $('#modal-templates').modal('show');
+    // $('#modal-templates').modal('show');
 });
 
 
@@ -30,7 +32,18 @@ $(document).ready(function() {
 Add all the event listeners to the page
 **********************************************************/
 function addEventListeners() {
+    addSidenavListeners();
+    addActiveListElementListeners();
+    addActiveListItemElementListeners();
+    addListRenameModalListeners();
+    ItemDrag.listen(eActiveListContainer);  // listen for item drag/drop actions
+}
 
+
+/**********************************************************
+SIDENAV: Register all the event listeners
+**********************************************************/
+function addSidenavListeners() {
     // open sidenav
     $(eBtnShowSidenavBtn).on('click', function() {
         toggleSidenav();
@@ -47,12 +60,13 @@ function addEventListeners() {
     // close sidebar button clicked
     $(eSidebar.buttons.close).on('click', closeSidenav);
 
-    // add value to sidebar new list form input
-    $(SidenavFormList.elements.input).on('keyup change', mSidenavFormList.toggleSubmitButton);
+    // begin typing into the new list input
+    $(SidenavFormList.elements.input).on('keyup change', mSidenavFormList.toggleForm);
 
     // create a new list from the sidenav
     $(SidenavFormList.elements.submit).on('click', mSidenavFormList.saveNewList);
 
+    // create a new list from the sidenav
     $(SidenavFormList.elements.input).on('keypress', function(e) {
         if (e.keyCode == 13) {
             e.preventDefault();
@@ -60,117 +74,20 @@ function addEventListeners() {
         }
     });
 
-    // create new item
-    $(eActiveListContainer).on('keypress', `.${ListHtml.Elements.NEW_ITEM_FORM} input`, function(e) {
-        if (e.keyCode == 13) {
-            e.preventDefault();
-            createNewItem(this);
-        }
+    // filter lists
+    $(eSidebar.filterForm).find(`.form-check-input`).on('change', function(e) {
+        const checkboxValue = $(this).val();
+        $(eListsContainer).find(`[data-list-type="${checkboxValue}"]`).toggleClass('d-none');
     });
-
-    // Display an item's update content form
-    $(eActiveListContainer).on('click', `.${ItemHtml.Elements.CONTENT}`, function() {
-        displayItemUpdateForm(this);
-    });
-
-    // When editing an item's content, either save or cancel update
-    $(eActiveListContainer).on('click', `.${ItemContentUpdateForm.Elements.FORM} button`, function() {
-        performUpdateItemFormAction(this);
-    });
-
-    // When editing an item's content, hits enter
-    $(eActiveListContainer).on('keypress', `.${ItemContentUpdateForm.Elements.FORM} input`, function(e) {
-        if (e.keyCode == 13) {
-            e.preventDefault();
-            updateItemContent(this);
-        }
-    });
-
-    // When editing an item's content, hits enter
-    $(eActiveListContainer).on('focusout', `.${ItemContentUpdateForm.Elements.FORM} input`, function() {
-        // cancelItemContentUpdate(this);
-    });
-
-    // close an active list
-    $(eActiveListContainer).on('click', `.${ListHtml.Elements.BTN_CLOSE}`, function() {
-        closeActiveList(this);
-    });
-
-
-    // mark item complete
-    $(eActiveListContainer).on('change', `.${ItemHtml.Elements.CHECKBOX}`, function() {
-        completeItem(this);
-    });
-
-    // delete an item
-    $(eActiveListContainer).on('click', `.${ItemHtml.Elements.BTN_DELETE}`, function() {
-        deleteItem(this);
-    });
-
-    // list action button
-    $(eActiveListContainer).on('click', `.${ListHtml.Elements.ACTION_BUTTONS} .dropdown-item`, function() {
-        performListAction(this);
-    });
-
-    // save the list rename
-    $(ListRename.Elements.BTN_SAVE).on('click', function() {
-        saveListRename();
-    });
-
-    // save the list rename for typing enter key while input is in focus
-    $(ListRename.Elements.INPUT).on('keypress', function(e) {
-        if (e.keyCode == 13) {
-            e.preventDefault();
-            saveListRename();
-        }
-    });
-
-    // listen for item drag/drop actions
-    ItemDrag.listen(eActiveListContainer);
-
-    // toggle complete items visibility
-    $(eActiveListContainer).on('change', `.${ListHtml.Elements.TOGGLE_COMPLETE}`, function() {
-        toggleCompleteItemsVisibility(this);
-    });
-
-    addTemplateModalListeners();
 }
 
 /**********************************************************
-Register all the event listeners for the templates modal
+Open/close the sidebar
 **********************************************************/
-function addTemplateModalListeners() {
-    // user chose a different template
-    $(TemplateModal.Elements.SELECT).on('select2:select', function(e) {
-        TemplateModal.changeTemplate(e);
-    });
-
-    // clone the selected template
-    $(TemplateModal.Elements.BUTTONS.CLONE).on('click', TemplateModal.cloneList);
-
-    // When the rename form dropdown is closed, reset the input's value to the name of the current template
-    $(TemplateModal.Elements.RENAME_FORM.DROPDOWN).on('hidden.bs.dropdown', TemplateModal.initRenameFormValue);
-
-    // rename the current template
-    $(TemplateModal.Elements.RENAME_FORM.SAVE_BTN).on('click', TemplateModal.saveRename);
-
-    // rename the current template
-    $(TemplateModal.Elements.RENAME_FORM.INPUT).on('keypress', function(e) {
-        if (e.keyCode == 13) {
-            e.preventDefault();
-            TemplateModal.saveRename();
-        }
-    });
+function toggleSidenav() {
+    $('#page').toggleClass('sidenav-open');
+    $('body').append(eOverlay);
 }
-
-
-
-function testingActivateFirstList() {
-    const firstList = $('#lists-container').find('.list-group-item-action')[0];
-    activateList(firstList);
-}
-
-
 
 /**********************************************************
 Open a list from the sidebar
@@ -196,13 +113,6 @@ async function activateList(sidebarListElement) {
     list.renderHtml(eActiveListContainer);
 }
 
-/**********************************************************
-Open/close the sidebar
-**********************************************************/
-function toggleSidenav() {
-    $('#page').toggleClass('sidenav-open');
-    $('body').append(eOverlay);
-}
 
 /**********************************************************
 Close the sidebar
@@ -212,7 +122,34 @@ function closeSidenav() {
     $('body .drawer-overlay').remove();
 }
 
+/**********************************************************
+ACTIVE LIST: add event listeners
+**********************************************************/
+function addActiveListElementListeners() {
+    // create new item
+    $(eActiveListContainer).on('keypress', `.${ListHtml.Elements.NEW_ITEM_FORM} input`, function(e) {
+        if (e.keyCode == 13) {
+            e.preventDefault();
+            createNewItem(this);
+        }
+    });
 
+    // close an active list
+    $(eActiveListContainer).on('click', `.${ListHtml.Elements.BTN_CLOSE}`, function() {
+        closeActiveList(this);
+    });
+
+    // list action button
+    $(eActiveListContainer).on('click', `.${ListHtml.Elements.ACTION_BUTTONS} .dropdown-item`, function(e) {
+        e.preventDefault();
+        performListAction(this);
+    });
+
+    // toggle complete items visibility
+    $(eActiveListContainer).on('change', `.${ListHtml.Elements.TOGGLE_COMPLETE}`, function() {
+        toggleCompleteItemsVisibility(this);
+    });
+}
 
 /**********************************************************
 Attempt to add a new item to the active list in focus
@@ -237,6 +174,86 @@ function createNewItem(inputElement) {
 }
 
 /**********************************************************
+Close an active list
+**********************************************************/
+function closeActiveList(eClickedCloseButton) {
+    const eActiveList = $(eClickedCloseButton).closest(`.${ListHtml.Elements.CONTAINER}`);
+    const listID = $(eActiveList).attr('data-list-id');
+
+    // remove active list from the board
+    $(eActiveList).remove();    
+
+    // remove active class from sidenav list item
+    $(`#lists-container .list-group-item[data-list-id="${listID}"]`).removeClass('active');
+    
+}
+
+/**********************************************************
+Determine which list action to take
+**********************************************************/
+function performListAction(eListActionButton) {
+    const listActionValue = $(eListActionButton).attr('data-list-action');
+    
+    // determine which button was clicked
+    switch(listActionValue)
+    {
+        case ListHtml.HeaderButtonActions.SETTINGS:
+            ListRename.openModal(eListActionButton);
+            break;
+        case ListHtml.HeaderButtonActions.DELETE:
+            const listDelete = new ListDelete(eListActionButton);
+            listDelete.delete();
+            break;
+        case ListHtml.HeaderButtonActions.CLONE:
+            const listClone = new ListCloner(eListActionButton);
+            listClone.clone();
+            break;
+    }
+}
+
+/**********************************************************
+Toggle complete items' visibility
+**********************************************************/
+function toggleCompleteItemsVisibility(eClickedCheckbox) {
+    const eListContainer = ListHtml.getParentActiveListElement(eClickedCheckbox);
+    $(eListContainer).toggleClass('hide-completed');
+}
+
+
+/**********************************************************
+ACTIVE LIST ITEM: add event listeners
+**********************************************************/
+function addActiveListItemElementListeners() {
+    // Display an item's update content form
+    $(eActiveListContainer).on('click', `.${ItemHtml.Elements.CONTENT}`, function() {
+        displayItemUpdateForm(this);
+    });
+    
+    // mark item complete
+    $(eActiveListContainer).on('change', `.${ItemHtml.Elements.CHECKBOX}`, function() {
+        completeItem(this);
+    });
+
+    // delete an item
+    $(eActiveListContainer).on('click', `.${ItemHtml.Elements.BTN_DELETE}`, function() {
+        deleteItem(this);
+    });
+
+    // When editing an item's content, either save or cancel update
+    $(eActiveListContainer).on('click', `.${ItemContentUpdateForm.Elements.FORM} button`, function() {
+        performUpdateItemFormAction(this);
+    });
+
+    // When editing an item's content, hits enter
+    $(eActiveListContainer).on('keypress', `.${ItemContentUpdateForm.Elements.FORM} input`, function(e) {
+        if (e.keyCode == 13) {
+            e.preventDefault();
+            updateItemContent(this);
+        }
+    });
+}
+
+/**********************************************************
 Render an item's update content form.
 **********************************************************/
 function displayItemUpdateForm(eItemContent) {
@@ -244,6 +261,25 @@ function displayItemUpdateForm(eItemContent) {
     
     const itemUpdateForm = new ItemContentUpdateForm(eItemContainer);
     itemUpdateForm.renderUpdateForm();
+}
+
+/**********************************************************
+Item's complete checkbox was clicked
+**********************************************************/
+function completeItem(eCheckbox) {
+    const itemCompletor = new ItemCompletor(eCheckbox);
+    itemCompletor.save();
+}
+
+
+/**********************************************************
+Delete an item
+**********************************************************/
+function deleteItem(eDeleteButton) {
+    const itemRemove = new ItemRemove(eDeleteButton);
+
+    itemRemove.remove();
+    itemRemove.updateListItemCount('#sidenav');
 }
 
 /**********************************************************
@@ -255,6 +291,7 @@ function performUpdateItemFormAction(eUpdateItemFormActionButton) {
     const itemUpdateForm = new ItemContentUpdateForm(eItemContainer);
     itemUpdateForm.respondToActionButton(eUpdateItemFormActionButton);
 }
+
 
 /**********************************************************
 Update an item's content
@@ -276,61 +313,22 @@ function cancelItemContentUpdate(eItemUpdateFormInput) {
     itemUpdateForm.cancelUpdate();
 }
 
-
-
 /**********************************************************
-Close an active list
+List rename form modal: add event listeners
 **********************************************************/
-function closeActiveList(eClickedCloseButton) {
-    const eActiveList = $(eClickedCloseButton).closest(`.${ListHtml.Elements.CONTAINER}`);
-    const listID = $(eActiveList).attr('data-list-id');
+function addListRenameModalListeners() {
+    // save the list rename
+    $(ListRename.Elements.BTN_SAVE).on('click', function() {
+        saveListRename();
+    });
 
-    // remove active list from the board
-    $(eActiveList).remove();    
-
-    // remove active class from sidenav list item
-    $(`#lists-container .list-group-item[data-list-id="${listID}"]`).removeClass('active');
-    
-}
-
-/**********************************************************
-Item's complete checkbox was clicked
-**********************************************************/
-function completeItem(eCheckbox) {
-    const itemCompletor = new ItemCompletor(eCheckbox);
-    itemCompletor.save();
-}
-
-/**********************************************************
-Delete an item
-**********************************************************/
-function deleteItem(eDeleteButton) {
-    const itemRemove = new ItemRemove(eDeleteButton);
-
-    itemRemove.remove();
-    itemRemove.updateListItemCount('#sidenav');
-}
-
-
-/**********************************************************
-Determine which list action to take
-**********************************************************/
-function performListAction(eListActionButton) {
-    const listActionValue = $(eListActionButton).attr('data-list-action');
-    
-    // determine which button was clicked
-    switch(listActionValue)
-    {
-        case "rename":
-            ListRename.openModal(eListActionButton);
-            break;
-        case "delete":
-            const listDelete = new ListDelete(eListActionButton);
-            console.log(listDelete);
-            listDelete.delete();
-            break;
-
-    }
+    // save the list rename for typing enter key while input is in focus
+    $(ListRename.Elements.INPUT).on('keypress', function(e) {
+        if (e.keyCode == 13) {
+            e.preventDefault();
+            saveListRename();
+        }
+    });
 }
 
 /**********************************************************
@@ -342,10 +340,7 @@ function saveListRename() {
 }
 
 
-/**********************************************************
-Toggle complete items' visibility
-**********************************************************/
-function toggleCompleteItemsVisibility(eClickedCheckbox) {
-    const eListContainer = ListHtml.getParentActiveListElement(eClickedCheckbox);
-    $(eListContainer).toggleClass('hide-completed');
+function testingActivateFirstList() {
+    const firstList = $('#lists-container').find('.list-group-item-action')[0];
+    activateList(firstList);
 }

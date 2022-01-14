@@ -105,19 +105,23 @@ class ListHtml
     getHtml() {
         const itemsHtml = this.getItemsHtml();
 
+        // determine which type icon to display
+        const typeIcon = ListHtml.getTypeIcon(this.metadata.type);
+
         let html = `
-        <div class="${ListHtml.Elements.CONTAINER} card my-shadow" data-list-id="${this.listID}">
+        <div class="${ListHtml.Elements.CONTAINER} card my-shadow" data-list-id="${this.listID}" data-list-type="${this.metadata.type}">
             <div class="card-header">
 
                 <div class="d-flex justify-content-between align-items-baseline">
                     <h4 class="${ListHtml.Elements.LIST_NAME}">${this.metadata.name}</h4>
-                    
+
                     <div class="list-header-buttons">
                         <div class="dropdown mr-2">
                             <button class="close" type="button" data-toggle="dropdown"><i class='bx bx-dots-horizontal'></i></button>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <button class="dropdown-item" type="button" data-list-action="rename">Rename</button>
-                                <button class="dropdown-item" type="button" data-list-action="delete">Delete</button>
+                                <button class="dropdown-item" type="button" data-list-action="${ListHtml.HeaderButtonActions.SETTINGS}">Settings</button>
+                                <button class="dropdown-item" type="button" data-list-action="${ListHtml.HeaderButtonActions.CLONE}">Clone</button>
+                                <button class="dropdown-item" type="button" data-list-action="${ListHtml.HeaderButtonActions.DELETE}">Delete</button>
                             </div>
                         </div>
 
@@ -127,17 +131,15 @@ class ListHtml
                     </div>
                 </div>
 
-                <div class="mt-2">
+                <div class="mt-2 d-flex justify-content-between">
+                    <div class="${ListHtml.Elements.TYPE_ICON}"><i class='bx ${typeIcon} bx-border-circle'></i></div>
                     
                     <div class="form-check">
                         <label class="form-check-label">
-                            <input class="form-check-input ${ListHtml.Elements.TOGGLE_COMPLETE}" type="checkbox" checked>
-                            Completed
+                            <input class="form-check-input ${ListHtml.Elements.TOGGLE_COMPLETE}" type="checkbox" checked> Completed
                         </label>
                     </div>
                 </div>
-
-
             </div>
 
             <div class="card-body">
@@ -156,6 +158,7 @@ class ListHtml
         return html;
     }
 
+
     /**********************************************************
     Generate the html for all this list's items
     **********************************************************/
@@ -169,8 +172,7 @@ class ListHtml
     }
 
     /**********************************************************
-    Display the loading card html prior to fetching the data 
-    from the api.
+    Display the loading card html prior to fetching the data from the api.
     **********************************************************/
     displayLoadingCard(listBoardElement) {
         const html = `
@@ -183,6 +185,27 @@ class ListHtml
             </div>`;
 
         $(listBoardElement).append(html);
+    }
+
+    
+    /**********************************************************
+    Set the given list's icon class to the one provided
+
+    Args:
+        listID: list id
+        typeIconClass: ListHtml.TypeIcons value
+    **********************************************************/
+    static setActiveListTypeIcon(listID, typeIconClass) {
+        // gather the icon element
+        const eActiveList = ListHtml.getActiveListElementByID(listID);
+        const eIcon = $(eActiveList).find(`.${ListHtml.Elements.TYPE_ICON} i`);
+
+        // drop both icon classes from the list element since we don't know which one it currently has
+        $(eIcon).removeClass(ListHtml.TypeIcons.LIST);
+        $(eIcon).removeClass(ListHtml.TypeIcons.TEMPLATE);
+
+        // now add the given icon class
+        $(eIcon).addClass(typeIconClass);
     }
 
 
@@ -209,6 +232,22 @@ class ListHtml
     static getActiveListElementID(eActiveList) {
         return $(eActiveList).attr('data-list-id');
     }
+
+    /**********************************************************
+    Return the appropriate type icon that should be displayed 
+    for the given listType.
+
+    Args:
+        listType: ListHtml.Types member
+    **********************************************************/
+    static getTypeIcon(listType) {
+        if (listType == ListHtml.Types.LIST) {
+            return ListHtml.TypeIcons.LIST;
+        } 
+        else {
+            return ListHtml.TypeIcons.TEMPLATE;
+        }
+    }
 }
 
 
@@ -220,6 +259,24 @@ ListHtml.Elements = {
     ACTION_BUTTONS: 'list-header-buttons',
     LIST_NAME: 'active-list-name',
     TOGGLE_COMPLETE: 'list-header-toggle-complete',
+    TYPE_ICON: 'list-header-type-icon'
+}
+
+
+ListHtml.Types = {
+    LIST: 'list',
+    TEMPLATE: 'tempalte',
+}
+
+ListHtml.TypeIcons = {
+    LIST:     'bx-checkbox-checked',
+    TEMPLATE: 'bx-book',
+}
+
+ListHtml.HeaderButtonActions = {
+    SETTINGS: 'settings',
+    DELETE: 'delete',
+    CLONE: 'clone',
 }
 
 
