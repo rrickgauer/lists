@@ -5,7 +5,6 @@ Prefix:     ''
 Purpose:    Home page routing
 ********************************************************************************************
 """
-
 import flask
 from lists_common import flaskutil
 from ..common import security
@@ -26,7 +25,12 @@ def home():
     if not response.ok:
         return (response.text, response.status_code)
 
-    payload = list_services.getHomePagePayload(response.json())
+    try:
+        lists_collection = response.json()
+    except Exception as e:
+        lists_collection = []   # empty response body
+
+    payload = list_services.getHomePagePayload(lists_collection)
 
     return flask.render_template('home/home.html', data=payload)
 

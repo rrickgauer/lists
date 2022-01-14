@@ -186,15 +186,17 @@ function performListAction(eListActionButton) {
     // determine which button was clicked
     switch(listActionValue)
     {
-        case "rename":
+        case ListHtml.HeaderButtonActions.SETTINGS:
             ListRename.openModal(eListActionButton);
             break;
-        case "delete":
+        case ListHtml.HeaderButtonActions.DELETE:
             const listDelete = new ListDelete(eListActionButton);
-            console.log(listDelete);
             listDelete.delete();
             break;
-
+        case ListHtml.HeaderButtonActions.CLONE:
+            const listClone = new ListCloner(eListActionButton);
+            listClone.clone();
+            break;
     }
 }
 
@@ -300,9 +302,6 @@ function cancelItemContentUpdate(eItemUpdateFormInput) {
     itemUpdateForm.cancelUpdate();
 }
 
-
-
-
 /**********************************************************
 List rename form modal: add event listeners
 **********************************************************/
@@ -321,8 +320,6 @@ function addListRenameModalListeners() {
     });
 }
 
-
-
 /**********************************************************
 Action listener for saving a list rename
 **********************************************************/
@@ -330,8 +327,6 @@ function saveListRename() {
     const listRename = new ListRename();
     listRename.save();
 }
-
-
 
 /**********************************************************
 TEMPLATES MODAL: Register all the event listeners for the 

@@ -119,8 +119,9 @@ class ListHtml
                         <div class="dropdown mr-2">
                             <button class="close" type="button" data-toggle="dropdown"><i class='bx bx-dots-horizontal'></i></button>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <button class="dropdown-item" type="button" data-list-action="rename">Settings</button>
-                                <button class="dropdown-item" type="button" data-list-action="delete">Delete</button>
+                                <button class="dropdown-item" type="button" data-list-action="${ListHtml.HeaderButtonActions.SETTINGS}">Settings</button>
+                                <button class="dropdown-item" type="button" data-list-action="${ListHtml.HeaderButtonActions.CLONE}">Clone</button>
+                                <button class="dropdown-item" type="button" data-list-action="${ListHtml.HeaderButtonActions.DELETE}">Delete</button>
                             </div>
                         </div>
 
@@ -270,6 +271,12 @@ ListHtml.Types = {
 ListHtml.TypeIcons = {
     LIST:     'bx-checkbox-checked',
     TEMPLATE: 'bx-book',
+}
+
+ListHtml.HeaderButtonActions = {
+    SETTINGS: 'settings',
+    DELETE: 'delete',
+    CLONE: 'clone',
 }
 
 
