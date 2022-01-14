@@ -130,7 +130,8 @@ function addActiveListElementListeners() {
     });
 
     // list action button
-    $(eActiveListContainer).on('click', `.${ListHtml.Elements.ACTION_BUTTONS} .dropdown-item`, function() {
+    $(eActiveListContainer).on('click', `.${ListHtml.Elements.ACTION_BUTTONS} .dropdown-item`, function(e) {
+        e.preventDefault();
         performListAction(this);
     });
 

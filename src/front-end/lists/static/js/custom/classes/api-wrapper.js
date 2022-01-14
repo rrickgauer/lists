@@ -67,7 +67,7 @@ class ApiWrapper
     }
 
     /**********************************************************
-    Delete a list
+    Clone the given list.
     **********************************************************/
     static async listsClone(listID) {
         const url = `${ApiWrapper.Urls.LISTS}/${listID}/clones`;
