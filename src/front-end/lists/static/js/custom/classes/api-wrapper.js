@@ -55,11 +55,25 @@ class ApiWrapper
         });
     }
 
+    /**********************************************************
+    Delete a list
+    **********************************************************/
     static async listsDelete(listID) {
         const url = `${ApiWrapper.Urls.LISTS}/${listID}`;
 
         return await fetch(url, {
             method: ApiWrapper.Methods.DELETE,
+        });
+    }
+
+    /**********************************************************
+    Delete a list
+    **********************************************************/
+    static async listsClone(listID) {
+        const url = `${ApiWrapper.Urls.LISTS}/${listID}/clones`;
+
+        return await fetch(url, {
+            method: ApiWrapper.Methods.POST,
         });
     }
 

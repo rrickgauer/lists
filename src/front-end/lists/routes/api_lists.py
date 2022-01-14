@@ -45,6 +45,19 @@ def existingList(list_id: UUID):
     return (response.text, response.status_code)
     
 
+#------------------------------------------------------
+# Send an api request for existing lists
+#------------------------------------------------------
+@bp_api_lists.post('<uuid:list_id>/clones')
+@security.login_required
+def cloneList(list_id: UUID):
+    # redirect the request to the api
+    api = api_wrapper.ApiWrapperListsClones(flask.g)
+
+    response = api.post(list_id)
+    
+    return (response.text, response.status_code)
+
 
 
 

@@ -5,20 +5,40 @@ This module contains all the business logic for lists services.
 
 **********************************************************************************
 """
-
+from enum import Enum
 from uuid import UUID, uuid4
 from datetime import datetime
+import uuid
 import flask
 from ..db_manager import commands as sql_engine, DbOperationResult
 from ..common import responses
-from ..models import List
+from ..models import List, ListType
+
+
+# the template for selecting multiple lists from the database
+SQL_SELECT_ALL_TEMPLATE = '''
+    SELECT * FROM View_Lists vl
+    WHERE EXISTS (
+        SELECT 1 FROM Lists l
+        WHERE l.user_id = %s
+        AND l.id = vl.id
+        {}
+    )
+    ORDER BY modified_on DESC
+'''
+
+
+# Holds all the sql statements for selecting multiple lists (all or filter by type)
+class SqlSelectStmts(str, Enum):
+    ALL         = SQL_SELECT_ALL_TEMPLATE.format('')                        # all lists
+    FILTER_TYPE = SQL_SELECT_ALL_TEMPLATE.format(' AND l.`type` = %s ')     # Filter by list type
 
 
 #------------------------------------------------------
 # Return all of a user's lists
 #------------------------------------------------------
-def getAllLists() -> flask.Response:
-    db_result = _queryAll()
+def getAllLists(request_args: dict) -> flask.Response:
+    db_result = _selectMultiple(request_args)
     
     if db_result.successful:
         return responses.get(db_result.data)
@@ -27,20 +47,38 @@ def getAllLists() -> flask.Response:
 
 
 #------------------------------------------------------
+# If the given request_args has a url query arg, return all lists of that type
+# Otherwise, return all the lists owned by the client
+#------------------------------------------------------
+def _selectMultiple(request_args: dict) -> DbOperationResult:
+    filter_type_val = request_args.get('type') or None
+
+    if not filter_type_val:
+        return _queryAll()
+    else:
+        list_type = ListType(filter_type_val)
+        return _queryAllFilterByType(list_type)
+
+#------------------------------------------------------
 # Get all a user's lists from the database
 #------------------------------------------------------
 def _queryAll() -> DbOperationResult:
-    sql = '''
-    SELECT * FROM View_Lists vl
-    WHERE EXISTS (
-        SELECT 1 FROM Lists l
-        WHERE l.user_id = %s
-        AND l.id = vl.id
-    )
-    ORDER BY created_on DESC
-    '''
-
+    sql = SQL_SELECT_ALL_TEMPLATE.format('')
     parms = (str(flask.g.client_id),)
+
+    return sql_engine.select(sql, parms, True)
+
+
+#------------------------------------------------------
+# Returns all lists of the given type
+#------------------------------------------------------
+def _queryAllFilterByType(filter_type: ListType) -> DbOperationResult:
+    sql = SqlSelectStmts.FILTER_TYPE.value
+
+    parms = (
+        str(flask.g.client_id),
+        filter_type.value
+    )
 
     return sql_engine.select(sql, parms, True)
 
@@ -55,6 +93,38 @@ def getList(list_id: UUID) -> flask.Response:
         return responses.badRequest(query_result.error)
 
     return responses.get(query_result.data)
+
+#------------------------------------------------------
+# Generate response for cloning a list
+#------------------------------------------------------
+def cloneListResponse(list_id: UUID) -> flask.Response:
+    new_list_id = uuid.uuid4()
+    clone_db_result = cmdCloneList(list_id, new_list_id)
+
+    if not clone_db_result.successful:
+        return responses.badRequest(clone_db_result.error)
+
+    db_select = _query(new_list_id)
+
+    return responses.created(db_select.data) 
+
+
+#------------------------------------------------------
+# Execute sql to clone the given list
+#
+# Args:
+#   existing_list_id: id of the existing list
+#   new_list_id: designated ID to give the newly created list
+#------------------------------------------------------
+def cmdCloneList(existing_list_id: UUID, new_list_id: UUID) -> DbOperationResult:
+    sql = 'CALL Clone_List(%s, %s);'
+    
+    parms = (
+        str(existing_list_id),
+        str(new_list_id),
+    )
+
+    return sql_engine.modify(sql, parms)
 
 #------------------------------------------------------
 # Fetch a single list from the database
@@ -93,12 +163,8 @@ def updateList(list_id: UUID, request_body: dict) -> flask.Response:
 #------------------------------------------------------
 def _modifyList(list_id: UUID, request_body: dict) -> flask.Response:
     # create a new list model
-    new_list = List(
-        id         = list_id,
-        user_id    = flask.g.client_id,
-        name       = request_body.get('name') or None,
-        created_on = datetime.now()
-    )
+    new_list = dictToList(request_body)
+    new_list.id = list_id
 
     # make sure the request body contained a name field
     if not new_list.name:
@@ -121,16 +187,30 @@ def _modifyList(list_id: UUID, request_body: dict) -> flask.Response:
 
     return response_function(response_data.data)
 
+
+#------------------------------------------------------
+# Parse the given dict into a new List model object
+#------------------------------------------------------
+def dictToList(dict_obj: dict) -> List:
+    return List(
+        user_id    = flask.g.client_id,
+        name       = dict_obj.get('name') or None,
+        created_on = datetime.now(),
+        type       = ListType(dict_obj.get('type'))
+    )
+
+
 #------------------------------------------------------
 # SQL command that either inserts a new list, or updates
 # an exiting record's name if it already exists.
 #------------------------------------------------------
 def _modifyDbCommand(list_: List) -> DbOperationResult:
     sql = '''
-        INSERT INTO Lists (id, user_id, name, created_on) 
-        VALUES (%s, %s, %s, %s)
+        INSERT INTO Lists (id, user_id, name, created_on, `type`) 
+        VALUES (%s, %s, %s, %s, %s)
         ON DUPLICATE KEY UPDATE 
-        name=VALUES(name);
+        name   = VALUES(name),
+        `type` = VALUES (`type`);
     '''
 
     parms = (
@@ -138,6 +218,7 @@ def _modifyDbCommand(list_: List) -> DbOperationResult:
         str(list_.user_id),
         list_.name,
         list_.created_on,
+        list_.type
     )
 
     return sql_engine.modify(sql, parms)

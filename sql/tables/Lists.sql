@@ -3,6 +3,7 @@ CREATE TABLE Lists (
     user_id CHAR(36) NOT NULL,
     name CHAR(100),
     created_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `type` ENUM('list','template') NOT NULL DEFAULT 'list',
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES Users(id) ON UPDATE CASCADE ON DELETE CASCADE
 );

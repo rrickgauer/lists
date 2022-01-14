@@ -4,6 +4,7 @@ This is the top document for the home page.
 
 Incoming data (data):
 - lists
+- templates
 
 #}
 
@@ -21,14 +22,13 @@ Incoming data (data):
         {% include 'home/sidenav.html' %}
 
         <section id="main" class="container-fluid">
-
             <div class="top-row-buttons">
                 <!-- button to open the sidenav -->
                 <button type="button" class="top-row-button btn no-focus-outline" id="btn-show-sidenav" title="Show list menu"><i class='bx bx-menu'></i></button>
 
                 <div class="d-flex">
                     <!-- logout -->
-                    <a href="https://github.com/rrickgauer/lists" class="top-row-button mr-3" target="_blank" title="Logout"><i class='bx bx-log-out'></i></a>
+                    <a href="/login" class="top-row-button mr-3" title="Logout"><i class='bx bx-log-out'></i></a>
 
                     <!-- link to github repo -->
                     <a href="https://github.com/rrickgauer/lists" class="top-row-button" target="_blank" title="View GitHub repository"><i class='bx bxl-github'></i></a>
@@ -37,6 +37,8 @@ Incoming data (data):
             </div>
 
             <hr class="m-0">
+
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-templates">Templates</button>
 
             <!-- active lists container -->
             <div class="container-fluid board-wrapper">
@@ -51,6 +53,7 @@ Incoming data (data):
     </div>
 
     {% include 'home/rename-list-modal.html' %}
+    {% include 'home/templates-modal.html' %}
 
     {% include 'includes/footer.html' %}
     <script src="/static/js/custom/pages/home/sidenav-form-list.js"></script>
@@ -63,6 +66,7 @@ Incoming data (data):
     <script src="/static/js/custom/pages/home/list-rename.js"></script>
     <script src="/static/js/custom/pages/home/list-delete.js"></script>
     <script src="/static/js/custom/pages/home/item-drag.js"></script>
+    <script src="/static/js/custom/pages/home/templates.js"></script>
     <script src="/static/js/custom/pages/home/main.js"></script>
 </body>
 
