@@ -18,7 +18,7 @@ Main logic
 $(document).ready(function() {
     addEventListeners();
     
-    // toggleSidenav();    // open the sidebar initially
+    toggleSidenav();    // open the sidebar initially
     testingActivateFirstList();
 
 

@@ -121,6 +121,7 @@ ListRename.Elements = {
     MODAL: '#modal-list-rename',
     INPUT: '#list-rename-form-input',
     BTN_SAVE: '#list-rename-form-save',
+    TYPE_OPTIONS: 'list-rename-form-type-radio-option',
 }
 
 

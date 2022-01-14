@@ -10,8 +10,7 @@ import flask
 from lists_common import flaskutil
 from ..common import security
 from ..api_wrapper import lists as api_wrapper_lists
-
-
+from ..services import lists as list_services
 
 # module blueprint
 bp_home = flask.Blueprint('home', __name__)
@@ -27,7 +26,7 @@ def home():
     if not response.ok:
         return (response.text, response.status_code)
 
-    lists = response.json()
-    lists_by_type = api_wrapper_lists.splitListsByType(lists)
+    payload = list_services.getHomePagePayload(response.json())
 
-    return flask.render_template('home/home.html', data=lists_by_type)
+    return flask.render_template('home/home.html', data=payload)
+
