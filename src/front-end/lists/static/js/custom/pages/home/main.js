@@ -5,9 +5,9 @@ import { ItemContentUpdateForm } from "./item-content-update-form";
 import { ListRename } from "./list-rename";
 import { ItemDrag } from "./item-drag";
 import { ItemCreator } from "./item-creator";
-
-
-
+import { ListDelete } from "./list-delete";
+import { ItemCompletor } from './item-update-complete';
+import { ItemRemove } from "./item-remove";
 
 const eOverlay = '<div style="z-index: 109;" class="drawer-overlay"></div>';
 
