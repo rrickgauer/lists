@@ -1,7 +1,11 @@
+import { ListHtml } from "./list-html";
+import { ItemHtml } from "./item-html";
+import { Utilities } from "../../classes/utilities";
+import { ApiWrapper } from "../../classes/api-wrapper";
+
 /**
  * This class handles all the logic for an item's update content form.
  */
-
 export class ItemContentUpdateForm
 {
     

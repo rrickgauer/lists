@@ -1,4 +1,5 @@
 import { ApiWrapper } from "../../classes/api-wrapper";
+import { ItemHtml } from "./item-html"; 
 
 export class ItemCompletor
 {
