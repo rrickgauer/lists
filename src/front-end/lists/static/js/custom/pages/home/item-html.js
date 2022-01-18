@@ -1,6 +1,6 @@
 
 
-class ItemHtml
+export class ItemHtml
 {
     constructor(itemObject) {
         this.id          = itemObject.id;           //char(36)

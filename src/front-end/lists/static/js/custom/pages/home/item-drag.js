@@ -1,12 +1,11 @@
+import { ItemHtml } from "./item-html";
+import { ApiWrapper } from "../../classes/api-wrapper";
+import { ListHtml } from "./list-html";
 
 
-class ItemDrag
+export class ItemDrag
 {
-
-
-
     static listen(eItemContainer) {
-
         const eContainer = document.querySelector(eItemContainer);
 
         eContainer.addEventListener('dragstart', ItemDrag.dragStart);
@@ -16,7 +15,6 @@ class ItemDrag
         eContainer.addEventListener('dragleave', ItemDrag.dragLeave);
     }
 
-
     static dragStart(e) {
         // get the item container element
         const eItem = ItemHtml.getContainerItem(e.target);
@@ -25,7 +23,6 @@ class ItemDrag
         const itemID = ItemHtml.getItemID(eItem);
         e.dataTransfer.setData('text/plain', itemID);
     }
-
         
     static dragEnter(e) {
         e.preventDefault();
@@ -51,17 +48,11 @@ class ItemDrag
         // clone both elements
         ItemDrag._swapItemElements(eDroppedItem, eDraggedItem);
 
-
         // determine the new rank values the 2 items now have
         const newItemRanks = ItemDrag.getRanks(droppedItemID, draggedItemID);
-        console.table(newItemRanks);
 
         // send the request to the api
-        
-        const apiResponse = await ApiWrapper.itemsPatch(JSON.stringify(newItemRanks));
-
-
-
+        await ApiWrapper.itemsPatch(JSON.stringify(newItemRanks));
     }
 
     // given 2 item elements, swap them
@@ -103,10 +94,4 @@ class ItemDrag
 
         return ranks;
     }
-
-    
-
-
-    
-
 }

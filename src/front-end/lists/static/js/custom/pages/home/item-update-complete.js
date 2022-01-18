@@ -1,8 +1,10 @@
+import { ApiWrapper } from "../../classes/api-wrapper";
 
-
-
-class ItemCompletor
+export class ItemCompletor
 {
+    /**********************************************************
+    Constructor
+    **********************************************************/
     constructor(eClickedCheckbox) {
         this.eCheckbox      = eClickedCheckbox;
         this.eItemContainer = $(this.eCheckbox).closest(`.${ItemHtml.Elements.TOP}`);

@@ -1,6 +1,6 @@
 
 
-class Utilities
+export class Utilities
 {
     
     /**********************************************************

@@ -1,5 +1,8 @@
+import { SpinnerButton } from '../../classes/spinner-button';
+import { ApiWrapper } from '../../classes/api-wrapper';
+import { Utilities } from '../../classes/utilities';
 
-class SidenavFormList
+export class SidenavFormList
 {
     /**********************************************************
     Constructor

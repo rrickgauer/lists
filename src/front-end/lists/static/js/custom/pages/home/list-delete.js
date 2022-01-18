@@ -1,8 +1,10 @@
+import { ListHtml } from "./list-html";
+import { ApiWrapper } from "../../classes/api-wrapper";
+
 /**
  * This class handles all the actions needed to delete a list
  */
-
-class ListDelete
+export class ListDelete
 {
     constructor(eDeleteButton) {
         this.eDeleteButton = eDeleteButton;

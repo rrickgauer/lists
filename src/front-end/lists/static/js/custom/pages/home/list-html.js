@@ -1,7 +1,7 @@
+import { ApiWrapper } from "../../classes/api-wrapper";
+import { ItemHtml } from "./item-html";
 
-
-
-class ListHtml
+export class ListHtml
 {
 
     constructor(listID) {
@@ -249,7 +249,6 @@ class ListHtml
         }
     }
 }
-
 
 
 ListHtml.Elements = {

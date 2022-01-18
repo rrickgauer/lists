@@ -1,7 +1,7 @@
 
 
 
-class ApiWrapper
+export class ApiWrapper
 {
     /**********************************************************
     Create a new user

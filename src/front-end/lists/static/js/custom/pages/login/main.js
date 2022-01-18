@@ -1,6 +1,9 @@
+import { SpinnerButton } from "../../classes/spinner-button";
+import { ApiWrapper } from "../../classes/api-wrapper";
+
 
 // Form html selector
-const eForms = {
+export const eForms = {
     selectors: {
         login: '#login-form',
         signup: '#signup-form',
@@ -19,7 +22,7 @@ const eForms = {
 }
 
 // spinner buttons
-const mSpinnerButtons = {
+export const mSpinnerButtons = {
     login: new SpinnerButton(eForms.buttons.login),
     signup: new SpinnerButton(eForms.buttons.signup),
 }
@@ -36,7 +39,7 @@ $(document).ready(function() {
 /**********************************************************
 Add all the event listeners to the page
 **********************************************************/
-function addEventListeners() {
+export function addEventListeners() {
     $('.form-control').on('keypress', function(e) {
         if (e.keyCode == 13) {
             e.preventDefault();
@@ -56,7 +59,7 @@ function addEventListeners() {
 /**********************************************************
 Submit the form after user hits enter while typing in a form input.
 **********************************************************/
-function submitForm(activeInputElement) {
+export function submitForm(activeInputElement) {
     const parentForm = $(activeInputElement).closest('form');
     const parentFormID = '#' + $(parentForm).attr('id');
 
@@ -71,7 +74,7 @@ function submitForm(activeInputElement) {
 /**********************************************************
 Attempt to create a new user account
 **********************************************************/
-async function attemptSignup() {
+export async function attemptSignup() {
     mSpinnerButtons.signup.showSpinner();
 
     // retrieve the input values and turn them into a form data object
@@ -93,7 +96,7 @@ async function attemptSignup() {
 /**********************************************************
 Attempt to create a new user account
 **********************************************************/
-async function attemptLogin() {
+export async function attemptLogin() {
     mSpinnerButtons.login.showSpinner();
 
     // retrieve the input values and turn them into a form data object
@@ -116,7 +119,7 @@ async function attemptLogin() {
 /**********************************************************
 Fetch the input values from the given form
 **********************************************************/
-function getFormInputValues(parentFormSelector) {
+export function getFormInputValues(parentFormSelector) {
     const inputValues = {
         email: $(parentFormSelector).find(eForms.inputs.email).val(),
         password: $(parentFormSelector).find(eForms.inputs.password).val(),
@@ -128,14 +131,11 @@ function getFormInputValues(parentFormSelector) {
 /**********************************************************
 Transforms a js object into a FormData object
 **********************************************************/
-function inputValuesToFormData(inputValuesDict) {
+export function inputValuesToFormData(inputValuesDict) {
     const formData = new FormData();
     formData.append('email', inputValuesDict.email);
     formData.append('password', inputValuesDict.password);
 
     return formData;
 }
-
-
-
 

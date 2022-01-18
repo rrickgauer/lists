@@ -1,9 +1,11 @@
+import { SpinnerButton } from '../../classes/spinner-button';
+import { ApiWrapper } from "../../classes/api-wrapper";
+
 
 /**
  * This class handles all the actions needed to rename a list
  */
-
-class ListRename
+export class ListRename
 {
 
     constructor() {

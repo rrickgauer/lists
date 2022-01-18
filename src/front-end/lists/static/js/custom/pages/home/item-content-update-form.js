@@ -2,7 +2,7 @@
  * This class handles all the logic for an item's update content form.
  */
 
-class ItemContentUpdateForm
+export class ItemContentUpdateForm
 {
     
     constructor(eItem) {
