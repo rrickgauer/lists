@@ -7,7 +7,7 @@ and it is set to disabled.
 *************************************************/
 
 
-class SpinnerButton
+export class SpinnerButton
 {
     /************************************************
     Constructor

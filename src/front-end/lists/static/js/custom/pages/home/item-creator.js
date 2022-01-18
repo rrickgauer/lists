@@ -1,3 +1,8 @@
+import { ListHtml } from "./list-html";
+import { ItemHtml } from "./item-html";
+import { Utilities } from "../../classes/utilities";
+
+
 
 /**
  * This class is responsible for saving new items to active lists.
@@ -5,9 +10,7 @@
  * It sends the POST request to the API.
  * Then, it appends the item to the html.
  */
-
-
-class ItemCreator
+export class ItemCreator
 {
 
     constructor(newItemInputElement) {

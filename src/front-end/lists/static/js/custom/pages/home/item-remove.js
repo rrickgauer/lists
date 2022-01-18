@@ -1,25 +1,29 @@
+import { ItemHtml } from "./item-html";
+import { ApiWrapper } from "../../classes/api-wrapper";
+import { ListHtml } from "./list-html";
+
+
 /**
  * This class handles all the logic for removing an item from a list
  */
-
-class ItemRemove
+export class ItemRemove
 {
     constructor(eRemoveButton) {
         this.eRemoveButton = eRemoveButton;
 
         // gather item info
         this.eItemContainer = $(eRemoveButton).closest(`.${ItemHtml.Elements.TOP}`);
-        this.itemID = $(this.eItemContainer).attr('data-item-id');
+        this.itemID         = $(this.eItemContainer).attr('data-item-id');
 
         // gather the parent list info
         this.eListContainer = $(this.eItemContainer).closest(`.${ListHtml.Elements.CONTAINER}`);
-        this.listID = $(this.eListContainer).attr('data-list-id');
+        this.listID         = $(this.eListContainer).attr('data-list-id');
 
 
         // bind the object methods
-        this.remove = this.remove.bind(this);
-        this.updateListItemCount = this.updateListItemCount.bind(this);
-        this.getListItemCount = this.getListItemCount.bind(this);
+        this.remove                   = this.remove.bind(this);
+        this.updateListItemCount      = this.updateListItemCount.bind(this);
+        this.getListItemCount         = this.getListItemCount.bind(this);
         this._setSidenavListItemCount = this._setSidenavListItemCount.bind(this);
     }
 
@@ -50,14 +54,12 @@ class ItemRemove
     Get the number of items in the parent active list 
     **********************************************************/
     getListItemCount() {
-        
-        const eListItems = $(this.eListContainer).find(`.${ItemHtml.Elements.TOP}`);
-        return eListItems.length;
+        return $(this.eListContainer).find(`.${ItemHtml.Elements.TOP}`).length;
     }
 
-/**********************************************************
-Update the sidenav list item count
-**********************************************************/
+    /**********************************************************
+    Update the sidenav list item count
+    **********************************************************/
     _setSidenavListItemCount(eSidenavListsContainer, numItems) {
         // set the sidenav badge text to the new number
         const eSidenavList = $(eSidenavListsContainer).find(`.list-group-item[data-list-id="${this.listID}"]`);

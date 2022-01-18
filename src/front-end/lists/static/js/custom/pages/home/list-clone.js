@@ -1,6 +1,7 @@
+import { ApiWrapper } from "../../classes/api-wrapper";
+import { SpinnerButton } from "../../classes/spinner-button";
 
-
-class ListCloner
+export class ListCloner
 {
     constructor(eListActionButton) {
         this.eListActionButton    = eListActionButton;
@@ -14,8 +15,6 @@ class ListCloner
     // clone the list
     async clone() {
         this.spinnerButton.showSpinner();
-
-        spinnerButton.showSpinner();
         
         // send api request to clone
         const apiResponse = await ApiWrapper.listsClone(this.listID);
