@@ -8,6 +8,7 @@ import { ItemCreator } from "./item-creator";
 import { ListDelete } from "./list-delete";
 import { ItemCompletor } from './item-update-complete';
 import { ItemRemove } from "./item-remove";
+import { ListCloner } from "./list-clone";
 
 const eOverlay = '<div style="z-index: 109;" class="drawer-overlay"></div>';
 

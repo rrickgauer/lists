@@ -1,0 +1,14 @@
+
+************************************************
+Sass
+************************************************
+
+sass --watch custom/style.scss:custom/style.css external/bootstrap/bootstrap-custom.scss:external/bootstrap/bootstrap-custom.css
+
+
+
+************************************************
+Rollup JS bundler
+************************************************
+
+rollup -c .\rollup.config.js --watch
