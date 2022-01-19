@@ -152,6 +152,12 @@ cython_debug/
 #.idea/
 
 
-credentials.py
 
+#######################################################################
+# My shit
+#######################################################################
+
+credentials.py
 .table-schemas/
+
+bootstrap-custom/bootstrap/
