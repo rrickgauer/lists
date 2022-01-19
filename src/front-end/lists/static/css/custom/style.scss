@@ -207,8 +207,6 @@ textarea {
         min-width: 400px;
         width: 400px;
         padding: 20px;
-
-        
     }
 }
 
@@ -235,8 +233,6 @@ textarea {
 .active-list-item:hover {
     cursor: move;
 }
-
-
 
 .active-list-item.checked  {
     .active-list-item-content {
@@ -275,47 +271,6 @@ textarea {
     @media screen and (min-width: 768px) {
         .top-row-button {
             font-size: 40px;
-        }
-    }
-}
-
-
-// ------------------------------------
-// Templates modal
-// ------------------------------------
-#modal-templates {
-
-    &.initial {
-        #modal-templates-body-items,
-        .modal-footer {
-            display: none;
-        }
-    }
-
-    &.loading {
-        #modal-templates-body-items,
-        .modal-footer {
-            display: none;
-        }
-    
-        #modal-templates-body-loading {
-            display: flex;
-            justify-content: space-around;
-        }
-    }
-
-    #modal-templates-body-loading {
-        display: none;
-    }
-
-    .modal-content {
-        overflow: visible;
-    }
-
-    #modal-templates-rename-dropdown {
-        form {
-            width: 95vw;
-            max-width: 500px;
         }
     }
 }

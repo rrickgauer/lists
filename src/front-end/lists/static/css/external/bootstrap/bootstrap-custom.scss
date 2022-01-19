@@ -1,0 +1,21 @@
+@import "bootstrap/functions";
+
+// @import "bootstrap/mixins";
+
+@import "../../custom/variables";
+
+
+// update bootstrap theme colors
+$theme-colors: (
+    "primary": map-get($colors-primary, "primary"),     // custom _variables.scss
+    "secondary": map-get($colors-grays, "light"),       // custom _variables.scss
+    "light": map-get($colors-grays, "lightest"),        // custom _variables.scss
+);
+
+
+// $component-active-color:      $white !default;
+// $component-active-bg:         map-get($colors-primary, "lightest");
+// $component-active-bg:         map-get($colors-grays, "light");
+
+@import "bootstrap/variables";
+@import "bootstrap/bootstrap";

@@ -1,0 +1,7 @@
+
+************************************************
+Sass
+************************************************
+
+In the css directory:
+    sass --watch custom/style.scss:custom/style.css external/bootstrap/bootstrap-custom.scss:external/bootstrap/bootstrap-custom.css

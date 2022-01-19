@@ -210,27 +210,4 @@ textarea {
   }
 }
 
-#modal-templates.initial #modal-templates-body-items,
-#modal-templates.initial .modal-footer {
-  display: none;
-}
-#modal-templates.loading #modal-templates-body-items,
-#modal-templates.loading .modal-footer {
-  display: none;
-}
-#modal-templates.loading #modal-templates-body-loading {
-  display: flex;
-  justify-content: space-around;
-}
-#modal-templates #modal-templates-body-loading {
-  display: none;
-}
-#modal-templates .modal-content {
-  overflow: visible;
-}
-#modal-templates #modal-templates-rename-dropdown form {
-  width: 95vw;
-  max-width: 500px;
-}
-
 /*# sourceMappingURL=style.css.map */
