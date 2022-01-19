@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal fade" id="modal-list-settings" tabindex="-1" data-list-id>
+<div class="modal fade" id="modal-list-settings" tabindex="-1" data-list-id="null">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -52,7 +52,7 @@
 
                     <div class="modal-list-settings-section-content">
                         <p>Create a copy of this list and its current items.</p>
-                        <button type="button" class="btn btn-sm bg-gray-lightest">Clone list</button>
+                        <button type="button" class="btn btn-sm bg-gray-lightest" id="modal-list-settings-btn-clone">Clone list</button>
                     </div>
                 </div>
 
@@ -62,11 +62,9 @@
 
                     <div class="modal-list-settings-section-content">
                         <p>Once you delete a list, there is no going back. Please be certain.</p>
-                        <button type="button" class="btn btn-sm bg-gray-lightest text-danger">Delete this list</button>
+                        <button type="button" class="btn btn-sm bg-gray-lightest text-danger" id="modal-list-settings-btn-delete">Delete this list</button>
                     </div>
                 </div>
-
-
 
             </div>
         </div>

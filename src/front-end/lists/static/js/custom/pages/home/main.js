@@ -335,6 +335,12 @@ function addListSettingsModalListeners() {
             saveListSettings();
         }
     });
+
+
+    $(ListSettings.Elements.BTN_CLONE).on('click', function() {
+        const listSettings = new ListSettings();
+        listSettings.clone();
+    });
 }
 
 /**********************************************************

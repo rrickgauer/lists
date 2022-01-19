@@ -16,11 +16,15 @@ export class ListSettings
 
         // bind the object methods
         this.save                      = this.save.bind(this);
-        this._sendRequest              = this._sendRequest.bind(this);
+        this._sendPutRequest           = this._sendPutRequest.bind(this);
         this._updateActiveListElement  = this._updateActiveListElement.bind(this);
         this._updateSidenavListElement = this._updateSidenavListElement.bind(this);
-        this.disableInputs = this.disableInputs.bind(this);
-        this.enableInputs = this.enableInputs.bind(this);
+
+
+        this.clone = this.clone.bind(this);
+
+        this.disableInputs             = this.disableInputs.bind(this);
+        this.enableInputs              = this.enableInputs.bind(this);
     }
 
     /**********************************************************
@@ -31,7 +35,7 @@ export class ListSettings
         this.disableInputs();
 
         // send api request
-        const successfulRequest = await this._sendRequest();
+        const successfulRequest = await this._sendPutRequest();
         
         // update the active list name text if request was successful
         if (successfulRequest) {
@@ -54,7 +58,7 @@ export class ListSettings
         true: successful request
         false: error with the request
     **********************************************************/
-    async _sendRequest() {
+    async _sendPutRequest() {
         // create a formdata oject for the request
         const formData = Utilities.objectToFormData({
             name: this.newName,
@@ -89,7 +93,6 @@ export class ListSettings
         // type - icon
         const eNewIcon = ListHtml.getTypeIcon(newType);
         ListHtml.setActiveListTypeIcon(this.listID, eNewIcon);
-
     }
 
     
@@ -123,7 +126,7 @@ export class ListSettings
     **********************************************************/
     disableInputs() {
         // disable the save button
-        ListSettings.SpinnerButton.showSpinner();
+        ListSettings.SpinnerButtons.SAVE.showSpinner();
         ListSettings.setInputProps(true);
     }
 
@@ -131,9 +134,34 @@ export class ListSettings
     Remove the disabled attribute to the form inputs
     **********************************************************/
     enableInputs() {
-        ListSettings.SpinnerButton.reset();
+        ListSettings.SpinnerButtons.SAVE.reset();
         ListSettings.setInputProps(false);
     }
+
+    /**********************************************************
+    Clone the current list
+    **********************************************************/
+    async clone() {
+        // disable spinner button
+        ListSettings.SpinnerButtons.CLONE.showSpinner();
+
+        // send the clone api request
+        const apiResponse = await ApiWrapper.listsClone(this.listID);
+
+        // ensure the request was successful
+        if (!apiResponse.ok) {
+            ListSettings.SpinnerButtons.CLONE.reset();
+            console.error(await apiResponse.text());
+            return false;
+        }
+        
+        // successfull clone - refresh the page
+        window.location.href = window.location.href;
+        return true;
+    }
+
+
+
 
     /**********************************************************
     Open the modal that has the rename list form
@@ -208,8 +236,13 @@ ListSettings.Elements = {
     INPUT: '#list-rename-form-input',
     BTN_SAVE: '#list-rename-form-save',
     TYPE_OPTIONS: 'list-rename-form-type-radio-option',
+    BTN_CLONE: '#modal-list-settings-btn-clone',
+    BTN_DELETE: '#modal-list-settings-btn-delete',
 }
 
-
-ListSettings.SpinnerButton = new SpinnerButton(ListSettings.Elements.BTN_SAVE);
+ListSettings.SpinnerButtons = {
+    SAVE: new SpinnerButton(ListSettings.Elements.BTN_SAVE),
+    CLONE: new SpinnerButton(ListSettings.Elements.BTN_CLONE),
+    DELETE: new SpinnerButton(ListSettings.Elements.BTN_DELETE),
+}
 
