@@ -19,14 +19,16 @@ export class ListRename
         this._sendRequest              = this._sendRequest.bind(this);
         this._updateActiveListElement  = this._updateActiveListElement.bind(this);
         this._updateSidenavListElement = this._updateSidenavListElement.bind(this);
+        this.disableInputs = this.disableInputs.bind(this);
+        this.enableInputs = this.enableInputs.bind(this);
     }
 
     /**********************************************************
     Save the list's new name
     **********************************************************/
     async save() {
-        // disable the save button
-        ListRename.SpinnerButton.showSpinner();
+        // disable all the form inputs
+        this.disableInputs();
 
         // send api request
         const successfulRequest = await this._sendRequest();
@@ -37,12 +39,13 @@ export class ListRename
             this._updateSidenavListElement();
         }
 
-        // enable the save button
-        ListRename.SpinnerButton.reset();
-
         // close the modal
         ListRename.closeModal();
+
+        // enable the inputs
+        this.enableInputs();
     }
+
 
     /**********************************************************
     Send the api request.
@@ -115,6 +118,22 @@ export class ListRename
         $(eSidenavListItem).attr('data-list-type', newType);
     }
 
+    /**********************************************************
+    Add the disabled attribute to the form inputs
+    **********************************************************/
+    disableInputs() {
+        // disable the save button
+        ListRename.SpinnerButton.showSpinner();
+        ListRename.setInputProps(true);
+    }
+
+    /**********************************************************
+    Remove the disabled attribute to the form inputs
+    **********************************************************/
+    enableInputs() {
+        ListRename.SpinnerButton.reset();
+        ListRename.setInputProps(false);
+    }
 
     /**********************************************************
     Open the modal that has the rename list form
@@ -166,6 +185,19 @@ export class ListRename
     **********************************************************/
     static getListTypeValue() {
         return $(`[name="${ListRename.Elements.TYPE_OPTIONS}"]:checked`).val();
+    }
+
+    /**********************************************************
+    Set the form inputs' disabled attributes to the one provided
+
+    Args:
+        newPropValue: bool
+            true: add the disabled attribute
+            false: remove the disabled attribute
+    **********************************************************/
+    static setInputProps(newPropValue) {
+        $(ListRename.Elements.INPUT).prop('disabled', newPropValue);
+        $(`[name="${ListRename.Elements.TYPE_OPTIONS}"]`).prop('disabled', newPropValue);
     }
 }
 

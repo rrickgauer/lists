@@ -8,19 +8,21 @@ export class SidenavFormList
     Constructor
     **********************************************************/
     constructor() {
-        this.spinnerButton = new SpinnerButton(SidenavFormList.elements.submit);
+        this.spinnerButton = new SpinnerButton(SidenavFormList.Elements.SUBMIT);
 
         // bind all the functions
         this.toggleForm                = this.toggleForm.bind(this);
         this.showForm                  = this.showForm.bind(this);
         this.hideForm                  = this.hideForm.bind(this);
         this.saveNewList               = this.saveNewList.bind(this);
+        this.disableInputs = this.disableInputs.bind(this);
+        this.enableInputs = this.enableInputs.bind(this);
         this.validateNameInput         = this.validateNameInput.bind(this);
         this.sendPostRequest           = this.sendPostRequest.bind(this);
         this.handlePostRequestResponse = this.handlePostRequestResponse.bind(this);
         this.getTypeInputValue         = this.getTypeInputValue.bind(this);
         this.getNameInputValue         = this.getNameInputValue.bind(this);
-    }
+    }   
 
     /**********************************************************
     If the input element has a non-empty value, show the rest of the form.
@@ -35,16 +37,16 @@ export class SidenavFormList
     Show the rest of the form
     **********************************************************/
     showForm() {
-        $(SidenavFormList.elements.submit).removeClass('d-none');
-        $(SidenavFormList.elements.radioContainer).removeClass('d-none');
+        $(SidenavFormList.Elements.SUBMIT).removeClass('d-none');
+        $(SidenavFormList.Elements.RADIO_CONTAINER).removeClass('d-none');
     }
 
     /**********************************************************
     Hide the rest of the form
     **********************************************************/
     hideForm() {
-        $(SidenavFormList.elements.submit).addClass('d-none');
-        $(SidenavFormList.elements.radioContainer).addClass('d-none');
+        $(SidenavFormList.Elements.SUBMIT).addClass('d-none');
+        $(SidenavFormList.Elements.RADIO_CONTAINER).addClass('d-none');
     }
 
     /**********************************************************
@@ -56,8 +58,8 @@ export class SidenavFormList
             return;
         }
 
-        // disable the submit button and show that we are processing this request
-        this.spinnerButton.showSpinner();
+        // disable the form inputs and show that we are processing this request
+        this.disableInputs();
 
         // send the api request
         const apiResponse = await this.sendPostRequest();
@@ -103,23 +105,38 @@ export class SidenavFormList
             window.location.href = window.location.href;
         } else {
             console.error(await apiResponse.text());
-            this.spinnerButton.reset();
+            this.enableInputs();
         }
     }
+    
+    /**********************************************************
+    Disable the form by disabling the button and input elements.
+    **********************************************************/
+    disableInputs() {
+        this.spinnerButton.showSpinner();
+        $(`${SidenavFormList.Elements.INPUT}`).prop('disabled', true);
+    }
 
+    /**********************************************************
+    Enable all the form inputs. (Remove the disabled attribute)
+    **********************************************************/
+    enableInputs() {
+        this.spinnerButton.reset();
+        $(`${SidenavFormList.Elements.INPUT}`).prop('disabled', false);
+    }
 
     /**********************************************************
     Get the current value of the type radio input
     **********************************************************/
     getTypeInputValue() {
-        return $(`[name=${SidenavFormList.elements.radioName}]:checked`).val();
+        return $(`[name=${SidenavFormList.Elements.RADIO_NAME}]:checked`).val();
     }
 
     /**********************************************************
     Get the current value of the name text input
     **********************************************************/
     getNameInputValue() {
-        return $(SidenavFormList.elements.input).val();
+        return $(SidenavFormList.Elements.INPUT).val();
     }
 
 }
@@ -127,11 +144,11 @@ export class SidenavFormList
 /**********************************************************
 ALl the related form html elements.
 **********************************************************/
-SidenavFormList.elements = {
-    container: '.sidenav-form-list-container',
-    form: '.sidenav-form-list',
-    input: '.sidenav-form-list-input',
-    submit: '.sidenav-form-list-submit',
-    radioContainer: '.sidenav-form-list-radio',
-    radioName: 'sidenav-form-list-radio-option'
+SidenavFormList.Elements = {
+    CONTAINER: '.sidenav-form-list-container',
+    FORM: '.sidenav-form-list',
+    INPUT: '.sidenav-form-list-input',
+    SUBMIT: '.sidenav-form-list-submit',
+    RADIO_CONTAINER: '.sidenav-form-list-radio',
+    RADIO_NAME: 'sidenav-form-list-radio-option'
 }
