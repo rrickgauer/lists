@@ -151,6 +151,7 @@ textarea {
 #lists-container-wrapper {
   max-height: 85vh;
   overflow-y: auto;
+  padding-bottom: 200px;
 }
 
 #lists-container {
