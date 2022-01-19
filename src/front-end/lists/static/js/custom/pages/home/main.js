@@ -300,16 +300,6 @@ function updateItemContent(eItemUpdateFormInput) {
 }
 
 /**********************************************************
-Cancel an item's content update
-**********************************************************/
-function cancelItemContentUpdate(eItemUpdateFormInput) {
-    const eItemContainer = $(eItemUpdateFormInput).closest(`.${ItemHtml.Elements.TOP}`);
-    
-    const itemUpdateForm = new ItemContentUpdateForm(eItemContainer);
-    itemUpdateForm.cancelUpdate();
-}
-
-/**********************************************************
 List rename form modal: add event listeners
 **********************************************************/
 function addListSettingsModalListeners() {
@@ -339,7 +329,8 @@ function addListSettingsModalListeners() {
         listSettings.delete();
     });
 
-    
+    // close modal
+    $(ListSettings.Elements.MODAL).on('hide.bs.modal', ListSettings.handleModalCloseEvent);
 }
 
 /**********************************************************

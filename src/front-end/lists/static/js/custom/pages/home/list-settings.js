@@ -22,7 +22,6 @@ export class ListSettings
         this._updateSidenavListElement = this._updateSidenavListElement.bind(this);
         this.disableInputs             = this.disableInputs.bind(this);
         this.enableInputs              = this.enableInputs.bind(this);
-
         this.clone = this.clone.bind(this);
         this.delete = this.delete.bind(this);
     }
@@ -33,6 +32,7 @@ export class ListSettings
     async save() {
         // disable all the form inputs
         this.disableInputs();
+        ListSettings.keepModalOpen(true);
 
         // send api request
         const successfulRequest = await this._sendPutRequest();
@@ -42,6 +42,8 @@ export class ListSettings
             this._updateActiveListElement();
             this._updateSidenavListElement();
         }
+        
+        ListSettings.keepModalOpen(false);
 
         // close the modal
         ListSettings.closeModal();
@@ -145,6 +147,8 @@ export class ListSettings
         // disable spinner button
         ListSettings.SpinnerButtons.CLONE.showSpinner();
 
+        ListSettings.keepModalOpen(true);
+
         // send the clone api request
         const apiResponse = await ApiWrapper.listsClone(this.listID);
 
@@ -152,6 +156,7 @@ export class ListSettings
         if (!apiResponse.ok) {
             ListSettings.SpinnerButtons.CLONE.reset();
             console.error(await apiResponse.text());
+            ListSettings.keepModalOpen(false);
             return false;
         }
         
@@ -161,7 +166,9 @@ export class ListSettings
     }
 
 
-    // delete the current list
+    /**********************************************************
+    Delete the current list
+    **********************************************************/
     async delete() {
         const listDelete = new ListDelete(this.listID);
         listDelete.delete();
@@ -234,6 +241,58 @@ export class ListSettings
         $(ListSettings.Elements.INPUT).prop('disabled', newPropValue);
         $(`[name="${ListSettings.Elements.TYPE_OPTIONS}"]`).prop('disabled', newPropValue);
     }
+
+    /**********************************************************
+    Add the waiting js class to the modal
+
+    Args:
+        setModalToWaiting: bool
+            true: add the class
+            false: remove the class
+    **********************************************************/
+    static keepModalOpen(setModalToWaiting) {
+        if (setModalToWaiting) {
+            $(ListSettings.Elements.MODAL).addClass(ListSettings.WaitingClasses.WAITING);
+        } else {
+            $(ListSettings.Elements.MODAL).removeClass(ListSettings.WaitingClasses.WAITING);
+        }
+    }
+
+    /**********************************************************
+    Set the modal's data-backdrop attribute value
+
+    Args:
+        dataBackdrop: ListSettings.ModalBackdrop value
+            STATIC: if user clicks on backdrop, modal remains open
+            OTHER: modal closes when user clicks on backdrop
+    **********************************************************/
+    static setModalBackdropAttribute(dataBackdrop) {
+        $(ListSettings.Elements.MODAL).attr('data-backdrop', dataBackdrop);
+    }
+
+
+    /**********************************************************
+    Handles the close modal event.
+    If the modal has the waiting class, it will not close.
+    **********************************************************/
+    static handleModalCloseEvent(e) {
+        const isModalWaiting = ListSettings.isModalWaitingForResponse();
+
+        if (isModalWaiting) {
+            e.preventDefault();
+        }
+    }
+
+    
+    /**********************************************************
+    Check if the modal is waiting for an api response.
+    Checks if it has the waiting class.
+
+    Returns a bool
+    **********************************************************/
+    static isModalWaitingForResponse() {
+        return $(ListSettings.Elements.MODAL).hasClass(ListSettings.WaitingClasses.WAITING);
+    }
 }
 
 
@@ -245,11 +304,22 @@ ListSettings.Elements = {
     TYPE_OPTIONS: 'list-rename-form-type-radio-option',
     BTN_CLONE: '#modal-list-settings-btn-clone',
     BTN_DELETE: '#modal-list-settings-btn-delete',
+    BTN_CLOSE_MODAL: '#modal-list-settings-btn-close-modal',
 }
 
 ListSettings.SpinnerButtons = {
     SAVE: new SpinnerButton(ListSettings.Elements.BTN_SAVE),
     CLONE: new SpinnerButton(ListSettings.Elements.BTN_CLONE),
     DELETE: new SpinnerButton(ListSettings.Elements.BTN_DELETE),
+}
+
+ListSettings.WaitingClasses = {
+    WAITING: 'js-waiting-response',
+}
+
+
+ListSettings.ModalBackdrop = {
+    STATIC: 'static',
+    OTHER: 'false',
 }
 
