@@ -120,8 +120,6 @@ export class ListHtml
                             <button class="close" type="button" data-toggle="dropdown"><i class='bx bx-dots-horizontal'></i></button>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <button class="dropdown-item" type="button" data-list-action="${ListHtml.HeaderButtonActions.SETTINGS}">Settings</button>
-                                <button class="dropdown-item" type="button" data-list-action="${ListHtml.HeaderButtonActions.CLONE}">Clone</button>
-                                <button class="dropdown-item" type="button" data-list-action="${ListHtml.HeaderButtonActions.DELETE}">Delete</button>
                             </div>
                         </div>
 
@@ -274,8 +272,6 @@ ListHtml.TypeIcons = {
 
 ListHtml.HeaderButtonActions = {
     SETTINGS: 'settings',
-    DELETE: 'delete',
-    CLONE: 'clone',
 }
 
 

@@ -5,10 +5,8 @@ import { ItemContentUpdateForm } from "./item-content-update-form";
 import { ListSettings } from "./list-settings";
 import { ItemDrag } from "./item-drag";
 import { ItemCreator } from "./item-creator";
-import { ListDelete } from "./list-delete";
 import { ItemCompletor } from './item-update-complete';
 import { ItemRemove } from "./item-remove";
-import { ListCloner } from "./list-clone";
 
 const eOverlay = '<div style="z-index: 109;" class="drawer-overlay"></div>';
 
@@ -205,14 +203,6 @@ function performListAction(eListActionButton) {
     {
         case ListHtml.HeaderButtonActions.SETTINGS:
             ListSettings.openModal(eListActionButton);
-            break;
-        case ListHtml.HeaderButtonActions.DELETE:
-            const listDelete = new ListDelete(eListActionButton);
-            listDelete.delete();
-            break;
-        case ListHtml.HeaderButtonActions.CLONE:
-            const listClone = new ListCloner(eListActionButton);
-            listClone.clone();
             break;
     }
 }
