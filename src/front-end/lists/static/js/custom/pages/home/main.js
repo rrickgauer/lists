@@ -73,13 +73,13 @@ function addSidenavListeners() {
     $(eSidebar.buttons.close).on('click', closeSidenav);
 
     // begin typing into the new list input
-    $(SidenavFormList.elements.input).on('keyup change', mSidenavFormList.toggleForm);
+    $(SidenavFormList.Elements.INPUT).on('keyup change', mSidenavFormList.toggleForm);
 
     // create a new list from the sidenav
-    $(SidenavFormList.elements.submit).on('click', mSidenavFormList.saveNewList);
+    $(SidenavFormList.Elements.SUBMIT).on('click', mSidenavFormList.saveNewList);
 
     // create a new list from the sidenav
-    $(SidenavFormList.elements.input).on('keypress', function(e) {
+    $(SidenavFormList.Elements.INPUT).on('keypress', function(e) {
         if (e.keyCode == 13) {
             e.preventDefault();
             mSidenavFormList.saveNewList();
