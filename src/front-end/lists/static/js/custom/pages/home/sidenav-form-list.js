@@ -22,7 +22,7 @@ export class SidenavFormList
         this.handlePostRequestResponse = this.handlePostRequestResponse.bind(this);
         this.getTypeInputValue         = this.getTypeInputValue.bind(this);
         this.getNameInputValue         = this.getNameInputValue.bind(this);
-    }
+    }   
 
     /**********************************************************
     If the input element has a non-empty value, show the rest of the form.
