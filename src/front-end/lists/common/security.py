@@ -1,6 +1,7 @@
 from enum import Enum
 from functools import wraps
 import flask
+from ..services import cookies
 
 
 #------------------------------------------------------
@@ -48,3 +49,19 @@ def set_session_values(user_id: int, email: str, password: str):
     flask.session.setdefault(SessionKeys.USER_ID, user_id)
     flask.session.setdefault(SessionKeys.EMAIL, email)
     flask.session.setdefault(SessionKeys.PASSWORD, password)
+
+#------------------------------------------------------
+# Save the user's email as a cookie for 30 days
+#------------------------------------------------------
+def save_user_email_cookie(flask_response: flask.Response) -> flask.Response:
+    # return here if there is no user email session value
+    if not flask.session.get(SessionKeys.EMAIL):
+        return flask_response
+
+    # set the cookie to remember the user's email for login in the future
+    cookie = cookies.ResponseCookie(flask_response, 'user_email', flask.g.email)
+    cookie.save(30)
+
+    return flask_response
+
+
