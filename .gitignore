@@ -160,4 +160,4 @@ cython_debug/
 credentials.py
 .table-schemas/
 
-bootstrap-custom/bootstrap/
+**/bootstrap-custom/bootstrap/
