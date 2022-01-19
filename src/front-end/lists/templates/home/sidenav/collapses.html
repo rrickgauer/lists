@@ -2,18 +2,23 @@
 
 <div id="sidenav-collapse-container">
     <!-- lists action collapse buttons -->
-    <div class="btn-group btn-group-sm" role="group" id="sidenav-collapse-buttons">
-        <button type="button" class="btn btn-xs btn-light" data-toggle="collapse" data-target="#sidenav-collapse-sections-filter" title="Filter lists"><i class='bx bx-filter'></i></button>
-        <button type="button" class="btn btn-xs btn-light" title="Sort lists"><i class='bx bxs-sort-alt'></i></button>
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="btn-group btn-group-sm" role="group" id="sidenav-collapse-buttons">
+            <button type="button" class="btn btn-xs btn-light" data-toggle="collapse" data-target="#sidenav-collapse-sections-filter" title="Filter lists"><i class='bx bx-filter'></i></button>
+            <button type="button" class="btn btn-xs btn-light" title="Sort lists"><i class='bx bxs-sort-alt'></i></button>
+        </div>
+
+        <button type="button" class="close" id="sidenav-btn-close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+
     </div>
+
 
     <div id="sidenav-collapse-sections">
 
         <!-- filter lists by type (list, template) -->
         <div class="collapse" id="sidenav-collapse-sections-filter">
-
-            <!-- <b>Filter lists:</b> -->
-
             <form id="sidenav-collapse-sections-filter-form">
                 <!-- lists -->
                 <div class="form-check">
