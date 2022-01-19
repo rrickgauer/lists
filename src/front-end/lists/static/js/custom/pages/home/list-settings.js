@@ -30,6 +30,10 @@ export class ListSettings
     Save the list's new name
     **********************************************************/
     async save() {
+        if (!ListSettings.doesNameInputHaveValue()) {
+            return;
+        }
+
         // disable all the form inputs
         this.disableInputs();
         ListSettings.keepModalOpen(true);
@@ -293,8 +297,31 @@ export class ListSettings
     static isModalWaitingForResponse() {
         return $(ListSettings.Elements.MODAL).hasClass(ListSettings.WaitingClasses.WAITING);
     }
-}
 
+    /**********************************************************
+    Event handler for name input keyup, change events
+    **********************************************************/
+    static handleNameInputChange() {
+        if (!ListSettings.doesNameInputHaveValue()) {
+            $(ListSettings.Elements.BTN_SAVE).prop('disabled', true);
+        } else {
+            $(ListSettings.Elements.BTN_SAVE).prop('disabled', false);
+        }
+    }
+
+    /**********************************************************
+    Checks if the name input has a value
+    **********************************************************/
+    static doesNameInputHaveValue() {
+        const nameInputValue = $(ListSettings.Elements.INPUT).val();
+
+        if (nameInputValue == '' || nameInputValue == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+}
 
 
 ListSettings.Elements = {

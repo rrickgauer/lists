@@ -297,7 +297,7 @@ function updateItemContent(eItemUpdateFormInput) {
     
     const itemUpdateForm = new ItemContentUpdateForm(eItemContainer);
     itemUpdateForm.updateContent();
-}
+}   
 
 /**********************************************************
 List rename form modal: add event listeners
@@ -331,6 +331,9 @@ function addListSettingsModalListeners() {
 
     // close modal
     $(ListSettings.Elements.MODAL).on('hide.bs.modal', ListSettings.handleModalCloseEvent);
+
+    // rename list name input
+    $(ListSettings.Elements.INPUT).on('keyup change', ListSettings.handleNameInputChange);
 }
 
 /**********************************************************
