@@ -20,6 +20,9 @@ bp_home = flask.Blueprint('home', __name__)
 @bp_home.route('')
 @security.login_required
 def home():
+    # print current cookies
+    print(flask.json.dumps(flask.request.cookies.to_dict(), indent=4))
+
     response = api_wrapper_lists.getAllLists(flask.g)
 
     if not response.ok:
@@ -31,6 +34,12 @@ def home():
         lists_collection = []   # empty response body
 
     payload = list_services.getHomePagePayload(lists_collection)
+    
+    # generate the response html
+    response = flask.make_response(flask.render_template('home/home.html', data=payload))
+    
+    # set the cookie
+    # response.set_cookie('test-cookie', 'hsd', expires=date)
 
-    return flask.render_template('home/home.html', data=payload)
+    return response
 
