@@ -2,6 +2,7 @@ import { SpinnerButton } from '../../classes/spinner-button';
 import { ApiWrapper } from "../../classes/api-wrapper";
 import { Utilities } from '../../classes/utilities';
 import { ListHtml } from './list-html';
+import { ListDelete } from './list-delete';
 
 
 /**
@@ -19,12 +20,11 @@ export class ListSettings
         this._sendPutRequest           = this._sendPutRequest.bind(this);
         this._updateActiveListElement  = this._updateActiveListElement.bind(this);
         this._updateSidenavListElement = this._updateSidenavListElement.bind(this);
-
-
-        this.clone = this.clone.bind(this);
-
         this.disableInputs             = this.disableInputs.bind(this);
         this.enableInputs              = this.enableInputs.bind(this);
+
+        this.clone = this.clone.bind(this);
+        this.delete = this.delete.bind(this);
     }
 
     /**********************************************************
@@ -161,7 +161,14 @@ export class ListSettings
     }
 
 
+    // delete the current list
+    async delete() {
+        const listDelete = new ListDelete(this.listID);
+        listDelete.delete();
 
+        listDelete.removeListElements();
+        ListSettings.closeModal();
+    }
 
     /**********************************************************
     Open the modal that has the rename list form

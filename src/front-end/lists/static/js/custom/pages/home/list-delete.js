@@ -6,11 +6,11 @@ import { ApiWrapper } from "../../classes/api-wrapper";
  */
 export class ListDelete
 {
-    constructor(eDeleteButton) {
-        this.eDeleteButton = eDeleteButton;
-        this.eActiveList = ListHtml.getParentActiveListElement(eDeleteButton);
-        this.listID = ListHtml.getActiveListElementID(this.eActiveList);
+    constructor(listID) {
+        this.listID = listID;
+        this.eActiveList = ListHtml.getActiveListElementByID(listID);
 
+        // bind the object methods
         this.delete = this.delete.bind(this);
         this.sendRequest = this.sendRequest.bind(this);
         this.removeListElements = this.removeListElements.bind(this);
@@ -20,7 +20,6 @@ export class ListDelete
     Delete the list 
     **********************************************************/
     async delete() {
-
         // confirm user wants to delete the list
         if (!confirm('Are you sure you want to delete this list?')) {
             return false;
@@ -32,9 +31,6 @@ export class ListDelete
         if (!successfulRequest) {
             return false;   // error with the request, so stop here
         }
-
-        // remove the html elements from the screen
-        this.removeListElements();
 
         return true;
     }
@@ -68,7 +64,5 @@ export class ListDelete
         // remove the sidenav list
         $(`#sidenav  .list-group-item[data-list-id="${this.listID}"]`).remove();
     }
-
-
 }
 

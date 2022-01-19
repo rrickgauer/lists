@@ -337,10 +337,19 @@ function addListSettingsModalListeners() {
     });
 
 
+    // clone list
     $(ListSettings.Elements.BTN_CLONE).on('click', function() {
         const listSettings = new ListSettings();
         listSettings.clone();
     });
+
+    // delete list
+    $(ListSettings.Elements.BTN_DELETE).on('click', function() {
+        const listSettings = new ListSettings();
+        listSettings.delete();
+    });
+
+    
 }
 
 /**********************************************************
