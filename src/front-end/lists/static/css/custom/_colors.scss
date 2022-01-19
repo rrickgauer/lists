@@ -1,0 +1,20 @@
+
+@import "./variables";
+
+// primary colors
+.color-gray-darkest { color: map-get($colors-grays, "darkest"); }
+.color-gray-darker { color: map-get($colors-grays, "darker"); }
+.color-gray-dark { color: map-get($colors-grays, "dark"); }
+.color-gray-primary { color: map-get($colors-grays, "primary"); }
+.color-gray-light { color: map-get($colors-grays, "light"); }
+.color-gray-lighter { color: map-get($colors-grays, "lighter"); }
+.color-gray-lightest { color: map-get($colors-grays, "lightest"); }
+
+// background colors
+.bg-gray-darkest { background-color: map-get($colors-grays, "darkest"); }
+.bg-gray-darker { background-color: map-get($colors-grays, "darker"); }
+.bg-gray-dark { background-color: map-get($colors-grays, "dark"); }
+.bg-gray-primary { background-color: map-get($colors-grays, "primary"); }
+.bg-gray-light { background-color: map-get($colors-grays, "light"); }
+.bg-gray-lighter { background-color: map-get($colors-grays, "lighter"); }
+.bg-gray-lightest { background-color: map-get($colors-grays, "lightest"); }
