@@ -2,7 +2,7 @@ import { SidenavFormList } from './sidenav-form-list';
 import { ListHtml } from "./list-html";
 import { ItemHtml } from "./item-html";
 import { ItemContentUpdateForm } from "./item-content-update-form";
-import { ListRename } from "./list-rename";
+import { ListSettings } from "./list-settings";
 import { ItemDrag } from "./item-drag";
 import { ItemCreator } from "./item-creator";
 import { ListDelete } from "./list-delete";
@@ -13,19 +13,13 @@ import { ListCloner } from "./list-clone";
 const eOverlay = '<div style="z-index: 109;" class="drawer-overlay"></div>';
 
 const eSidebar = {
-    buttons: {
-        close: '#sidenav-btn-close',
-    },
-
+    buttons: {close: '#sidenav-btn-close',},
     filterForm: '#sidenav-collapse-sections-filter-form',
 }
 
 const eActiveListContainer = '.active-lists-board';
-
 const mSidenavFormList = new SidenavFormList();
-
 const eBtnShowSidenavBtn = '#btn-show-sidenav';
-
 const eListsContainer = '#lists-container';
 
 
@@ -47,7 +41,7 @@ function addEventListeners() {
     addSidenavListeners();
     addActiveListElementListeners();
     addActiveListItemElementListeners();
-    addListRenameModalListeners();
+    addListSettingsModalListeners();
     ItemDrag.listen(eActiveListContainer);  // listen for item drag/drop actions
 }
 
@@ -210,7 +204,7 @@ function performListAction(eListActionButton) {
     switch(listActionValue)
     {
         case ListHtml.HeaderButtonActions.SETTINGS:
-            ListRename.openModal(eListActionButton);
+            ListSettings.openModal(eListActionButton);
             break;
         case ListHtml.HeaderButtonActions.DELETE:
             const listDelete = new ListDelete(eListActionButton);
@@ -328,17 +322,17 @@ function cancelItemContentUpdate(eItemUpdateFormInput) {
 /**********************************************************
 List rename form modal: add event listeners
 **********************************************************/
-function addListRenameModalListeners() {
+function addListSettingsModalListeners() {
     // save the list rename
-    $(ListRename.Elements.BTN_SAVE).on('click', function() {
-        saveListRename();
+    $(ListSettings.Elements.BTN_SAVE).on('click', function() {
+        saveListSettings();
     });
 
     // save the list rename for typing enter key while input is in focus
-    $(ListRename.Elements.INPUT).on('keypress', function(e) {
+    $(ListSettings.Elements.INPUT).on('keypress', function(e) {
         if (e.keyCode == 13) {
             e.preventDefault();
-            saveListRename();
+            saveListSettings();
         }
     });
 }
@@ -346,9 +340,9 @@ function addListRenameModalListeners() {
 /**********************************************************
 Action listener for saving a list rename
 **********************************************************/
-function saveListRename() {
-    const listRename = new ListRename();
-    listRename.save();
+function saveListSettings() {
+    const listSettings = new ListSettings();
+    listSettings.save();
 }
 
 

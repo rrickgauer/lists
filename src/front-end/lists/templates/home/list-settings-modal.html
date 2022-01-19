@@ -1,43 +1,73 @@
 <!-- Modal -->
-<div class="modal fade" id="modal-list-rename" tabindex="-1" data-list-id>
+<div class="modal fade" id="modal-list-settings" tabindex="-1" data-list-id>
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">List settings</h5>
+                <h3 class="modal-title">List settings</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
 
-                <form id="list-rename-form">
-                    <!-- name -->
-                    <div class="form-group">
-                        <label for="list-rename-form-input">Name</label>
-                        <input type="text" class="form-control" id="list-rename-form-input">
+                <!-- settings -->
+                <div class="modal-list-settings-section">
+                    <h5 class="modal-list-settings-section-header">Settings</h5>
+
+                    <div class="modal-list-settings-section-content">
+                        <form id="list-rename-form">
+                            <!-- name -->
+                            <div class="form-group">
+                                <label for="list-rename-form-input" class="font-weight-bold">Name</label>
+                                <input type="text" class="form-control form-control-sm" id="list-rename-form-input">
+                            </div>
+        
+                            <!-- type -->
+                            <div class="form-group">
+                                <div class="font-weight-bold">Type</div>
+                                
+                                <!-- list -->
+                                <div class="form-check form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="radio" name="list-rename-form-type-radio-option" value="list" checked> List
+                                    </label>
+                                </div>
+        
+                                <!-- template -->
+                                <div class="form-check form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="radio" name="list-rename-form-type-radio-option" value="template"> Template
+                                    </label>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- save list options form changes -->
+                        <button type="button" class="btn btn-sm btn-success" id="list-rename-form-save">Save changes</button>
                     </div>
+                </div>
 
-                    <!-- type -->
-                    <div class="form-group">
-                        <div>Type</div>
-                        
-                        <!-- list -->
-                        <div class="form-check form-check">
-                            <label class="form-check-label">
-                                <input class="form-check-input" type="radio" name="list-rename-form-type-radio-option" value="list" checked> List
-                            </label>
-                        </div>
+                <!-- clone list -->
+                <div class="modal-list-settings-section">
+                    <h5 class="modal-list-settings-section-header">Clone</h5>
 
-                        <!-- template -->
-                        <div class="form-check form-check">
-                            <label class="form-check-label">
-                                <input class="form-check-input" type="radio" name="list-rename-form-type-radio-option" value="template"> Template
-                            </label>
-                        </div>
+                    <div class="modal-list-settings-section-content">
+                        <p>Create a copy of this list and its current items.</p>
+                        <button type="button" class="btn btn-sm bg-gray-lightest">Clone list</button>
                     </div>
-                </form>
+                </div>
 
-                <button type="button" class="btn btn-success" id="list-rename-form-save">Save changes</button>
+                <!-- delete list -->
+                <div class="modal-list-settings-section">
+                    <h5 class="modal-list-settings-section-header">Delete</h5>
+
+                    <div class="modal-list-settings-section-content">
+                        <p>Once you delete a list, there is no going back. Please be certain.</p>
+                        <button type="button" class="btn btn-sm bg-gray-lightest text-danger">Delete this list</button>
+                    </div>
+                </div>
+
+
+
             </div>
         </div>
     </div>

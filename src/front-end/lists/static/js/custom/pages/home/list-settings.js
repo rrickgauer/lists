@@ -7,12 +7,12 @@ import { ListHtml } from './list-html';
 /**
  * This class handles all the actions needed to rename a list
  */
-export class ListRename
+export class ListSettings
 {
 
     constructor() {
-        this.newName = $(ListRename.Elements.INPUT).val();
-        this.listID = $(ListRename.Elements.MODAL).attr('data-list-id');
+        this.newName = $(ListSettings.Elements.INPUT).val();
+        this.listID = $(ListSettings.Elements.MODAL).attr('data-list-id');
 
         // bind the object methods
         this.save                      = this.save.bind(this);
@@ -40,7 +40,7 @@ export class ListRename
         }
 
         // close the modal
-        ListRename.closeModal();
+        ListSettings.closeModal();
 
         // enable the inputs
         this.enableInputs();
@@ -58,7 +58,7 @@ export class ListRename
         // create a formdata oject for the request
         const formData = Utilities.objectToFormData({
             name: this.newName,
-            type: ListRename.getListTypeValue(),
+            type: ListSettings.getListTypeValue(),
         });
 
         let result = true;
@@ -83,7 +83,7 @@ export class ListRename
         $(eActiveList).find(`.${ListHtml.Elements.LIST_NAME}`).text(this.newName);
 
         // type - data attribute
-        const newType = ListRename.getListTypeValue();
+        const newType = ListSettings.getListTypeValue();
         $(eActiveList).attr('data-list-type', newType);
 
         // type - icon
@@ -103,7 +103,7 @@ export class ListRename
 
 
         // type - icon
-        const newType = ListRename.getListTypeValue();
+        const newType = ListSettings.getListTypeValue();
         const newIconClass = ListHtml.getTypeIcon(newType);
         const eIcon = $(eSidenavListItem).find('.list-group-item-type i');
 
@@ -123,16 +123,16 @@ export class ListRename
     **********************************************************/
     disableInputs() {
         // disable the save button
-        ListRename.SpinnerButton.showSpinner();
-        ListRename.setInputProps(true);
+        ListSettings.SpinnerButton.showSpinner();
+        ListSettings.setInputProps(true);
     }
 
     /**********************************************************
     Remove the disabled attribute to the form inputs
     **********************************************************/
     enableInputs() {
-        ListRename.SpinnerButton.reset();
-        ListRename.setInputProps(false);
+        ListSettings.SpinnerButton.reset();
+        ListSettings.setInputProps(false);
     }
 
     /**********************************************************
@@ -140,7 +140,7 @@ export class ListRename
     **********************************************************/
     static openModal(eListActionButton) {
         const eActiveListContainer = $(eListActionButton).closest(`.${ListHtml.Elements.CONTAINER}`);
-        const eModal = $(ListRename.Elements.MODAL);
+        const eModal = $(ListSettings.Elements.MODAL);
 
         // set the list id
         const listID = $(eActiveListContainer).attr('data-list-id');
@@ -152,12 +152,12 @@ export class ListRename
         $(eModal).attr('data-list-name-original', originalName);
 
         // set the input value to the orignal name
-        const eInput = $(ListRename.Elements.INPUT);
+        const eInput = $(ListSettings.Elements.INPUT);
         $(eInput).val(originalName);
 
         // set the related type radio input to checked
         const listType = $(eActiveListContainer).attr('data-list-type');
-        ListRename.setTypeOptionChecked(listType);
+        ListSettings.setTypeOptionChecked(listType);
 
         // show the modal
         $(eModal).modal('show');
@@ -168,7 +168,7 @@ export class ListRename
     Mark the type radio option as checked 
     **********************************************************/
     static setTypeOptionChecked(listType) {
-        $(ListRename.Elements.MODAL).find(`[name="${ListRename.Elements.TYPE_OPTIONS}"][value="${listType}"]`).prop('checked', true);
+        $(ListSettings.Elements.MODAL).find(`[name="${ListSettings.Elements.TYPE_OPTIONS}"][value="${listType}"]`).prop('checked', true);
     }
 
 
@@ -176,7 +176,7 @@ export class ListRename
     Close the open modal
     **********************************************************/
     static closeModal() {
-        $(ListRename.Elements.MODAL).modal('hide');
+        $(ListSettings.Elements.MODAL).modal('hide');
     }
 
     
@@ -184,7 +184,7 @@ export class ListRename
     Get the value of the checked list type radio input
     **********************************************************/
     static getListTypeValue() {
-        return $(`[name="${ListRename.Elements.TYPE_OPTIONS}"]:checked`).val();
+        return $(`[name="${ListSettings.Elements.TYPE_OPTIONS}"]:checked`).val();
     }
 
     /**********************************************************
@@ -196,20 +196,20 @@ export class ListRename
             false: remove the disabled attribute
     **********************************************************/
     static setInputProps(newPropValue) {
-        $(ListRename.Elements.INPUT).prop('disabled', newPropValue);
-        $(`[name="${ListRename.Elements.TYPE_OPTIONS}"]`).prop('disabled', newPropValue);
+        $(ListSettings.Elements.INPUT).prop('disabled', newPropValue);
+        $(`[name="${ListSettings.Elements.TYPE_OPTIONS}"]`).prop('disabled', newPropValue);
     }
 }
 
 
 
-ListRename.Elements = {
-    MODAL: '#modal-list-rename',
+ListSettings.Elements = {
+    MODAL: '#modal-list-settings',
     INPUT: '#list-rename-form-input',
     BTN_SAVE: '#list-rename-form-save',
     TYPE_OPTIONS: 'list-rename-form-type-radio-option',
 }
 
 
-ListRename.SpinnerButton = new SpinnerButton(ListRename.Elements.BTN_SAVE);
+ListSettings.SpinnerButton = new SpinnerButton(ListSettings.Elements.BTN_SAVE);
 
