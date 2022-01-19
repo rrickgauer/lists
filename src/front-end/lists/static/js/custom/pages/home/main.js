@@ -2,30 +2,22 @@ import { SidenavFormList } from './sidenav-form-list';
 import { ListHtml } from "./list-html";
 import { ItemHtml } from "./item-html";
 import { ItemContentUpdateForm } from "./item-content-update-form";
-import { ListRename } from "./list-rename";
+import { ListSettings } from "./list-settings";
 import { ItemDrag } from "./item-drag";
 import { ItemCreator } from "./item-creator";
-import { ListDelete } from "./list-delete";
 import { ItemCompletor } from './item-update-complete';
 import { ItemRemove } from "./item-remove";
-import { ListCloner } from "./list-clone";
 
 const eOverlay = '<div style="z-index: 109;" class="drawer-overlay"></div>';
 
 const eSidebar = {
-    buttons: {
-        close: '#sidenav-btn-close',
-    },
-
+    buttons: {close: '#sidenav-btn-close',},
     filterForm: '#sidenav-collapse-sections-filter-form',
 }
 
 const eActiveListContainer = '.active-lists-board';
-
 const mSidenavFormList = new SidenavFormList();
-
 const eBtnShowSidenavBtn = '#btn-show-sidenav';
-
 const eListsContainer = '#lists-container';
 
 
@@ -47,7 +39,7 @@ function addEventListeners() {
     addSidenavListeners();
     addActiveListElementListeners();
     addActiveListItemElementListeners();
-    addListRenameModalListeners();
+    addListSettingsModalListeners();
     ItemDrag.listen(eActiveListContainer);  // listen for item drag/drop actions
 }
 
@@ -210,15 +202,7 @@ function performListAction(eListActionButton) {
     switch(listActionValue)
     {
         case ListHtml.HeaderButtonActions.SETTINGS:
-            ListRename.openModal(eListActionButton);
-            break;
-        case ListHtml.HeaderButtonActions.DELETE:
-            const listDelete = new ListDelete(eListActionButton);
-            listDelete.delete();
-            break;
-        case ListHtml.HeaderButtonActions.CLONE:
-            const listClone = new ListCloner(eListActionButton);
-            listClone.clone();
+            ListSettings.openModal(eListActionButton);
             break;
     }
 }
@@ -316,39 +300,45 @@ function updateItemContent(eItemUpdateFormInput) {
 }
 
 /**********************************************************
-Cancel an item's content update
-**********************************************************/
-function cancelItemContentUpdate(eItemUpdateFormInput) {
-    const eItemContainer = $(eItemUpdateFormInput).closest(`.${ItemHtml.Elements.TOP}`);
-    
-    const itemUpdateForm = new ItemContentUpdateForm(eItemContainer);
-    itemUpdateForm.cancelUpdate();
-}
-
-/**********************************************************
 List rename form modal: add event listeners
 **********************************************************/
-function addListRenameModalListeners() {
+function addListSettingsModalListeners() {
     // save the list rename
-    $(ListRename.Elements.BTN_SAVE).on('click', function() {
-        saveListRename();
+    $(ListSettings.Elements.BTN_SAVE).on('click', function() {
+        saveListSettings();
     });
 
     // save the list rename for typing enter key while input is in focus
-    $(ListRename.Elements.INPUT).on('keypress', function(e) {
+    $(ListSettings.Elements.INPUT).on('keypress', function(e) {
         if (e.keyCode == 13) {
             e.preventDefault();
-            saveListRename();
+            saveListSettings();
         }
     });
+
+
+    // clone list
+    $(ListSettings.Elements.BTN_CLONE).on('click', function() {
+        const listSettings = new ListSettings();
+        listSettings.clone();
+    });
+
+    // delete list
+    $(ListSettings.Elements.BTN_DELETE).on('click', function() {
+        const listSettings = new ListSettings();
+        listSettings.delete();
+    });
+
+    // close modal
+    $(ListSettings.Elements.MODAL).on('hide.bs.modal', ListSettings.handleModalCloseEvent);
 }
 
 /**********************************************************
 Action listener for saving a list rename
 **********************************************************/
-function saveListRename() {
-    const listRename = new ListRename();
-    listRename.save();
+function saveListSettings() {
+    const listSettings = new ListSettings();
+    listSettings.save();
 }
 
 

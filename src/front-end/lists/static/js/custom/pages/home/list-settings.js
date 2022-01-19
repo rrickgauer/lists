@@ -2,25 +2,28 @@ import { SpinnerButton } from '../../classes/spinner-button';
 import { ApiWrapper } from "../../classes/api-wrapper";
 import { Utilities } from '../../classes/utilities';
 import { ListHtml } from './list-html';
+import { ListDelete } from './list-delete';
 
 
 /**
  * This class handles all the actions needed to rename a list
  */
-export class ListRename
+export class ListSettings
 {
 
     constructor() {
-        this.newName = $(ListRename.Elements.INPUT).val();
-        this.listID = $(ListRename.Elements.MODAL).attr('data-list-id');
+        this.newName = $(ListSettings.Elements.INPUT).val();
+        this.listID = $(ListSettings.Elements.MODAL).attr('data-list-id');
 
         // bind the object methods
         this.save                      = this.save.bind(this);
-        this._sendRequest              = this._sendRequest.bind(this);
+        this._sendPutRequest           = this._sendPutRequest.bind(this);
         this._updateActiveListElement  = this._updateActiveListElement.bind(this);
         this._updateSidenavListElement = this._updateSidenavListElement.bind(this);
-        this.disableInputs = this.disableInputs.bind(this);
-        this.enableInputs = this.enableInputs.bind(this);
+        this.disableInputs             = this.disableInputs.bind(this);
+        this.enableInputs              = this.enableInputs.bind(this);
+        this.clone = this.clone.bind(this);
+        this.delete = this.delete.bind(this);
     }
 
     /**********************************************************
@@ -29,18 +32,21 @@ export class ListRename
     async save() {
         // disable all the form inputs
         this.disableInputs();
+        ListSettings.keepModalOpen(true);
 
         // send api request
-        const successfulRequest = await this._sendRequest();
+        const successfulRequest = await this._sendPutRequest();
         
         // update the active list name text if request was successful
         if (successfulRequest) {
             this._updateActiveListElement();
             this._updateSidenavListElement();
         }
+        
+        ListSettings.keepModalOpen(false);
 
         // close the modal
-        ListRename.closeModal();
+        ListSettings.closeModal();
 
         // enable the inputs
         this.enableInputs();
@@ -54,11 +60,11 @@ export class ListRename
         true: successful request
         false: error with the request
     **********************************************************/
-    async _sendRequest() {
+    async _sendPutRequest() {
         // create a formdata oject for the request
         const formData = Utilities.objectToFormData({
             name: this.newName,
-            type: ListRename.getListTypeValue(),
+            type: ListSettings.getListTypeValue(),
         });
 
         let result = true;
@@ -83,13 +89,12 @@ export class ListRename
         $(eActiveList).find(`.${ListHtml.Elements.LIST_NAME}`).text(this.newName);
 
         // type - data attribute
-        const newType = ListRename.getListTypeValue();
+        const newType = ListSettings.getListTypeValue();
         $(eActiveList).attr('data-list-type', newType);
 
         // type - icon
         const eNewIcon = ListHtml.getTypeIcon(newType);
         ListHtml.setActiveListTypeIcon(this.listID, eNewIcon);
-
     }
 
     
@@ -103,7 +108,7 @@ export class ListRename
 
 
         // type - icon
-        const newType = ListRename.getListTypeValue();
+        const newType = ListSettings.getListTypeValue();
         const newIconClass = ListHtml.getTypeIcon(newType);
         const eIcon = $(eSidenavListItem).find('.list-group-item-type i');
 
@@ -123,16 +128,53 @@ export class ListRename
     **********************************************************/
     disableInputs() {
         // disable the save button
-        ListRename.SpinnerButton.showSpinner();
-        ListRename.setInputProps(true);
+        ListSettings.SpinnerButtons.SAVE.showSpinner();
+        ListSettings.setInputProps(true);
     }
 
     /**********************************************************
     Remove the disabled attribute to the form inputs
     **********************************************************/
     enableInputs() {
-        ListRename.SpinnerButton.reset();
-        ListRename.setInputProps(false);
+        ListSettings.SpinnerButtons.SAVE.reset();
+        ListSettings.setInputProps(false);
+    }
+
+    /**********************************************************
+    Clone the current list
+    **********************************************************/
+    async clone() {
+        // disable spinner button
+        ListSettings.SpinnerButtons.CLONE.showSpinner();
+
+        ListSettings.keepModalOpen(true);
+
+        // send the clone api request
+        const apiResponse = await ApiWrapper.listsClone(this.listID);
+
+        // ensure the request was successful
+        if (!apiResponse.ok) {
+            ListSettings.SpinnerButtons.CLONE.reset();
+            console.error(await apiResponse.text());
+            ListSettings.keepModalOpen(false);
+            return false;
+        }
+        
+        // successfull clone - refresh the page
+        window.location.href = window.location.href;
+        return true;
+    }
+
+
+    /**********************************************************
+    Delete the current list
+    **********************************************************/
+    async delete() {
+        const listDelete = new ListDelete(this.listID);
+        listDelete.delete();
+
+        listDelete.removeListElements();
+        ListSettings.closeModal();
     }
 
     /**********************************************************
@@ -140,7 +182,7 @@ export class ListRename
     **********************************************************/
     static openModal(eListActionButton) {
         const eActiveListContainer = $(eListActionButton).closest(`.${ListHtml.Elements.CONTAINER}`);
-        const eModal = $(ListRename.Elements.MODAL);
+        const eModal = $(ListSettings.Elements.MODAL);
 
         // set the list id
         const listID = $(eActiveListContainer).attr('data-list-id');
@@ -152,12 +194,12 @@ export class ListRename
         $(eModal).attr('data-list-name-original', originalName);
 
         // set the input value to the orignal name
-        const eInput = $(ListRename.Elements.INPUT);
+        const eInput = $(ListSettings.Elements.INPUT);
         $(eInput).val(originalName);
 
         // set the related type radio input to checked
         const listType = $(eActiveListContainer).attr('data-list-type');
-        ListRename.setTypeOptionChecked(listType);
+        ListSettings.setTypeOptionChecked(listType);
 
         // show the modal
         $(eModal).modal('show');
@@ -168,7 +210,7 @@ export class ListRename
     Mark the type radio option as checked 
     **********************************************************/
     static setTypeOptionChecked(listType) {
-        $(ListRename.Elements.MODAL).find(`[name="${ListRename.Elements.TYPE_OPTIONS}"][value="${listType}"]`).prop('checked', true);
+        $(ListSettings.Elements.MODAL).find(`[name="${ListSettings.Elements.TYPE_OPTIONS}"][value="${listType}"]`).prop('checked', true);
     }
 
 
@@ -176,7 +218,7 @@ export class ListRename
     Close the open modal
     **********************************************************/
     static closeModal() {
-        $(ListRename.Elements.MODAL).modal('hide');
+        $(ListSettings.Elements.MODAL).modal('hide');
     }
 
     
@@ -184,7 +226,7 @@ export class ListRename
     Get the value of the checked list type radio input
     **********************************************************/
     static getListTypeValue() {
-        return $(`[name="${ListRename.Elements.TYPE_OPTIONS}"]:checked`).val();
+        return $(`[name="${ListSettings.Elements.TYPE_OPTIONS}"]:checked`).val();
     }
 
     /**********************************************************
@@ -196,20 +238,88 @@ export class ListRename
             false: remove the disabled attribute
     **********************************************************/
     static setInputProps(newPropValue) {
-        $(ListRename.Elements.INPUT).prop('disabled', newPropValue);
-        $(`[name="${ListRename.Elements.TYPE_OPTIONS}"]`).prop('disabled', newPropValue);
+        $(ListSettings.Elements.INPUT).prop('disabled', newPropValue);
+        $(`[name="${ListSettings.Elements.TYPE_OPTIONS}"]`).prop('disabled', newPropValue);
+    }
+
+    /**********************************************************
+    Add the waiting js class to the modal
+
+    Args:
+        setModalToWaiting: bool
+            true: add the class
+            false: remove the class
+    **********************************************************/
+    static keepModalOpen(setModalToWaiting) {
+        if (setModalToWaiting) {
+            $(ListSettings.Elements.MODAL).addClass(ListSettings.WaitingClasses.WAITING);
+        } else {
+            $(ListSettings.Elements.MODAL).removeClass(ListSettings.WaitingClasses.WAITING);
+        }
+    }
+
+    /**********************************************************
+    Set the modal's data-backdrop attribute value
+
+    Args:
+        dataBackdrop: ListSettings.ModalBackdrop value
+            STATIC: if user clicks on backdrop, modal remains open
+            OTHER: modal closes when user clicks on backdrop
+    **********************************************************/
+    static setModalBackdropAttribute(dataBackdrop) {
+        $(ListSettings.Elements.MODAL).attr('data-backdrop', dataBackdrop);
+    }
+
+
+    /**********************************************************
+    Handles the close modal event.
+    If the modal has the waiting class, it will not close.
+    **********************************************************/
+    static handleModalCloseEvent(e) {
+        const isModalWaiting = ListSettings.isModalWaitingForResponse();
+
+        if (isModalWaiting) {
+            e.preventDefault();
+        }
+    }
+
+    
+    /**********************************************************
+    Check if the modal is waiting for an api response.
+    Checks if it has the waiting class.
+
+    Returns a bool
+    **********************************************************/
+    static isModalWaitingForResponse() {
+        return $(ListSettings.Elements.MODAL).hasClass(ListSettings.WaitingClasses.WAITING);
     }
 }
 
 
 
-ListRename.Elements = {
-    MODAL: '#modal-list-rename',
+ListSettings.Elements = {
+    MODAL: '#modal-list-settings',
     INPUT: '#list-rename-form-input',
     BTN_SAVE: '#list-rename-form-save',
     TYPE_OPTIONS: 'list-rename-form-type-radio-option',
+    BTN_CLONE: '#modal-list-settings-btn-clone',
+    BTN_DELETE: '#modal-list-settings-btn-delete',
+    BTN_CLOSE_MODAL: '#modal-list-settings-btn-close-modal',
+}
+
+ListSettings.SpinnerButtons = {
+    SAVE: new SpinnerButton(ListSettings.Elements.BTN_SAVE),
+    CLONE: new SpinnerButton(ListSettings.Elements.BTN_CLONE),
+    DELETE: new SpinnerButton(ListSettings.Elements.BTN_DELETE),
+}
+
+ListSettings.WaitingClasses = {
+    WAITING: 'js-waiting-response',
 }
 
 
-ListRename.SpinnerButton = new SpinnerButton(ListRename.Elements.BTN_SAVE);
+ListSettings.ModalBackdrop = {
+    STATIC: 'static',
+    OTHER: 'false',
+}
 
