@@ -9,7 +9,7 @@ class ListTypeIcons(str, Enum):
 
 
 #------------------------------------------------------
-# transform the given list collection into the payload for jinja to render
+# transform the given List collection into the payload for jinja to render
 #------------------------------------------------------
 def getHomePagePayload(lists_api_response: list[dict]):
     # set the type icon for each list
