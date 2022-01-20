@@ -4,11 +4,6 @@ Module:     home
 Prefix:     ''
 Purpose:    Home page routing
 
-
-Data:
-    - cookies
-        - user_email
-
 ********************************************************************************************
 """
 import flask
@@ -20,7 +15,9 @@ from ..services import lists as list_services
 bp_home = flask.Blueprint('home', __name__)
 
 #------------------------------------------------------
-# Home page (search page)
+# Home page
+# The outgoing data is a dict with fields:
+#   lists: list of List objects
 #------------------------------------------------------
 @bp_home.route('')
 @security.login_required
@@ -43,7 +40,7 @@ def home():
     # generate the response html
     response = flask.make_response(flask.render_template('home/home.html', data=payload))
 
-    # save the user's email as a cool
+    # save the user's email as a cookie
     response_updated = security.save_user_email_cookie(response)
 
     return response_updated

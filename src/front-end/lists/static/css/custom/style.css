@@ -104,6 +104,17 @@ textarea {
   line-height: 1.25;
 }
 
+.btn.btn-gray {
+  border: 1px solid #d5d7dd;
+  background-color: #f1f2f4;
+  color: #393d46;
+  font-weight: 500;
+  transition: filter 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.btn.btn-gray:hover, .btn.btn-gray:active, .btn.btn-gray:focus {
+  filter: brightness(95%);
+}
+
 ::-webkit-scrollbar {
   width: 20px;
 }
@@ -268,12 +279,13 @@ textarea {
 }
 
 #modal-list-settings .modal-list-settings-section {
-  margin-bottom: 40px;
+  margin-bottom: 50px;
 }
 #modal-list-settings .modal-list-settings-section-header {
   border-bottom: 1px solid #d5d7dd;
   padding-bottom: 5px;
   color: #010819;
+  margin-bottom: 12px;
 }
 
 /*# sourceMappingURL=style.css.map */
