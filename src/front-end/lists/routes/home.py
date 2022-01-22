@@ -10,6 +10,7 @@ import flask
 from ..common import security
 from ..api_wrapper import lists as api_wrapper_lists
 from ..services import lists as list_services
+import flaskforward
 
 # module blueprint
 bp_home = flask.Blueprint('home', __name__)
@@ -23,6 +24,7 @@ bp_home = flask.Blueprint('home', __name__)
 @security.login_required
 def home():
     response = api_wrapper_lists.getAllLists(flask.g)
+
 
     # return the api error if one occurs
     if not response.ok:
