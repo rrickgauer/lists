@@ -8,11 +8,20 @@ Purpose:    create all the routes for the api
 """
 
 import flask
+import flaskforward
+
 from .. import api_wrapper
 from ..common import security
 
+
+
 # module blueprint
 bp_api = flask.Blueprint('api', __name__)
+
+# setup the flask forward variables
+flaskforward.globals.url = api_wrapper.URL_BASE
+
+
 
 #------------------------------------------------------
 # Create a new account
@@ -75,3 +84,16 @@ def login():
     return ('', api_response.status_code)
 
 
+
+#------------------------------------------------------
+# Create a new account
+#
+# Need to provide email and password in request body
+#------------------------------------------------------
+@bp_api.route('<path:api_endpoint>', methods=flaskforward.enums.RequestMethods.values())
+@security.login_required
+def router(api_endpoint):
+    flaskforward.globals.auth = (flask.g.email, flask.g.password)
+    api_response = flaskforward.routines.sendExternalRequest(flask.request, api_endpoint)
+    
+    return flaskforward.routines.toFlaskResponse(api_response)
