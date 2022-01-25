@@ -1,3 +1,4 @@
+@import url("https://rsms.me/inter/inter.css");
 .color-gray-darkest {
   color: #0b0c0e;
 }
@@ -54,6 +55,15 @@
   background-color: #f1f2f4;
 }
 
+body {
+  font-family: "Inter", sans-serif;
+}
+
+@supports (font-variation-settings: normal) {
+  body {
+    font-family: "Inter var", sans-serif;
+  }
+}
 input[type=color],
 input[type=date],
 input[type=datetime],
