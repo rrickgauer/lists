@@ -1,4 +1,14 @@
 @import "./_colors";
+@import "./variables";
+
+
+@import url('https://rsms.me/inter/inter.css');
+body { font-family: 'Inter', sans-serif; }
+@supports (font-variation-settings: normal) {
+  body { font-family: 'Inter var', sans-serif; }
+}
+
+
 
 $sidenav-lg-width: 400px;
 
