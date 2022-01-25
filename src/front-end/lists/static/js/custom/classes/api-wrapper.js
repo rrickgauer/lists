@@ -114,6 +114,7 @@ export class ApiWrapper
         return await fetch(url, {
             method: ApiWrapper.Methods.PUT,
             body: formData,
+            
         });
     }
 
@@ -151,6 +152,10 @@ export class ApiWrapper
         return await fetch(url, {
             method: requestMethod,
         });
+    }
+
+    static async logError(apiResponse) {
+        console.error(await apiResponse.text());
     }
 
 }

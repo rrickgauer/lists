@@ -52,7 +52,11 @@ export class ItemDrag
         const newItemRanks = ItemDrag.getRanks(droppedItemID, draggedItemID);
 
         // send the request to the api
-        await ApiWrapper.itemsPatch(JSON.stringify(newItemRanks));
+        const apiResponse = await ApiWrapper.itemsPatch(JSON.stringify(newItemRanks));
+
+        if (!apiResponse.ok) {
+            ApiWrapper.logError(apiResponse);
+        }
     }
 
     // given 2 item elements, swap them
