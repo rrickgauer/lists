@@ -1,4 +1,8 @@
-mod_wsgi-express start-server \
+echo 'Starting up API server...'
+
+cd /var/www/lists/api
+
+mod_wsgi-express setup-server \
 --user www-data  \
 --group www-data  \
 --server-name api.lists.ryanrickgauer.com  \
@@ -8,6 +12,8 @@ mod_wsgi-express start-server \
 --compress-responses \
 --server-root /etc/api.lists.ryanrickgauer.com \
 --host 104.225.208.116 \
---log-to-terminal \
-/var/www/lists/api/api_lists.wsgi 
+--setup-only \
+api_lists.wsgi
 
+# restart the server
+/etc/api.lists.ryanrickgauer.com/apachectl restart
