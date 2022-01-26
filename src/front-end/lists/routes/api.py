@@ -7,7 +7,6 @@ Purpose:    create all the routes for the api
 ********************************************************************************************
 """
 
-from sys import api_version
 import flask
 import flaskforward
 from .. import api_wrapper
@@ -15,9 +14,6 @@ from ..common import security
 
 # module blueprint
 bp_api = flask.Blueprint('api', __name__)
-
-# setup the flask forward variables
-flaskforward.globals.url = api_wrapper.URL_BASE
 
 #------------------------------------------------------
 # Create a new account
@@ -82,7 +78,6 @@ def login():
     return ('', api_response.status_code)
 
 
-
 #------------------------------------------------------
 # Create a new account
 #
@@ -91,8 +86,19 @@ def login():
 @bp_api.route('<path:api_endpoint>', methods=flaskforward.enums.RequestMethods.values())
 @security.login_required
 def router(api_endpoint):
-    flaskforward.globals.auth = (flask.g.email, flask.g.password)
-    
-    api_response = flaskforward.routines.sendExternalRequest(flask.request, api_endpoint)
-    
+    body = flaskforward.structs.SingleRequest(
+        url    = f'{api_wrapper.URL_BASE}{api_endpoint}',
+        auth   = (flask.g.email, flask.g.password),
+        method = flask.request.method,
+        data   = flaskforward.routines._getData(flask.request),
+        params = flask.request.args.to_dict(),
+        headers = dict(),
+    )
+
+
+    if flask.request.is_json:
+        body.headers.setdefault('Content-Type', 'application/json')
+
+    api_response = flaskforward.routines.sendRequest(body)
+
     return flaskforward.routines.toFlaskResponse(api_response)

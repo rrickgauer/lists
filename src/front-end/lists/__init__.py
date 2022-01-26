@@ -1,5 +1,6 @@
 import flask
 from . import routes
+from lists_common import config
 
 
 #------------------------------------------------------
@@ -27,4 +28,3 @@ def registerBlueprints(flask_app: flask.Flask):
 app = flask.Flask(__name__)
 initApp(app)
 registerBlueprints(app)
-
