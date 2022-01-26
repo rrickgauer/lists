@@ -13,6 +13,7 @@ mod_wsgi-express setup-server \
 --server-root /etc/lists.ryanrickgauer.com \
 --host 104.225.208.116 \
 --setup-only \
+--document-root /var/www/lists/front-end/lists/static \
 lists.wsgi
 
 # restart the server
