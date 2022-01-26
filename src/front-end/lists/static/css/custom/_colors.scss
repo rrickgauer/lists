@@ -2,6 +2,24 @@
 @import "./variables";
 
 // primary colors
+.color-primary-darkest { color: map-get($colors-primary, "darkest"); }
+.color-primary-darker { color: map-get($colors-primary, "darker"); }
+.color-primary-dark { color: map-get($colors-primary, "dark"); }
+.color-primary-primary { color: map-get($colors-primary, "primary"); }
+.color-primary-light { color: map-get($colors-primary, "light"); }
+.color-primary-lighter { color: map-get($colors-primary, "lighter"); }
+.color-primary-lightest { color: map-get($colors-primary, "lightest"); }
+
+.bg-primary-darkest { background-color: map-get($colors-primary, "darkest"); }
+.bg-primary-darker { background-color: map-get($colors-primary, "darker"); }
+.bg-primary-dark { background-color: map-get($colors-primary, "dark"); }
+.bg-primary-primary { background-color: map-get($colors-primary, "primary"); }
+.bg-primary-light { background-color: map-get($colors-primary, "light"); }
+.bg-primary-lighter { background-color: map-get($colors-primary, "lighter"); }
+.bg-primary-lightest { background-color: map-get($colors-primary, "lightest"); }
+
+
+// grays
 .color-gray-darkest { color: map-get($colors-grays, "darkest"); }
 .color-gray-darker { color: map-get($colors-grays, "darker"); }
 .color-gray-dark { color: map-get($colors-grays, "dark"); }
@@ -10,7 +28,6 @@
 .color-gray-lighter { color: map-get($colors-grays, "lighter"); }
 .color-gray-lightest { color: map-get($colors-grays, "lightest"); }
 
-// background colors
 .bg-gray-darkest { background-color: map-get($colors-grays, "darkest"); }
 .bg-gray-darker { background-color: map-get($colors-grays, "darker"); }
 .bg-gray-dark { background-color: map-get($colors-grays, "dark"); }

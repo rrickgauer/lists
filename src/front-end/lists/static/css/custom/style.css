@@ -1,4 +1,60 @@
 @import url("https://rsms.me/inter/inter.css");
+.color-primary-darkest {
+  color: #05012d;
+}
+
+.color-primary-darker {
+  color: #1a0f8f;
+}
+
+.color-primary-dark {
+  color: #5045c4;
+}
+
+.color-primary-primary {
+  color: #8175ff;
+}
+
+.color-primary-light {
+  color: #a69eff;
+}
+
+.color-primary-lighter {
+  color: #d0ccff;
+}
+
+.color-primary-lightest {
+  color: #f6f5ff;
+}
+
+.bg-primary-darkest {
+  background-color: #05012d;
+}
+
+.bg-primary-darker {
+  background-color: #1a0f8f;
+}
+
+.bg-primary-dark {
+  background-color: #5045c4;
+}
+
+.bg-primary-primary {
+  background-color: #8175ff;
+}
+
+.bg-primary-light {
+  background-color: #a69eff;
+}
+
+.bg-primary-lighter {
+  background-color: #d0ccff;
+}
+
+.bg-primary-lightest {
+  background-color: #f6f5ff;
+}
+
 .color-gray-darkest {
   color: #0b0c0e;
 }
@@ -207,7 +263,7 @@ textarea {
 }
 
 #main {
-  padding: 10px;
+  width: 100%;
 }
 
 .board-wrapper {
@@ -274,27 +330,34 @@ textarea {
   width: 100%;
 }
 
+.top-row-buttons-container {
+  background-color: #f6f5ff;
+  border-bottom: 1px solid #d0ccff;
+}
+
 .top-row-buttons {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
 }
-.top-row-buttons .top-row-button {
+
+.top-row-button {
   font-size: 30px;
 }
+
 @media screen and (min-width: 768px) {
-  .top-row-buttons .top-row-button {
+  .top-row-button {
     font-size: 40px;
   }
 }
-
 #modal-list-settings .modal-list-settings-section {
   margin-bottom: 50px;
 }
 #modal-list-settings .modal-list-settings-section-header {
   border-bottom: 1px solid #d5d7dd;
   padding-bottom: 5px;
-  color: #010819;
+  color: #05012d;
   margin-bottom: 12px;
 }
 

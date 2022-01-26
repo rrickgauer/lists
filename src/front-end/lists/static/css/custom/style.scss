@@ -202,7 +202,7 @@ textarea {
 }
 
 #main {
-    padding: 10px;
+    width: 100%;
 }
 
 
@@ -296,20 +296,25 @@ textarea {
 // ------------------------------------
 // Buttons at the top of the main secion
 // ------------------------------------
+.top-row-buttons-container {
+    background-color: map-get($map: $colors-primary, $key: "lightest");
+    border-bottom: 1px solid map-get($map: $colors-primary, $key: "lighter");
+}
+
 .top-row-buttons { 
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
+}
 
+.top-row-button {
+    font-size: 30px;
+}
 
+@media screen and (min-width: 768px) {
     .top-row-button {
-        font-size: 30px;
-    }
-
-    @media screen and (min-width: 768px) {
-        .top-row-button {
-            font-size: 40px;
-        }
+        font-size: 40px;
     }
 }
 
