@@ -3,6 +3,13 @@ from . import routes
 from lists_common import config
 
 
+# Set the custom config object
+def setConfigObject(flask_app: flask.Flask):
+    if flask_app.env == "development":
+        flask_app.config.from_object(config.Base)
+    else:
+        flask_app.config.from_object(config.Production)
+
 #------------------------------------------------------
 # Sets up and initializes the flask application
 #
@@ -11,7 +18,6 @@ from lists_common import config
 #------------------------------------------------------
 def initApp(flask_app: flask.Flask):    
     flask_app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
-
     flask_app.config['JSON_SORT_KEYS'] = False               # don't sort the json keys
     flask_app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False  # print the json pretty
 
@@ -22,9 +28,9 @@ def registerBlueprints(flask_app: flask.Flask):
     flask_app.register_blueprint(routes.home.bp_home, url_prefix='/')
     flask_app.register_blueprint(routes.login.bp_login, url_prefix='/login')
     flask_app.register_blueprint(routes.api.bp_api, url_prefix='/api')
-    # flask_app.register_blueprint(routes.api_lists.bp_api_lists, url_prefix='/api/lists')
-    # flask_app.register_blueprint(routes.api_items.bp_api_items, url_prefix='/api/items')
 
 app = flask.Flask(__name__)
+
+setConfigObject(app)
 initApp(app)
 registerBlueprints(app)

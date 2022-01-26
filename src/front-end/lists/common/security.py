@@ -23,8 +23,11 @@ def login_required(f):
     def wrap(*args, **kwargs):
         # if user is not logged in, redirect to login page
         if not flask.session:
-            # redirect_url = f'{LOGIN_URL_PREFIX}/login'
-            return flask.redirect('/login', 302)
+            prefix = flask.current_app.config.get('URL_GUI')
+            url = f'{prefix}login'
+
+            # return flask.redirect('/login', 302)
+            return flask.redirect(url, 302)
 
         # set the flask g object
         flask.g.user_id  = flask.session.get(SessionKeys.USER_ID)
