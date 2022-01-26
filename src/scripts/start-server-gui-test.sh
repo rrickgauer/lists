@@ -9,7 +9,6 @@ mod_wsgi-express start-server \
 --port 3001   \
 --access-log  \
 --log-level info   \
---compress-responses \
 --host 104.225.208.116 \
 --log-to-terminal \
 lists.wsgi

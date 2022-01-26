@@ -9,7 +9,6 @@ mod_wsgi-express setup-server \
 --port 3001   \
 --access-log  \
 --log-level info   \
---compress-responses \
 --server-root /etc/lists.ryanrickgauer.com \
 --host 104.225.208.116 \
 --setup-only \
