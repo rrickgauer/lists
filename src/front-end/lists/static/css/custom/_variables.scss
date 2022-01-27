@@ -13,12 +13,22 @@ $colors-primary: (
 
 // grays
 $colors-grays: (
-    "darkest":  hsl(223, 10%, 5%),
-    "darker":   hsl(223, 10%, 25%),
-    "dark":     hsl(223, 10%, 45%),
-    "primary":  hsl(223, 10%, 65%),
-    "light":    hsl(223, 10%, 75%),
-    "lighter":  hsl(223, 10%, 85%),
-    "lightest": hsl(223, 10%, 95%),
+    "darkest": hsl(245, 9%, 23%),
+    "darker": hsl(245, 9%, 35%),
+    "dark": hsl(245, 9%, 48%),
+    "primary": hsl(245, 9%, 61%),
+    "light": hsl(245, 9%, 73%),
+    "lighter": hsl(245, 8%, 86%),
+    "lightest": hsl(245, 9%, 98%),
 );
 
+// grays - original
+// $colors-grays: (
+//     "darkest":  hsl(223, 10%, 5%),
+//     "darker":   hsl(223, 10%, 25%),
+//     "dark":     hsl(223, 10%, 45%),
+//     "primary":  hsl(223, 10%, 65%),
+//     "light":    hsl(223, 10%, 75%),
+//     "lighter":  hsl(223, 10%, 85%),
+//     "lightest": hsl(223, 10%, 95%),
+// );
