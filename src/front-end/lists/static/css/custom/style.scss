@@ -136,6 +136,7 @@ textarea {
     position: fixed;
     top: 0;
     left: 0;
+    background-color: map-get($map: $colors-grays, $key: "lightest");
 }
 
 #page.sidenav-open #sidenav-container {
@@ -175,18 +176,43 @@ textarea {
         justify-content: space-between;
         align-items: baseline;
         border: none;
-    }
-
-    .list-group-item.active {
-        background-color: map-get($map: $colors-grays, $key: "lightest");
-        color: map-get($map: $colors-primary, $key: "darkest");
+        background-color: inherit;
     }
 
     .list-group-item-name {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        font-weight: 500;
+        color: map-get($colors-grays, "primary");
     }
+
+    .list-group-item.active {
+        background-color: inherit;
+        color: inherit;
+
+        .list-group-item-name {
+            color: map-get($colors-primary, "primary");
+            font-weight: 600;
+        }
+    }
+
+    .list-group-item-count {
+        background-color: map-get($map: $colors-primary, $key: "lightest");
+        color: map-get($map: $colors-primary, $key: "dark");
+        border: 1px solid map-get($map: $colors-primary, $key: "light");
+    }
+
+
+    .list-group-item:hover, 
+    .list-group-item:focus {
+        background-color: inherit;
+
+        .list-group-item-name {
+            filter: brightness(70%);
+        }   
+    }
+
 }
 
 // #sidenav-collapse-sections {
@@ -237,6 +263,7 @@ textarea {
     margin: 10px 10px;
     scroll-snap-align: center;
     background-color: map-get($map: $colors-grays, $key: "lightest");
+    border-top: 3px solid map-get($map: $colors-primary, $key: "primary");
 
     .card-header {
         background-color: inherit;

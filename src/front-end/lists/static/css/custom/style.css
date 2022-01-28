@@ -210,6 +210,7 @@ textarea {
   position: fixed;
   top: 0;
   left: 0;
+  background-color: #faf9fa;
 }
 
 #page.sidenav-open #sidenav-container {
@@ -241,15 +242,35 @@ textarea {
   justify-content: space-between;
   align-items: baseline;
   border: none;
-}
-#lists-container .list-group-item.active {
-  background-color: #faf9fa;
-  color: #05012d;
+  background-color: inherit;
 }
 #lists-container .list-group-item-name {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-weight: 500;
+  color: #9493a5;
+}
+#lists-container .list-group-item.active {
+  background-color: inherit;
+  color: inherit;
+}
+#lists-container .list-group-item.active .list-group-item-name {
+  color: #8175ff;
+  font-weight: 600;
+}
+#lists-container .list-group-item-count {
+  background-color: #f6f5ff;
+  color: #5045c4;
+  border: 1px solid #a69eff;
+}
+#lists-container .list-group-item:hover,
+#lists-container .list-group-item:focus {
+  background-color: inherit;
+}
+#lists-container .list-group-item:hover .list-group-item-name,
+#lists-container .list-group-item:focus .list-group-item-name {
+  filter: brightness(70%);
 }
 
 .drawer-overlay {
@@ -285,6 +306,7 @@ textarea {
   margin: 10px 10px;
   scroll-snap-align: center;
   background-color: #faf9fa;
+  border-top: 3px solid #8175ff;
 }
 .active-list .card-header {
   background-color: inherit;
