@@ -236,6 +236,7 @@ textarea {
     min-width: 100%;
     margin: 10px 10px;
     scroll-snap-align: center;
+    background-color: map-get($map: $colors-grays, $key: "lightest");
 
     .card-header {
         background-color: inherit;

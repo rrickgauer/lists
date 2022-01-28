@@ -288,6 +288,7 @@ textarea {
   min-width: 100%;
   margin: 10px 10px;
   scroll-snap-align: center;
+  background-color: #faf9fa;
 }
 .active-list .card-header {
   background-color: inherit;
