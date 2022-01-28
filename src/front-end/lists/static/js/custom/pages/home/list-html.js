@@ -206,6 +206,12 @@ export class ListHtml
         $(eIcon).addClass(typeIconClass);
     }
 
+    static getActiveListElementName(listID) {
+        const eActiveList = ListHtml.getActiveListElementByID(listID);
+
+        return $(eActiveList).find(`.${ListHtml.Elements.LIST_NAME}`).text();
+    }
+
 
     /**********************************************************
     Given the list id, return the active list element with the
@@ -246,6 +252,9 @@ export class ListHtml
             return ListHtml.TypeIcons.TEMPLATE;
         }
     }
+
+
+
 }
 
 

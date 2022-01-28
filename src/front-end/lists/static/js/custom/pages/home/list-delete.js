@@ -6,33 +6,44 @@ import { ApiWrapper } from "../../classes/api-wrapper";
  */
 export class ListDelete
 {
+    /**********************************************************
+    Constructor
+    **********************************************************/
     constructor(listID) {
         this.listID = listID;
         this.eActiveList = ListHtml.getActiveListElementByID(listID);
+        this.listName = ListHtml.getActiveListElementName(this.listID);
 
         // bind the object methods
-        this.delete = this.delete.bind(this);
-        this.sendRequest = this.sendRequest.bind(this);
+        this.confirm            = this.confirm.bind(this);
+        this.delete             = this.delete.bind(this);
+        this.sendRequest        = this.sendRequest.bind(this);
         this.removeListElements = this.removeListElements.bind(this);
+    }
+
+    /**********************************************************
+    Confirm user wants to delete the list
+    Have them type out the list name into the prompt input
+    **********************************************************/
+    confirm() {
+        // prompt user for list name
+        let promptResponse = prompt(`Please type "${this.listName}" to confirm:`);
+
+        // make sure they filled it out
+        if (promptResponse == null || promptResponse.length == 0) {
+            return false;
+        }
+
+        // check if prompt response is match with list name
+        return promptResponse.toLowerCase() == this.listName.toLowerCase();
     }
 
     /**********************************************************
     Delete the list 
     **********************************************************/
     async delete() {
-        // confirm user wants to delete the list
-        if (!confirm('Are you sure you want to delete this list?')) {
-            return false;
-        }
-
         // send the delete request to the api
-        const successfulRequest = await this.sendRequest();
-        
-        if (!successfulRequest) {
-            return false;   // error with the request, so stop here
-        }
-
-        return true;
+        return await this.sendRequest();
     }
 
     /**********************************************************
