@@ -113,7 +113,8 @@ export class ListHtml
             <div class="card-header pl-0">
 
                 <div class="d-flex justify-content-between align-items-baseline">
-                    <div class="d-flex align-items-baseline">
+                    <div class="d-flex align-items-baseline pl-3">
+                        
                         <div class="${ListHtml.Elements.TYPE_ICON} mr-2 color-primary-primary">
                             <i class='bx ${typeIcon} bx-border-circle'></i>
                         </div>

@@ -83,6 +83,11 @@ function addSidenavListeners() {
         const checkboxValue = $(this).val();
         $(eListsContainer).find(`[data-list-type="${checkboxValue}"]`).toggleClass('d-none');
     });
+
+    // make sure only 1 collapseable section is open at a time
+    $('#sidenav-collapse-sections .collapse').on('show.bs.collapse', function() {
+        $('#sidenav-collapse-sections .collapse').collapse('hide');
+    });
 }
 
 /**********************************************************
@@ -124,6 +129,7 @@ Close the sidebar
 function closeSidenav() {
     $('#page').removeClass('sidenav-open');
     $('body .drawer-overlay').remove();
+    $('#sidenav-collapse-sections .collapse').collapse('hide');
 }
 
 /**********************************************************

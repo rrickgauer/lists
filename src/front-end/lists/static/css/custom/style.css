@@ -252,10 +252,6 @@ textarea {
   white-space: nowrap;
 }
 
-#sidenav-collapse-sections {
-  padding: 10px;
-}
-
 .drawer-overlay {
   position: fixed;
   top: 0;
