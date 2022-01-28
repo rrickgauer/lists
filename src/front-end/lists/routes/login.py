@@ -18,12 +18,9 @@ bp_login = flask.Blueprint('login', __name__)
 @bp_login.route('')
 def login():
     security.clear_session_values()
-    print(flask.json.dumps(flask.request.cookies.to_dict(), indent=4))
-
 
     payload = dict(
         cookies = flask.request.cookies.to_dict()
     )
-
     
     return flask.render_template('login/login.html', data=payload)

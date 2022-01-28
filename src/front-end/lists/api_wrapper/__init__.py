@@ -1,4 +1,3 @@
-from .base_wrapper import URL_BASE as URL_BASE
 from .base_wrapper import ApiUrls as ApiUrls
 from .base_wrapper import IApiWrapper as IApiWrapper
 from .base_wrapper import ApiWrapperBase as ApiWrapperBase

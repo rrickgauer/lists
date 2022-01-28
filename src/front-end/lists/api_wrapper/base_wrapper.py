@@ -3,20 +3,12 @@ from dataclasses import dataclass
 import requests
 from enum import Enum
 import flask
-
-
 from lists_common import config
-
-
-
-
 
 #------------------------------------------------------
 # Prefix for the api url
 #------------------------------------------------------
 URL_BASE = config.Production.URL_API
-
-
 
 #------------------------------------------------------
 # All the suffixes for the api urls
@@ -26,7 +18,6 @@ class ApiUrls(str, Enum):
     LISTS = 'lists'
     ITEMS = 'items'
 
-    
 
 #------------------------------------------------------
 # The custom header we are going to send to the api.
@@ -127,8 +118,6 @@ class ApiWrapperBase(IApiWrapper):
     #------------------------------------------------------
     def _baseRequest(self, request_method, request_parms: RequestParms) -> requests.Response:
         api_url = f'{URL_BASE}{request_parms.url}'
-        # prefix = flask.current_app.config.get('URL_API')
-        # api_url = f'{prefix}{request_parms.url}'
 
         return request_method(
             url     = api_url,
