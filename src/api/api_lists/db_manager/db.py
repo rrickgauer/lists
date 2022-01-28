@@ -15,7 +15,6 @@ class DB:
     # Connect to the database
     #----------------------------------------------------------
     def connect(self):
-
         self.connection = mysql.connector.connect(
             user     = db_credentials.USER,
             host     = db_credentials.HOST,

@@ -1,6 +1,8 @@
+import json
 from .structs import DbOperationResult as DbOperationResult
 from .db import DB
-import json
+
+
 
 #------------------------------------------------------
 # Execute a select statement for mulitple records

@@ -1,22 +1,27 @@
 import flask
-from . import routes
+from lists_common import config
+from . import routes, db_manager
 from .common import CustomJSONEncoder
 
 
 #------------------------------------------------------
-# Sets up and initializes the flask application
+# Sets up the custom configuration values
 #
 # Args:
 #   flaskApp (obj): the flask application
 #------------------------------------------------------
-def initApp(flask_app: flask.Flask):    
-    # flaskApp.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0    # remove caching
-    flask_app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+def setApplicationConfiguration(flask_app: flask.Flask):    
+    if flask_app.env == "production":
+        flask_app.config.from_object(config.Production)
+    else:
+        flask_app.config.from_object(config.Dev)
 
-    flask_app.config['JSON_SORT_KEYS'] = False               # don't sort the json keys
-    flask_app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False  # print the json pretty
+#------------------------------------------------------
+# Set the values of some constants needed for the application
+#------------------------------------------------------
+def setConfigValues(flask_app: flask.Flask):
+    db_manager.credentials.DATABASE = flask_app.config.get('DB_NAME')
 
-    app.json_encoder = CustomJSONEncoder
 
 #------------------------------------------------------
 # Register all of the Flask blueprints
@@ -27,7 +32,17 @@ def registerBlueprints(flask_app: flask.Flask):
     flask_app.register_blueprint(routes.items.bp_items, url_prefix='/items')
 
 
+
 app = flask.Flask(__name__)
-initApp(app)
+
+setApplicationConfiguration(app)
+setConfigValues(app)
+
+
+app.json_encoder = CustomJSONEncoder
 registerBlueprints(app)
+
+
+# for t in app.config.items():
+#     print(t)
 
