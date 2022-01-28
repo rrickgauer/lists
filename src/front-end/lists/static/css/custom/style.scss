@@ -85,9 +85,10 @@ textarea {
 .btn.btn-gray {
     border: 1px solid map-get($colors-grays, "lighter");
     background-color: map-get($colors-grays, "lightest");
-    color: map-get($colors-grays, "darkest");
+    // color: map-get($colors-grays, "darkest");
     font-weight: 500;
     transition: filter 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    box-shadow: rgba(27, 31, 36, 0.04) 0px 1px 0px 0px;
 
     &:hover,
     &:active,
@@ -330,7 +331,7 @@ textarea {
 // ------------------------------------
 #modal-list-settings {
     .modal-header {
-        border-bottom: 1px solid map-get($colors-primary, "dark");
+        border-bottom: 1px solid map-get($colors-primary, "light");
         display: flex;
         align-items: center;
         background-color: map-get($colors-primary, "lighter");
@@ -338,7 +339,7 @@ textarea {
 
     .modal-title {
         color: map-get($colors-primary, "darkest");
-        font-weight: 800;
+        font-weight: 600;
     }
 
     .modal-list-settings-section {
@@ -350,6 +351,11 @@ textarea {
         padding-bottom: 5px;
         color: map-get($colors-grays, "darkest");
         margin-bottom: 12px;
+        font-size: 2rem;
+    }
+
+    .modal-body {
+        background-color: map-get($colors-grays, "lightest");
     }
 }
 
