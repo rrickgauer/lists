@@ -175,10 +175,12 @@ export class ListSettings
     **********************************************************/
     async delete() {
         const listDelete = new ListDelete(this.listID);
-        listDelete.delete();
 
-        listDelete.removeListElements();
-        ListSettings.closeModal();
+        if (listDelete.confirm()) {
+            listDelete.delete();
+            listDelete.removeListElements();
+            ListSettings.closeModal();
+        }
     }
 
     /**********************************************************
