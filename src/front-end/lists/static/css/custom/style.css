@@ -173,9 +173,9 @@ textarea {
 .btn.btn-gray {
   border: 1px solid #d9d8de;
   background-color: #faf9fa;
-  color: #363540;
   font-weight: 500;
   transition: filter 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  box-shadow: rgba(27, 31, 36, 0.04) 0px 1px 0px 0px;
 }
 .btn.btn-gray:hover, .btn.btn-gray:active, .btn.btn-gray:focus {
   filter: brightness(95%);
@@ -210,6 +210,7 @@ textarea {
   position: fixed;
   top: 0;
   left: 0;
+  background-color: #faf9fa;
 }
 
 #page.sidenav-open #sidenav-container {
@@ -241,19 +242,35 @@ textarea {
   justify-content: space-between;
   align-items: baseline;
   border: none;
-}
-#lists-container .list-group-item.active {
-  background-color: #faf9fa;
-  color: #05012d;
+  background-color: inherit;
 }
 #lists-container .list-group-item-name {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-weight: 500;
+  color: #9493a5;
 }
-
-#sidenav-collapse-sections {
-  padding: 10px;
+#lists-container .list-group-item.active {
+  background-color: inherit;
+  color: inherit;
+}
+#lists-container .list-group-item.active .list-group-item-name {
+  color: #8175ff;
+  font-weight: 600;
+}
+#lists-container .list-group-item-count {
+  background-color: #f6f5ff;
+  color: #5045c4;
+  border: 1px solid #a69eff;
+}
+#lists-container .list-group-item:hover,
+#lists-container .list-group-item:focus {
+  background-color: inherit;
+}
+#lists-container .list-group-item:hover .list-group-item-name,
+#lists-container .list-group-item:focus .list-group-item-name {
+  filter: brightness(70%);
 }
 
 .drawer-overlay {
@@ -288,6 +305,8 @@ textarea {
   min-width: 100%;
   margin: 10px 10px;
   scroll-snap-align: center;
+  background-color: #faf9fa;
+  border-top: 3px solid #8175ff;
 }
 .active-list .card-header {
   background-color: inherit;
@@ -358,14 +377,14 @@ textarea {
   }
 }
 #modal-list-settings .modal-header {
-  border-bottom: 1px solid #5045c4;
+  border-bottom: 1px solid #a69eff;
   display: flex;
   align-items: center;
   background-color: #d0ccff;
 }
 #modal-list-settings .modal-title {
   color: #05012d;
-  font-weight: 800;
+  font-weight: 600;
 }
 #modal-list-settings .modal-list-settings-section {
   margin-bottom: 50px;
@@ -375,6 +394,10 @@ textarea {
   padding-bottom: 5px;
   color: #363540;
   margin-bottom: 12px;
+  font-size: 2rem;
+}
+#modal-list-settings .modal-body {
+  background-color: #faf9fa;
 }
 
 /*# sourceMappingURL=style.css.map */
