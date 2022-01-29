@@ -39,9 +39,7 @@ export class ItemHtml
 
     // retrieve the item element with a data-item-id that matches the itemID
     static getItemWithID(itemID) {
-        const eItem = $(`.${ItemHtml.Elements.TOP}[data-item-id="${itemID}"]`);
-
-        return eItem;
+        return $(`.${ItemHtml.Elements.TOP}[data-item-id="${itemID}"]`);
     }
 
     // Retrieve the id of the given item html element

@@ -27,6 +27,7 @@ export class ItemContentUpdateForm
         this._getOriginalContentAttr   = this._getOriginalContentAttr.bind(this);
         this.updateContent             = this.updateContent.bind(this);
         this._getInputValue            = this._getInputValue.bind(this);
+        this._getCurrentRank           = this._getCurrentRank.bind(this);
         this._sendPutRequest           = this._sendPutRequest.bind(this);
         this._replaceItemContainerHtml = this._replaceItemContainerHtml.bind(this);
     }
@@ -123,6 +124,7 @@ export class ItemContentUpdateForm
             content: this._getInputValue(),
             complete: this.itemComplete,
             list_id: this.parentListID,
+            rank: this._getCurrentRank(),
         }
 
         // send request to the api
@@ -140,6 +142,13 @@ export class ItemContentUpdateForm
     _getInputValue() {
         return $(this.eItemContaier).find(`.${ItemContentUpdateForm.Elements.FORM} input`).val();
     }
+
+    // get the current rank of the item
+    _getCurrentRank() {
+        const eListItems = ListHtml.getParentActiveListElement(this.eItemContaier).find(`.${ItemHtml.Elements.TOP}`);
+        return eListItems.index(this.eItemContaier);
+    }
+
 
     /**********************************************************
     Send a PUT request to the api to save the new content's changes.
