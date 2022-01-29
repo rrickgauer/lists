@@ -128,18 +128,22 @@ export class ListHtml
                             <div class="dropdown-menu dropdown-menu-right">
                                 
                                 <button class="dropdown-item" type="button" data-list-action="${ListHtml.HeaderButtonActions.SETTINGS}">
-                                    <i class='bx bx-cog'></i>  Settings
+                                    <i class='bx bx-cog'></i> Settings
                                 </button>
 
                                 <div class="dropdown-divider"></div>
                                 
-                                <div class="px-4">
+                                <button class="dropdown-item" type="button" data-list-action="${ListHtml.HeaderButtonActions.TOGGLE_COMPLETE}">
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input class="form-check-input ${ListHtml.Elements.TOGGLE_COMPLETE}" type="checkbox" checked> Completed
+                                            <input class="form-check-input ${ListHtml.Elements.TOGGLE_COMPLETE}" type="checkbox" checked> Toggle complete items
                                         </label>
                                     </div>
-                                </div>
+                                </button>
+
+                                <button class="dropdown-item" type="button" data-list-action="${ListHtml.HeaderButtonActions.REMOVE_COMPLETE}">
+                                    Remove completed items
+                                </button>
                     
                             </div>
                         </div>
@@ -292,6 +296,8 @@ ListHtml.TypeIcons = {
 
 ListHtml.HeaderButtonActions = {
     SETTINGS: 'settings',
+    TOGGLE_COMPLETE: 'toggle-complete',
+    REMOVE_COMPLETE: 'remove-complete',
 }
 
 
