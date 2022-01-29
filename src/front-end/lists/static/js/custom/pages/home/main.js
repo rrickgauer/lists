@@ -7,6 +7,7 @@ import { ItemDrag } from "./item-drag";
 import { ItemCreator } from "./item-creator";
 import { ItemCompletor } from './item-update-complete';
 import { ItemRemove } from "./item-remove";
+import { CompleteItemsRemover } from "./list-remove-complete-items";
 
 const eOverlay = '<div style="z-index: 109;" class="drawer-overlay"></div>';
 
@@ -250,9 +251,11 @@ function toggleCompleteItemsVisibility(eClickedCheckbox) {
     $(eListContainer).toggleClass('hide-completed');
 }
 
+// Handle event for removing complete list items
+function removeCompleteItems(eListActionButton) {
+    const completeItemRemover = new CompleteItemsRemover(eListActionButton);
 
-function removeCompleteItems() {
-    console.log('remove complete items');
+    console.log(completeItemRemover);
 }
 
 
