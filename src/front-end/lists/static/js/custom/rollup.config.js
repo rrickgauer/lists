@@ -16,4 +16,12 @@ export default [
             compact: true,
         }
     },
+    {
+        input: 'pages/tags/main.js',
+        output: {
+            file: 'dist/tags.bundle.js',
+            format: 'iife',
+            compact: true,
+        }
+    },
   ];

@@ -1,0 +1,55 @@
+{#
+
+This is the top document for tags page.
+
+Incoming data: none
+
+#}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% include 'includes/header.html' %}
+    <title>Lists - Tags</title>
+</head>
+
+<body>
+
+    <!-- header -->
+    <div class="container my-5">
+        <h1>Tags</h1>
+        <a href="/" class="btn btn-lg btn-light">Back to lists</a>
+    </div>
+
+    <!-- new tag form -->
+    <div class="container" id="tags-form-new-container">
+        <div class="card card-body">
+            <p class="text-muted">Create a new tag</p>
+        
+            <form id="tags-form-new">
+                <!-- name -->
+                <div class="form-group">
+                    <label for="tags-form-new-input-name">Name</label>
+                    <input type="text" class="form-control" id="tags-form-new-input-name" required>
+                </div>
+    
+                <!-- color -->
+                <div class="form-group">
+                    <label for="tags-form-new-input-color">Color</label>
+                    <input type="color" class="form-control" id="tags-form-new-input-color" required>
+                </div>
+    
+                <!-- submit -->
+                <button type="submit" class="btn btn-success" id="#tags-form-new-btn-submit">Create tag</button>
+            </form>
+        </div>
+    </div>
+
+
+
+    {% include 'includes/footer.html' %}
+    <script src="/static/js/custom/dist/tags.bundle.js"></script>
+</body>
+
+</html>
