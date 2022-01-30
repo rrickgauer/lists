@@ -221,9 +221,12 @@ export class ListHtml
         $(eIcon).addClass(typeIconClass);
     }
 
+    
+    /**********************************************************
+    Get the name of the active list who has the given id
+    **********************************************************/
     static getActiveListElementName(listID) {
         const eActiveList = ListHtml.getActiveListElementByID(listID);
-
         return $(eActiveList).find(`.${ListHtml.Elements.LIST_NAME}`).text();
     }
 
@@ -245,8 +248,7 @@ export class ListHtml
     }
 
     /**********************************************************
-    Get the given active list element's id from its data-list-id 
-    attribute.
+    Get the given active list element's id from its data-list-id attribute.
     **********************************************************/
     static getActiveListElementID(eActiveList) {
         return $(eActiveList).attr('data-list-id');
@@ -266,6 +268,13 @@ export class ListHtml
         else {
             return ListHtml.TypeIcons.TEMPLATE;
         }
+    }
+    
+    /**********************************************************
+    Retrieve all the active list item elements of the given list element
+    **********************************************************/
+    static getChildItems(eActiveList) {
+        return $(eActiveList).find(`.${ItemHtml.Elements.TOP}`);
     }
 
 

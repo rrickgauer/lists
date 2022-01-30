@@ -251,11 +251,13 @@ function toggleCompleteItemsVisibility(eClickedCheckbox) {
     $(eListContainer).toggleClass('hide-completed');
 }
 
-// Handle event for removing complete list items
+
+/**********************************************************
+Handle event for removing complete list items
+**********************************************************/
 function removeCompleteItems(eListActionButton) {
     const completeItemRemover = new CompleteItemsRemover(eListActionButton);
-
-    console.log(completeItemRemover);
+    completeItemRemover.remove();
 }
 
 

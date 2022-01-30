@@ -118,6 +118,21 @@ export class ApiWrapper
         });
     }
 
+    /**********************************************************
+    DELETE: /items
+    **********************************************************/
+    static async itemsDelete(itemIdsJsonString) {
+        const url = `${ApiWrapper.Urls.ITEMS}`;
+
+        return await fetch(url, {
+            method: ApiWrapper.Methods.DELETE,
+            body: itemIdsJsonString,
+            headers: {
+                'Content-Type': 'application/json'
+              },
+        });
+    }
+
 
     /**********************************************************
     DELETE: /items/:item_id
