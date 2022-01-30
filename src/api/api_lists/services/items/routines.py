@@ -14,7 +14,7 @@ from ...db_manager import commands as sql_engine, DbOperationResult
 from ...common import responses
 from ...models import Item, ItemComplete
 
-from .parser import BatchItemParser, ParseReturnCodes
+from .parser import BatchItemParserUpdate, ParseReturnCodes, BatchItemParserDelete
 
 SQL_SELECT_INIT = '''
     SELECT * FROM View_Items vi
@@ -308,7 +308,7 @@ def _cmdDeleteItem(item_id: UUID) -> DbOperationResult:
 # Execute a sql command to delete the given item
 #------------------------------------------------------
 def patchItems(flask_request: flask.Request) -> flask.Response:
-    parsing_result, items = _parseRequestData(flask_request)
+    parsing_result, items = _parseBatchUpdateRequestData(flask_request)
 
     # if data was invalid, reply with an invalid response
     if parsing_result != ParseReturnCodes.SUCCESS:
@@ -336,9 +336,9 @@ def patchItems(flask_request: flask.Request) -> flask.Response:
 #   - parser return code
 #   - list of parsed Item objects
 #------------------------------------------------------
-def _parseRequestData(flask_request: flask.Request) -> Tuple[ParseReturnCodes, list[Item]]:
+def _parseBatchUpdateRequestData(flask_request: flask.Request) -> Tuple[ParseReturnCodes, list[Item]]:
     # be sure the request data was valid
-    parser = BatchItemParser(flask_request)
+    parser = BatchItemParserUpdate(flask_request)
     parsing_result = parser.isValid()
 
     # transform the incoming json data into a list of Item objects
@@ -366,7 +366,7 @@ def _cmdBatchUpdateItemRanks(items: list[Item]) -> DbOperationResult:
 #------------------------------------------------------
 def _generateBatchUpdateSqlStatement(items: list[Item]) -> str:
     # generate the string with all the tuples in it
-    parms_str = _getBatchParmSqlString(items)
+    parms_str = _getBatchUpdateParmSqlString(items)
     
     sql = f'INSERT INTO Items (id, `rank`) VALUES {parms_str} ON DUPLICATE KEY UPDATE `rank`=values(`rank`);'
 
@@ -380,7 +380,7 @@ def _generateBatchUpdateSqlStatement(items: list[Item]) -> str:
 # Args:
 #   num_items: number of (%s, %s) elements to add to the string
 #------------------------------------------------------
-def _getBatchParmSqlString(items: list[Item]) -> str:
+def _getBatchUpdateParmSqlString(items: list[Item]) -> str:
     first = True
     sql = ''
 
@@ -408,5 +408,103 @@ def _itemsListToTuple(items: list[Item]) -> tuple:
         tuple_list.append(item.rank)
 
     return tuple(tuple_list)
+
+#------------------------------------------------------
+# Respond to a request to do a batch delete of existing items
+#------------------------------------------------------
+def batchDeleteItems(flask_request: flask.Request) -> flask.Response:
+    # get the list of item id's
+    item_ids, err_msg = _parseBatchDeleteRequestBody(flask_request)
+
+    if not item_ids:
+        return responses.badRequest(err_msg)
+
+    # no need to do anything else if an empty list was provided
+    if len(item_ids) == 0:
+        return responses.deleted()
+
+    # delete the items from the database
+    sql_result = _cmdBatchDeleteItems(item_ids)
+
+    if not sql_result.successful:
+        return responses.badRequest(sql_result.error)
+
+    return responses.deleted()
+
+
+#------------------------------------------------------
+# Parse the request body for the list of item id's to be deleted
+#
+# Returns a tuple comprised of:
+#   list of item ids or null if there was an error
+#   error message or null if okay
+#------------------------------------------------------
+def _parseBatchDeleteRequestBody(request: flask.Request) -> Tuple[list[UUID], str]:
+    parser = BatchItemParserDelete(request)
+
+    # make sure the request has a valid json body
+    parser_rc = parser.isValid()
+
+    if parser_rc != ParseReturnCodes.SUCCESS:
+        return (None, parser_rc.name)
+
+    # value error is raised if there is an invalid UUID in the request body 
+    # (can't be cast as a UUID)
+    try:
+        parser.parseData()
+    except ValueError as e:
+        return (None, str(e))
+        
+    return (parser.items, None)
+
+
+#------------------------------------------------------
+# Delete the given list of item ids from the database
+#------------------------------------------------------
+def _cmdBatchDeleteItems(item_ids: list[UUID]) -> DbOperationResult:
+    # generate the sql statement for the delete command
+    sql = _generateBatchDeleteSqlStmt(len(item_ids))
+
+    # get the parms
+    parms = _getBatchDeleteSqlParms(item_ids)
+
+    return sql_engine.modify(sql, parms)
+
+
+#------------------------------------------------------
+# Generate the sql statement for the batch delete command
+# Every item to be deleted needs to have a corresponding '%s' in the statement
+#
+# Args:
+#   num_items: number of items to be deleted
+#
+# Returns a str: the delete sql statement
+#------------------------------------------------------
+def _generateBatchDeleteSqlStmt(num_items: int) -> str:
+    sql = '''
+        DELETE FROM Items i 
+        WHERE i.id IN (%s{remaining}) 
+        AND i.list_id IN (SELECT l.id FROM Lists l WHERE l.user_id=%s)
+    '''
+
+    # create '%s' string of all items besides first 1 since 
+    # it's already in the string created above
+    percents = ', %s' * (num_items - 1)
+    sql = sql.format(remaining=percents)
+
+    return sql
+
+#------------------------------------------------------
+# Generate the paramter tuple for the batch delete sql command
+# Tuple is all the item_id's and then the client_id
+#------------------------------------------------------
+def _getBatchDeleteSqlParms(item_ids: list[UUID]) -> tuple:
+    # convert all the item_id UUID's into strings
+    str_ids = tuple(map(lambda item_id: str(item_id) , item_ids))
+    
+    # parms are all the item_id's then the client_id
+    parms = (*str_ids, str(flask.g.client_id))
+
+    return parms
 
 

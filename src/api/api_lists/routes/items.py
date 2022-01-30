@@ -38,7 +38,6 @@ def post():
     return item_services.createNewItem(flask.request.form.to_dict())
 
 
-
 #------------------------------------------------------
 # Do a batch update on multiple items
 #------------------------------------------------------
@@ -47,6 +46,15 @@ def post():
 def batch():
     return item_services.patchItems(flask.request)
 
+
+#------------------------------------------------------
+# Do a batch delete of items
+# Body must contain a json list of item ids.
+#------------------------------------------------------
+@bp_items.delete('')
+@security.login_required
+def batchDelete():
+    return item_services.batchDeleteItems(flask.request)
 
 #------------------------------------------------------
 # Retrieve a single item
