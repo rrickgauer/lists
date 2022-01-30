@@ -35,7 +35,7 @@ def home():
         lists_collection = []   # empty response body
 
     # setup the outgoing payload into a format the template file can use
-    payload = list_services.getHomePagePayload(lists_collection)
+    payload = list_services.assignListTypeIcons(lists_collection)
     
     # generate the response html
     response = flask.make_response(flask.render_template('home/home.html', data=payload))
