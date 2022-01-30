@@ -18,6 +18,8 @@ export class CompleteItemsRemover
         this.eListItems = ListHtml.getChildItems(this.eListContainer);
         this.eListItemsComplete = $(this.eListItems).filter(".checked");
         this.completeItemIds = CompleteItemsRemover.getItemElementIds(this.eListItemsComplete);
+
+        this.remove = this.remove.bind(this);
     }
 
     
@@ -25,6 +27,11 @@ export class CompleteItemsRemover
     Tell api to delete the items
     **********************************************************/
     async remove() {
+
+        if (this.completeItemIds.length < 1) {
+            return;
+        }
+
         // transform the lsit of item ids into a json string
         const itemsData = JSON.stringify(this.completeItemIds);
 

@@ -142,7 +142,7 @@ export class ListHtml
                                 </button>
 
                                 <button class="dropdown-item" type="button" data-list-action="${ListHtml.HeaderButtonActions.REMOVE_COMPLETE}">
-                                    Remove completed items
+                                    <i class='bx bx-trash'></i> Remove completed items
                                 </button>
                     
                             </div>
