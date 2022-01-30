@@ -14,47 +14,36 @@ from ..services import items as item_services
 bp_items = flask.Blueprint('items', __name__)
 
 #------------------------------------------------------
-# Retrieve all of user's list items.
-#
-# Clients can filter based provide multiple list_id's in
-# the request url query parms.
+# Routes with no item_id provided
 #------------------------------------------------------
-@bp_items.get('')
+@bp_items.route('', methods=['GET', 'POST', 'PATCH', 'DELETE'])
 @security.login_required
-def getAll():
-    # get the list_id query parm(s) if they were provided
-    query_parms = flask.request.args.to_dict(False)
-    list_ids = query_parms.get('list_id') or None
+def items():
+    
+    # Create a new item
+    if flask.request.method == "POST":
+        return item_services.createNewItem(flask.request.form.to_dict())
+    
+    # Do a batch update on multiple items
+    elif flask.request.method == "PATCH":
+        return item_services.patchItems(flask.request)
+    
+    # Do a batch delete of items
+    # Body must contain a json list of item ids.
+    elif flask.request.method == "DELETE":
+        return item_services.batchDeleteItems(flask.request)
+    
+    # GET
+    # Retrieve all of user's list items.
+    # Clients can filter based provide multiple list_id's in the request url query parms.
+    else:
+        # get the list_id query parm(s) if they were provided
+        query_parms = flask.request.args.to_dict(False)
+        list_ids = query_parms.get('list_id') or None
 
-    return item_services.getItems(list_ids)
+        return item_services.getItems(list_ids)
 
-
-#------------------------------------------------------
-# Create a new item
-#------------------------------------------------------
-@bp_items.post('')
-@security.login_required
-def post():
-    return item_services.createNewItem(flask.request.form.to_dict())
-
-
-#------------------------------------------------------
-# Do a batch update on multiple items
-#------------------------------------------------------
-@bp_items.patch('')
-@security.login_required
-def batch():
-    return item_services.patchItems(flask.request)
-
-
-#------------------------------------------------------
-# Do a batch delete of items
-# Body must contain a json list of item ids.
-#------------------------------------------------------
-@bp_items.delete('')
-@security.login_required
-def batchDelete():
-    return item_services.batchDeleteItems(flask.request)
+        
 
 #------------------------------------------------------
 # Retrieve a single item
