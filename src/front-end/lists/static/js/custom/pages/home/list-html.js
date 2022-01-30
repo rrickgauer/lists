@@ -299,8 +299,8 @@ ListHtml.Types = {
 }
 
 ListHtml.TypeIcons = {
-    LIST:     'bx-checkbox-checked',
-    TEMPLATE: 'bx-book',
+    LIST:     'bx-list-check',
+    TEMPLATE: 'bx-copy-alt',
 }
 
 ListHtml.HeaderButtonActions = {
