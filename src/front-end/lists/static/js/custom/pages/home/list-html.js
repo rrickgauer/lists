@@ -128,18 +128,22 @@ export class ListHtml
                             <div class="dropdown-menu dropdown-menu-right">
                                 
                                 <button class="dropdown-item" type="button" data-list-action="${ListHtml.HeaderButtonActions.SETTINGS}">
-                                    <i class='bx bx-cog'></i>  Settings
+                                    <i class='bx bx-cog'></i> Settings
                                 </button>
 
                                 <div class="dropdown-divider"></div>
                                 
-                                <div class="px-4">
+                                <button class="dropdown-item" type="button" data-list-action="${ListHtml.HeaderButtonActions.TOGGLE_COMPLETE}">
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input class="form-check-input ${ListHtml.Elements.TOGGLE_COMPLETE}" type="checkbox" checked> Completed
+                                            <input class="form-check-input ${ListHtml.Elements.TOGGLE_COMPLETE}" type="checkbox" checked> Toggle complete items
                                         </label>
                                     </div>
-                                </div>
+                                </button>
+
+                                <button class="dropdown-item" type="button" data-list-action="${ListHtml.HeaderButtonActions.REMOVE_COMPLETE}">
+                                    Remove completed items
+                                </button>
                     
                             </div>
                         </div>
@@ -217,9 +221,12 @@ export class ListHtml
         $(eIcon).addClass(typeIconClass);
     }
 
+    
+    /**********************************************************
+    Get the name of the active list who has the given id
+    **********************************************************/
     static getActiveListElementName(listID) {
         const eActiveList = ListHtml.getActiveListElementByID(listID);
-
         return $(eActiveList).find(`.${ListHtml.Elements.LIST_NAME}`).text();
     }
 
@@ -241,8 +248,7 @@ export class ListHtml
     }
 
     /**********************************************************
-    Get the given active list element's id from its data-list-id 
-    attribute.
+    Get the given active list element's id from its data-list-id attribute.
     **********************************************************/
     static getActiveListElementID(eActiveList) {
         return $(eActiveList).attr('data-list-id');
@@ -262,6 +268,13 @@ export class ListHtml
         else {
             return ListHtml.TypeIcons.TEMPLATE;
         }
+    }
+    
+    /**********************************************************
+    Retrieve all the active list item elements of the given list element
+    **********************************************************/
+    static getChildItems(eActiveList) {
+        return $(eActiveList).find(`.${ItemHtml.Elements.TOP}`);
     }
 
 
@@ -292,6 +305,8 @@ ListHtml.TypeIcons = {
 
 ListHtml.HeaderButtonActions = {
     SETTINGS: 'settings',
+    TOGGLE_COMPLETE: 'toggle-complete',
+    REMOVE_COMPLETE: 'remove-complete',
 }
 
 

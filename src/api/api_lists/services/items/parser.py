@@ -10,6 +10,7 @@ This module is responsible for 2 things:
 
 from __future__ import annotations
 from enum import Enum, auto
+from uuid import UUID
 import flask
 from ...models import Item
 
@@ -22,16 +23,24 @@ class ParseReturnCodes(Enum):
     NOT_JSON = auto()
     NOT_LIST = auto()
 
-class BatchItemParser:
 
+class BatchItemParserBase:
+    """Base parser class"""
+    
     #------------------------------------------------------
     # Constructor
     #------------------------------------------------------
     def __init__(self, request: flask.Request):
         self.request = request
         self.items: list[Item] = []
-        self._body: list[dict] = None
-        
+        self._body: list[dict] | list[UUID] = None
+
+    #------------------------------------------------------
+    # Print these objects out as a dict
+    #------------------------------------------------------
+    def __repr__(self) -> str:
+        return str(self.__dict__)
+
     #------------------------------------------------------
     # Make sure the request and incoming are valid
     #------------------------------------------------------
@@ -53,7 +62,16 @@ class BatchItemParser:
 
         return ParseReturnCodes.SUCCESS
 
+    #------------------------------------------------------
+    # All child classes need to implement this method
+    #------------------------------------------------------
+    def parseData(self):
+        raise NotImplementedError
 
+
+class BatchItemParserUpdate(BatchItemParserBase):
+    """Parser for request body containing list of Item json objects"""
+    
     #------------------------------------------------------
     # Transform the incoming json data into a list of Item objects
     #------------------------------------------------------
@@ -69,8 +87,17 @@ class BatchItemParser:
 
             self.items.append(item)
 
-    def __repr__(self) -> str:
-        return str(self.__dict__)
 
 
+class BatchItemParserDelete(BatchItemParserBase):
+    """Parser for request body containing list of item_ids (UUID's)"""
+
+    #------------------------------------------------------
+    # Transform the incoming json data into a list of item ids.
+    #------------------------------------------------------
+    def parseData(self):
+        self.items.clear()
+        
+        for record in self._body:
+            self.items.append(UUID(record))
     
