@@ -1,0 +1,24 @@
+{# Form to create new tags. #}
+
+<div class="container" id="tags-form-new-container">
+    <div class="card card-body">
+        <p class="text-muted">Create a new tag</p>
+    
+        <form id="tags-form-new">
+            <!-- name -->
+            <div class="form-group">
+                <label for="tags-form-new-input-name">Name</label>
+                <input type="text" class="form-control" id="tags-form-new-input-name" required>
+            </div>
+
+            <!-- color -->
+            <div class="form-group">
+                <label for="tags-form-new-input-color">Color</label>
+                <input type="color" class="form-control" id="tags-form-new-input-color" required>
+            </div>
+
+            <!-- submit -->
+            <button type="submit" class="btn btn-success" id="#tags-form-new-btn-submit">Create tag</button>
+        </form>
+    </div>
+</div>
