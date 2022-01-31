@@ -1,4 +1,5 @@
 
+import { TagElements } from "./tag-elements";
 
 /**
  * This class handles creating a new tag
@@ -6,35 +7,44 @@
 export class TagFormNew
 {
 
+    /**********************************************************
+    Create a new tag
+    **********************************************************/
     static create() {
-
-        const inputValues = {
-            name: TagFormNew.getNameInputValue(),
-            color: TagFormNew.getColorInputValue(),
-        }
-
+        const inputValues = TagFormNew.getInputValues();
         console.log(inputValues);
     }
 
+    /**********************************************************
+    Get the form input values.
+
+    Returns an object comprised of these fields:
+        - name
+        - color
+    **********************************************************/
+    static getInputValues() {
+        return {
+            name: TagFormNew.getNameInputValue(),
+            color: TagFormNew.getColorInputValue(),
+        }
+    }
+
+
+    /**********************************************************
+    Get the name input value
+    **********************************************************/
     static getNameInputValue() {
-        return $(TagFormNew.Elements.Inputs.NAME).val();
+        return $(TagElements.FormNew.Inputs.NAME).val();
     }
 
+    /**********************************************************
+    Get the value of the color input element
+    **********************************************************/
     static getColorInputValue() {
-        return $(TagFormNew.Elements.Inputs.COLOR).val();
+        return $(TagElements.FormNew.Inputs.COLOR).val();
     }
 }
 
-
-TagFormNew.Elements = {
-    FORM: '#tags-form-new',
-    CONTAINER: '#tags-form-new-container',
-    Inputs: {
-        NAME: '#tags-form-new-input-name',
-        COLOR: '#tags-form-new-input-color',
-    },
-    BTN_SUBMIT: '#tags-form-new-btn-submit',
-}
 
 
 
