@@ -11,11 +11,19 @@ from ..services import tags as tag_services
 # module blueprint
 bp_tags = flask.Blueprint('tags', __name__)
 
+
 #------------------------------------------------------
-# Retrieve all tags
+# Endpoints for tags with no id in the url
 #------------------------------------------------------
-@bp_tags.get('')
+@bp_tags.route('', methods = ['GET', 'POST'])
 @security.login_required
-def getAll():
-    return tag_services.getAllTags()
+def tagsNoID():
+
+    # create a new tag
+    if flask.request.method == 'POST':
+        return tag_services.postTag(flask.request)
+    
+    # Retrieve all tags
+    else:
+        return tag_services.getAllTags()
 
