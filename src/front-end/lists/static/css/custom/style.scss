@@ -388,6 +388,15 @@ textarea {
 }
 
 
-
+// ------------------------------------
+// Tags
+// ------------------------------------
+.tags-list-group-item {
+    .tags-list-group-item-display {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
 
 

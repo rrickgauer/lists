@@ -55,7 +55,7 @@ Incoming data:
 
                     <li class="list-group-item tags-list-group-item" data-tag-id="{{tag.id}}">
                         <!-- tag display section -->
-                        <div class="tags-list-group-item-display d-flex justify-content-between align-items-center">
+                        <div class="tags-list-group-item-display">
                             <span class="badge badge-pill tag-badge" style="background-color: {{tag.color}};">{{tag.name}}</span>
 
                             <div>
@@ -78,12 +78,11 @@ Incoming data:
                                 </div>
                     
                                 <!-- submit -->
-                                <button type="button" class="tags-form-edit-btn-cancel btn btn-sm btn-gray">Cancel</button>
                                 <button type="button" class="tags-form-edit-btn-submit btn btn-sm btn-success">Save changes</button>
+                                <button type="button" class="tags-form-edit-btn-cancel btn btn-sm btn-gray">Cancel</button>
                             </form>
                         </div>
 
-                        
                     </li>
 
                     {% endfor %}
