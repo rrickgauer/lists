@@ -7,7 +7,21 @@ export class TagFormNew
 {
 
     static create() {
-        console.log('Create new tag');
+
+        const inputValues = {
+            name: TagFormNew.getNameInputValue(),
+            color: TagFormNew.getColorInputValue(),
+        }
+
+        console.log(inputValues);
+    }
+
+    static getNameInputValue() {
+        return $(TagFormNew.Elements.Inputs.NAME).val();
+    }
+
+    static getColorInputValue() {
+        return $(TagFormNew.Elements.Inputs.COLOR).val();
     }
 }
 
