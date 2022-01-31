@@ -16,6 +16,7 @@ SQL_SELECT_ALL = '''
         WHERE t.user_id = %s 
         AND t.id = vt.id
     )
+    ORDER BY vt.name ASC
 '''
 
 #------------------------------------------------------
