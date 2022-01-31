@@ -26,15 +26,26 @@ Incoming data:
         <a href="/" class="btn btn-lg btn-light">Back to lists</a>
     </div>
 
-    <!-- new tag form -->
-    {% include 'tags/new-tag-form.html' %}
-
-
 
     <!-- existing tags -->
     <div class="container my-5" id="tags-container">
         <div class="card" id="tags-card">
-            <div class="card-header">{{data.tags|length}} tags</div>
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        {{data.tags|length}} tags
+                    </div>
+                    
+                    <div>
+                        <button type="button" class="btn btn-success" data-toggle="collapse" data-target="#tags-form-new-container">New tag</button>
+                    </div>
+                </div>
+
+
+                <!-- new tag form -->
+                {% include 'tags/new-tag-form.html' %}
+                
+            </div>
             
             
             <div class="card-body">
@@ -77,8 +88,6 @@ Incoming data:
 
                     {% endfor %}
                 </ul>
-
-                
 
             </div>
     
