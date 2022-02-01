@@ -183,8 +183,21 @@ export class ApiWrapper
         });
     }
 
+    /**********************************************************
+    DELETE: /tags/:tag_id
+    **********************************************************/
+    static async tagsDelete(tagID) {
+        const url = `${ApiWrapper.Urls.TAGS}/${tagID}`;
+
+        return await fetch(url, {
+            method: ApiWrapper.Methods.DELETE,
+        });
+    }
 
 
+    /**********************************************************
+    Log the api response error
+    **********************************************************/
     static async logError(apiResponse) {
         console.error(await apiResponse.text());
     }

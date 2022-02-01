@@ -64,15 +64,14 @@ function showNormalDisplaySection(eToggleBtn) {
 
 
 
+/**********************************************************
+Delete the tag
+**********************************************************/
 function deleteTag(eClickedDeleteBtn) {
     const tagDelete = new TagDelete(eClickedDeleteBtn);
-    console.log(tagDelete);
 
-
-    if (!tagDelete.confirm()) {
-        return;
+    if (tagDelete.confirm()) {
+        tagDelete.delete();
     }
-
-    
 }
 
