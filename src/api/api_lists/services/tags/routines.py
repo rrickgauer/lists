@@ -5,6 +5,7 @@ This module contains all services related to tags.
 """
 from enum import Enum
 from datetime import datetime
+from re import S
 from uuid import UUID, uuid4
 import flask
 from ...db_manager import commands as sql_engine, DbOperationResult
@@ -110,4 +111,33 @@ def cmdInsertGetParmsTuple(tag: Tag) -> tuple:
         tag.created_on,
         str(tag.user_id)
     )
+
+
+def getSingleTag(tag_id: UUID) -> flask.Response:
+    # fetch the tag record from the database
+    sql_result = cmdSelectSingle(tag_id)
+
+    # sql error
+    if not sql_result.successful:
+        return responses.badRequest(str(sql_result.error))
+
+    # either the tag DNE or the client does not own the tag
+    if not sql_result.data:
+        return responses.forbidden()
+
+    return responses.get(sql_result.data)
+
+
+# Fetch the tag record that has the given tag_id
+def cmdSelectSingle(tag_id: UUID) -> DbOperationResult:
+    sql = sql_statements.SELECT_SINGLE
+    parms = (
+        str(flask.g.client_id),
+        str(tag_id),
+    )
+
+    return sql_engine.select(sql, parms, False)
+
+
+
 
