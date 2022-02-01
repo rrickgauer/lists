@@ -57,7 +57,8 @@ def postTag(flask_request: flask.Request) -> flask.Response:
         return responses.badRequest(str(sql_result.error))
 
     # return the response used for a GET request for a single tag
-    return responses.created(new_tag)
+    tag_view_table = cmdSelectSingle(new_tag.id).data
+    return responses.created(tag_view_table)
 
 #------------------------------------------------------
 # create a new Tag object from the request body data
@@ -112,7 +113,9 @@ def cmdInsertGetParmsTuple(tag: Tag) -> tuple:
         str(tag.user_id)
     )
 
-
+#------------------------------------------------------
+# Respond to a get request for a single tag
+#------------------------------------------------------
 def getSingleTag(tag_id: UUID) -> flask.Response:
     # fetch the tag record from the database
     sql_result = cmdSelectSingle(tag_id)
@@ -127,8 +130,9 @@ def getSingleTag(tag_id: UUID) -> flask.Response:
 
     return responses.get(sql_result.data)
 
-
+#------------------------------------------------------
 # Fetch the tag record that has the given tag_id
+#------------------------------------------------------
 def cmdSelectSingle(tag_id: UUID) -> DbOperationResult:
     sql = sql_statements.SELECT_SINGLE
     parms = (
