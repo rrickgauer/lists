@@ -11,6 +11,10 @@ export class TagElements {
         return $(eChildElement).closest(`.${TagElements.ListGroupItem.CONTAINER}`);
     }
 
+    static getTagID(eTagContainer) {
+        return $(eTagContainer).attr('data-tag-id');
+    }
+
     /**********************************************************
     Get the display section of the given tag element
     **********************************************************/

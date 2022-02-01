@@ -9,7 +9,6 @@ import { ApiWrapper } from "../../classes/api-wrapper";
  */
 export class TagFormNew
 {
-
     /**********************************************************
     Create a new tag
     **********************************************************/

@@ -2,6 +2,7 @@
 import { TagFormNew } from "./tags-create-new";
 import { TagElements } from "./tag-elements";
 import { TagSectionToggle } from "./tag-section-toggle";
+import { TagDelete } from "./tags-delete";
 
 
 /**********************************************************
@@ -28,6 +29,12 @@ function addEventListeners() {
     $(`.${TagElements.FormEdit.Buttons.CANCEL}`).on('click', function() {
         showNormalDisplaySection(this);
     });
+
+    // delete existing tag
+    $(`.${TagElements.ListGroupItem.BTN_DELETE}`).on('click', function() {
+        deleteTag(this);
+    });
+
 }
 
 /**********************************************************
@@ -57,4 +64,15 @@ function showNormalDisplaySection(eToggleBtn) {
 
 
 
+function deleteTag(eClickedDeleteBtn) {
+    const tagDelete = new TagDelete(eClickedDeleteBtn);
+    console.log(tagDelete);
+
+
+    if (!tagDelete.confirm()) {
+        return;
+    }
+
+    
+}
 
