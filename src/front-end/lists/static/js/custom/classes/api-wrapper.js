@@ -114,7 +114,6 @@ export class ApiWrapper
         return await fetch(url, {
             method: ApiWrapper.Methods.PUT,
             body: formData,
-            
         });
     }
 
@@ -161,6 +160,9 @@ export class ApiWrapper
     }
 
 
+    /**********************************************************
+    Internal function used for item complete updating
+    **********************************************************/
     static async _itemCompleteUpdate(itemID, requestMethod) {
         const url = `${ApiWrapper.Urls.ITEMS}/${itemID}/complete`;
 
@@ -168,6 +170,20 @@ export class ApiWrapper
             method: requestMethod,
         });
     }
+
+    /**********************************************************
+    POST: /tags
+    **********************************************************/
+    static async tagsPost(formData) {
+        const url = `${ApiWrapper.Urls.TAGS}`;
+
+        return await fetch(url, {
+            method: ApiWrapper.Methods.POST,
+            body: formData,
+        });
+    }
+
+
 
     static async logError(apiResponse) {
         console.error(await apiResponse.text());
@@ -190,4 +206,5 @@ ApiWrapper.Urls = {
     LOGIN: '/api/login',
     LISTS: '/api/lists',
     ITEMS: '/api/items',
+    TAGS: '/api/tags'
 }

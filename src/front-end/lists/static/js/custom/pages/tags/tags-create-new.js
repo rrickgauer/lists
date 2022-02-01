@@ -1,5 +1,8 @@
 
 import { TagElements } from "./tag-elements";
+import { SpinnerButton } from "../../classes/spinner-button";
+import { Utilities } from "../../classes/utilities";
+import { ApiWrapper } from "../../classes/api-wrapper";
 
 /**
  * This class handles creating a new tag
@@ -10,9 +13,21 @@ export class TagFormNew
     /**********************************************************
     Create a new tag
     **********************************************************/
-    static create() {
+    static async create() {
+        TagFormNew.SpinnerButton.showSpinner();
+
         const inputValues = TagFormNew.getInputValues();
-        console.log(inputValues);
+        const formData = Utilities.objectToFormData(inputValues);
+
+        const apiResponse = await ApiWrapper.tagsPost(formData);
+        
+        if (apiResponse.ok) {
+            window.location.href = window.location.href;
+        } 
+        else {
+            TagFormNew.SpinnerButton.reset();
+            ApiWrapper.logError(apiResponse);
+        }
     }
 
     /**********************************************************
@@ -45,6 +60,8 @@ export class TagFormNew
     }
 }
 
+
+TagFormNew.SpinnerButton = new SpinnerButton('#tags-form-new-btn-submit');
 
 
 

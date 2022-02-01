@@ -60,7 +60,6 @@ TagElements.FormNew = {
 Edit tag form element
 **********************************************************/
 TagElements.FormEdit = {
-    
     FORM: 'tags-form-edit',
     Inputs: {
         NAME: 'tags-form-edit-input-name',
