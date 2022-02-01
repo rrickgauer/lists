@@ -32,4 +32,11 @@ INSERT_UPDATE = '''
 '''
 
 
+DELETE_SINGLE = '''
+    DELETE FROM Tags t 
+    WHERE t.id = %s
+    AND t.user_id = %s
+'''
+
+
 

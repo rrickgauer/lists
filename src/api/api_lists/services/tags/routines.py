@@ -142,6 +142,36 @@ def cmdSelectSingle(tag_id: UUID) -> DbOperationResult:
 
     return sql_engine.select(sql, parms, False)
 
+#------------------------------------------------------
+# Respond to a delete request for a single tag
+#------------------------------------------------------
+def deleteTag(tag_id: UUID) -> flask.Response:
+    # delete the record from the database
+    sql_result = cmdDeleteSingle(tag_id)
+
+    # make sure the sql command was correct
+    if not sql_result.successful:
+        return responses.badRequest(str(sql_result.error))
+
+    # if the returned data is not 1 then one of these cases is true:
+    #   - the client does not own the tag 
+    #   - tag does not exist
+    if sql_result.data != 1:
+        return responses.forbidden()
+
+    # all good, tag successfully deleted 
+    return responses.deleted()
 
 
+#------------------------------------------------------
+# Delete the tag record with the matching tag_id
+#------------------------------------------------------
+def cmdDeleteSingle(tag_id: UUID) -> DbOperationResult:
+    sql = sql_statements.DELETE_SINGLE
 
+    parms = (
+        str(tag_id),
+        str(flask.g.client_id)
+    )
+
+    return sql_engine.modify(sql, parms)

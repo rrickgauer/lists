@@ -31,9 +31,12 @@ def tagsNoID():
 #------------------------------------------------------
 # Endpoints for tags with no id in the url
 #------------------------------------------------------
-@bp_tags.route('<uuid:tag_id>', methods = ['GET'])
+@bp_tags.route('<uuid:tag_id>', methods = ['GET', 'DELETE'])
 @security.login_required
 def tagsWithIDtagsNoID(tag_id: UUID):
 
-    return tag_services.getSingleTag(tag_id)
+    if flask.request.method == 'DELETE':
+        return tag_services.deleteTag(tag_id)
+    else:
+        return tag_services.getSingleTag(tag_id)
 
