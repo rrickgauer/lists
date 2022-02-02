@@ -1,8 +1,14 @@
 
 import { TagElements } from "./tag-elements";
 
+/**
+ * Responsible for updating an existing tag.
+ */
 export class TagUpdateForm
 {
+    /**********************************************************
+    Constructor
+    **********************************************************/
     constructor(eForm) {
         this.eForm = eForm;
         this.eTagContainer = TagElements.getParentTagElement(eForm);
@@ -14,6 +20,13 @@ export class TagUpdateForm
         this.getInputColorValue = this.getInputColorValue.bind(this);
     }
 
+    /**********************************************************
+    Get the values of the inputs.
+
+    Returns an object comprised of these keys:
+        - name
+        - color
+    **********************************************************/
     getInputValues() {
         return {
             name: this.getInputNameValue(),
@@ -21,10 +34,18 @@ export class TagUpdateForm
         }
     }
 
+
+    /**********************************************************
+    Return the name input element value
+    **********************************************************/
     getInputNameValue() {
         return $(this.eTagContainer).find(`.${TagElements.FormEdit.Inputs.NAME}`).val();
     }
 
+
+    /**********************************************************
+    Return the color input element value
+    **********************************************************/
     getInputColorValue() {
         return $(this.eTagContainer).find(`.${TagElements.FormEdit.Inputs.COLOR}`).val();
     }
