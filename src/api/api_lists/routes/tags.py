@@ -21,22 +21,24 @@ bp_tags = flask.Blueprint('tags', __name__)
 def tagsNoID():
     # create a new tag
     if flask.request.method == 'POST':
-        return tag_services.postTag(flask.request)
+        return tag_services.responsePostTag(flask.request)
     
     # Retrieve all tags
     else:
-        return tag_services.getAllTags()
+        return tag_services.responseGetAllTags()
 
 
 #------------------------------------------------------
 # Endpoints for tags with no id in the url
 #------------------------------------------------------
-@bp_tags.route('<uuid:tag_id>', methods = ['GET', 'DELETE'])
+@bp_tags.route('<uuid:tag_id>', methods = ['GET', 'DELETE', 'PUT'])
 @security.login_required
 def tagsWithIDtagsNoID(tag_id: UUID):
 
     if flask.request.method == 'DELETE':
-        return tag_services.deleteTag(tag_id)
+        return tag_services.responseDeleteTag(tag_id)
+    elif flask.request.method == 'PUT':
+        return tag_services.responsePutTag(tag_id, flask.request)
     else:
-        return tag_services.getSingleTag(tag_id)
+        return tag_services.responseGetSingleTag(tag_id)
 

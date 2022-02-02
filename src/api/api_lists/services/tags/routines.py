@@ -3,6 +3,7 @@
 This module contains all services related to tags.
 **********************************************************************************
 """
+from typing import Tuple
 from enum import Enum
 from datetime import datetime
 from re import S
@@ -21,7 +22,7 @@ class ErrorMessages(str, Enum):
 #------------------------------------------------------
 # Get all tags response
 #------------------------------------------------------
-def getAllTags() -> flask.Response:
+def responseGetAllTags() -> flask.Response:
     sql_result = cmdSelectAll()
 
     if not sql_result.successful:
@@ -40,32 +41,65 @@ def cmdSelectAll() -> DbOperationResult:
 
 
 #------------------------------------------------------
-# Get all the user's tags from the database
+# Respond to a POST /tags request
 #------------------------------------------------------
-def postTag(flask_request: flask.Request) -> flask.Response:
+def responsePostTag(flask_request: flask.Request) -> flask.Response:
+    new_tag_id = uuid4()
+    request_form = flask_request.form.to_dict()
+    return _responsePutPostTag(new_tag_id, request_form, responses.created)
+
+#------------------------------------------------------
+# Respond to PUT /tags/:tag_id request
+#------------------------------------------------------
+def responsePutTag(tag_id: UUID, flask_request: flask.Request) -> flask.Response:
+    request_form = flask_request.form.to_dict()
+    return _responsePutPostTag(tag_id, request_form, responses.updated)
+
+#------------------------------------------------------
+# Shared logic for POST/PUT requests
+#------------------------------------------------------
+def _responsePutPostTag(tag_id: UUID, flask_request_form: dict, responses_method) -> flask.Response:
+    # update/insert the given tag_id and request form dictionary
+    successful, error_message = modifyTag(tag_id, flask_request_form)
+
+    # if it's not successful return error message
+    if not successful:
+        return responses.badRequest(error_message)
+
+    # return the response used for a GET request for a single tag
+    tag_view_table = cmdSelectSingle(tag_id).data
+    return responses_method(tag_view_table)
+
+#------------------------------------------------------
+# Modify the tag record with the given tag_id to have the values fo the dict passed in
+#
+# Returns a tuple:
+#   bool: successful - whether or not the database record was successfully updated
+#   str: error message - the error message if the update was not successful
+#------------------------------------------------------
+def modifyTag(tag_id: UUID, tag_dict: dict) -> Tuple[bool, str]:
     # create a new Tag object from the request body data
-    new_tag = createNewTagObject(flask_request.form.to_dict())
+    new_tag = setupNewTagObject(tag_id, tag_dict)
 
     # Request must contain name and color fields 
     if not isTagValidForModify(new_tag):
-        return responses.badRequest(ErrorMessages.POST_MISSING_FIELDS.value)
+        return (False, ErrorMessages.POST_MISSING_FIELDS)
 
     # insert it into the database
     sql_result = cmdModify(new_tag)
 
     if not sql_result.successful:
-        return responses.badRequest(str(sql_result.error))
+        return (False, str(sql_result.error))
 
-    # return the response used for a GET request for a single tag
-    tag_view_table = cmdSelectSingle(new_tag.id).data
-    return responses.created(tag_view_table)
+    return (True, None)
+
 
 #------------------------------------------------------
 # create a new Tag object from the request body data
 #------------------------------------------------------
-def createNewTagObject(request_form: dict) -> Tag:
+def setupNewTagObject(tag_id: UUID, request_form: dict) -> Tag:
     new_tag = dictToTag(request_form)
-    setExistingTagObjectField(new_tag, uuid4())
+    setExistingTagObjectField(new_tag, tag_id)
     return new_tag
 
 #------------------------------------------------------
@@ -116,7 +150,7 @@ def cmdInsertGetParmsTuple(tag: Tag) -> tuple:
 #------------------------------------------------------
 # Respond to a get request for a single tag
 #------------------------------------------------------
-def getSingleTag(tag_id: UUID) -> flask.Response:
+def responseGetSingleTag(tag_id: UUID) -> flask.Response:
     # fetch the tag record from the database
     sql_result = cmdSelectSingle(tag_id)
 
@@ -145,7 +179,7 @@ def cmdSelectSingle(tag_id: UUID) -> DbOperationResult:
 #------------------------------------------------------
 # Respond to a delete request for a single tag
 #------------------------------------------------------
-def deleteTag(tag_id: UUID) -> flask.Response:
+def responseDeleteTag(tag_id: UUID) -> flask.Response:
     # delete the record from the database
     sql_result = cmdDeleteSingle(tag_id)
 
