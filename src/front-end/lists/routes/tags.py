@@ -4,6 +4,15 @@ Module:     tags
 Prefix:     '/tags'
 Purpose:    Routing for tags
 
+
+Outgoing data:
+    - lists (collection)
+        - id
+        - name
+        - color
+        - created_on
+        - text_color
+
 ********************************************************************************************
 """
 import flask
@@ -19,16 +28,13 @@ bp_tags = flask.Blueprint('tags', __name__)
 @bp_tags.route('')
 @security.login_required
 def tagsHome():
-
-    tags_api_response = tag_services.getAllTags()
-
-    payload = dict()
-    
-
     try:
+        tags_api_response = tag_services.getAllTags()
         tags = tags_api_response.json()
     except:
         tags = []
+
+    tag_services.calculateTextColors(tags)
 
     payload = dict(
         tags = tags
