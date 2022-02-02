@@ -1,6 +1,6 @@
 <!-- Modal -->
 <div class="modal fade" id="modal-list-settings" tabindex="-1" data-list-id>
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Settings</h5>
@@ -9,7 +9,40 @@
                 </button>
             </div>
             <div class="modal-body">
-                {% include 'home/list-settings-modal/section-settings.html' %}
+                <ul class="nav nav-pills mb-3 modal-list-settings-nav" role="tablist">
+                    <!-- basic settings -->
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" data-toggle="pill" href="#modal-list-settings-section-basic" role="tab">Basic</a>
+                    </li>
+
+                    <!-- tags -->
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" data-toggle="pill" href="#modal-list-settings-section-tags" role="tab">Tags</a>
+                    </li>
+              
+                </ul>
+                <div class="tab-content">
+                    <!-- basic list settings -->
+                    <div class="tab-pane fade show active" id="modal-list-settings-section-basic" role="tabpanel">
+                        
+                        <div class="row">
+                            <div class="col-sm-12 col-lg-8">
+                                {% include 'home/list-settings-modal/section-settings.html' %}
+                            </div>
+                            <div class="col-sm-12 col-lg-4">
+                                {% include 'home/list-settings-modal/section-tags.html' %}
+                            </div>
+                            
+                        </div>
+                        
+                        
+                    </div>
+
+                    <!-- tags -->
+                    <div class="tab-pane fade" id="modal-list-settings-section-tags" role="tabpanel">
+                        {% include 'home/list-settings-modal/section-tags.html' %}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
