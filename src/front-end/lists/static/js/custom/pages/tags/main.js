@@ -4,6 +4,7 @@ import { TagElements } from "./tag-elements";
 import { TagSectionToggle } from "./tag-section-toggle";
 import { TagDelete } from "./tags-delete";
 import { TagUpdateForm } from "./tags-update-form";
+import { ApiWrapper } from "../../classes/api-wrapper";
 
 
 /**********************************************************
@@ -80,10 +81,29 @@ function deleteTag(eClickedDeleteBtn) {
     }
 }
 
-function updateTag(event) {
+/**********************************************************
+Update the tag
+**********************************************************/
+async function updateTag(event) {
+    // prevent the form from being submitted automatically
     event.preventDefault();
+
     const updateForm = new TagUpdateForm(event.target);
+    
+    // disable the submit button
+    updateForm.spinnerButton.showSpinner();
+    
+    // send the api request
+    const apiResponse = await updateForm.save();
 
-    console.log(updateForm);
+    // enable the submit button
+    updateForm.spinnerButton.reset();
 
+    // if successful api request, refresh the page
+    // otherwise log the error
+    if (apiResponse.ok) {
+        window.location.href = window.location.href;
+    } else {
+        ApiWrapper.logError(apiResponse);
+    }
 }

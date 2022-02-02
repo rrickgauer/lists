@@ -194,6 +194,19 @@ export class ApiWrapper
         });
     }
 
+    /**********************************************************
+    PUT: /tags/:tag_id
+    **********************************************************/
+    static async tagsPut(tagID, formData) {
+        const url = `${ApiWrapper.Urls.TAGS}/${tagID}`;
+
+        return await fetch(url, {
+            method: ApiWrapper.Methods.PUT,
+            body: formData,
+        });
+    }
+
+
 
     /**********************************************************
     Log the api response error
