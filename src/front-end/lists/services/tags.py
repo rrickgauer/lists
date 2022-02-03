@@ -13,10 +13,24 @@ class TextColors(str, Enum):
     BLACK = 'text-black'
 
 #------------------------------------------------------
+# Generate the tags collection for the home page payload
+#------------------------------------------------------
+def getTagsHomePagePayload() -> list[dict]:
+    
+    # fetch the tags from the api
+    try:
+        tags = getAllTags().json()
+    except Exception as e:
+        print(e)
+        tags = []
+    
+    return tags
+
+
+#------------------------------------------------------
 # Fetch all the user's tags from the api
 #------------------------------------------------------
 def getAllTags() -> requests.Response:
-    
     body = flaskforward.structs.SingleRequest(
         url    = f'{api_wrapper.base_wrapper.URL_BASE}{api_wrapper.ApiUrls.TAGS}',
         auth   = (flask.g.email, flask.g.password),

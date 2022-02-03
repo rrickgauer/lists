@@ -1,11 +1,30 @@
 from __future__ import annotations
 from enum import Enum
+import flask
+from ..api_wrapper import lists as api_wrapper_lists
 
 
 # Icons for list types - Boxicons
 class ListTypeIcons(str, Enum):
     LIST     = 'bx-list-check'
     TEMPLATE = 'bx-copy-alt'
+
+
+
+def getUserListsCollectionPayload() -> list[dict]:
+    # fetch the user's lists
+    try:
+        response = api_wrapper_lists.getAllLists(flask.g)
+        lists_collection = response.json()
+    except Exception as e:
+        print(e)
+        lists_collection = []   # empty response body
+
+    # generate the icons
+    assignListTypeIcons(lists_collection)
+
+    return lists_collection
+
 
 
 #------------------------------------------------------
@@ -20,5 +39,3 @@ def assignListTypeIcons(lists_api_response: list[dict]):
             list_record.setdefault('type_icon', ListTypeIcons.LIST.value)
         else:
             list_record.setdefault('type_icon', ListTypeIcons.TEMPLATE.value)
-
-    return dict(lists=lists_api_response)
