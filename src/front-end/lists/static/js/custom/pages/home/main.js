@@ -2,12 +2,16 @@ import { SidenavFormList } from './sidenav-form-list';
 import { ListHtml } from "./list-html";
 import { ItemHtml } from "./item-html";
 import { ItemContentUpdateForm } from "./item-content-update-form";
-import { ListSettings } from "./list-settings";
+import { ListRename } from "./list-rename";
 import { ItemDrag } from "./item-drag";
 import { ItemCreator } from "./item-creator";
 import { ItemCompletor } from './item-update-complete';
 import { ItemRemove } from "./item-remove";
 import { CompleteItemsRemover } from "./list-remove-complete-items";
+import { ListClone } from "./list-clone";
+import { ListSettingsModal } from "./list-settings-modal";
+import { ListDelete } from './list-delete';
+
 
 const eOverlay = '<div style="z-index: 109;" class="drawer-overlay"></div>';
 
@@ -209,7 +213,7 @@ function performListAction(event) {
     switch(listActionValue)
     {
         case ListHtml.HeaderButtonActions.SETTINGS:
-            ListSettings.openModal(event.target);
+            ListSettingsModal.openModal(event.target);
             break;
         case ListHtml.HeaderButtonActions.TOGGLE_COMPLETE:
             handleToggleCompleteItemsButton(event);
@@ -319,7 +323,6 @@ Delete an item
 **********************************************************/
 function deleteItem(eDeleteButton) {
     const itemRemove = new ItemRemove(eDeleteButton);
-
     itemRemove.remove();
     itemRemove.updateListItemCount('#sidenav');
 }
@@ -350,12 +353,12 @@ List rename form modal: add event listeners
 **********************************************************/
 function addListSettingsModalListeners() {
     // save the list rename
-    $(ListSettings.Elements.BTN_SAVE).on('click', function() {
+    $(ListSettingsModal.Elements.BTN_SAVE).on('click', function() {
         saveListSettings();
     });
 
     // save the list rename for typing enter key while input is in focus
-    $(ListSettings.Elements.INPUT).on('keypress', function(e) {
+    $(ListSettingsModal.Elements.INPUT).on('keypress', function(e) {
         if (e.keyCode == 13) {
             e.preventDefault();
             saveListSettings();
@@ -364,30 +367,43 @@ function addListSettingsModalListeners() {
 
 
     // clone list
-    $(ListSettings.Elements.BTN_CLONE).on('click', function() {
-        const listSettings = new ListSettings();
+    $(ListSettingsModal.Elements.BTN_CLONE).on('click', function() {
+        const listSettings = new ListClone();
         listSettings.clone();
     });
 
     // delete list
-    $(ListSettings.Elements.BTN_DELETE).on('click', function() {
-        const listSettings = new ListSettings();
-        listSettings.delete();
-    });
+    $(ListSettingsModal.Elements.BTN_DELETE).on('click', deleteList);
 
     // close modal
-    $(ListSettings.Elements.MODAL).on('hide.bs.modal', ListSettings.handleModalCloseEvent);
+    $(ListSettingsModal.Elements.MODAL).on('hide.bs.modal', ListSettingsModal.handleModalCloseEvent);
 
     // rename list name input
-    $(ListSettings.Elements.INPUT).on('keyup change', ListSettings.handleNameInputChange);
+    $(ListSettingsModal.Elements.INPUT).on('keyup change', ListSettingsModal.handleNameInputChange);
 }
 
 /**********************************************************
 Action listener for saving a list rename
 **********************************************************/
 function saveListSettings() {
-    const listSettings = new ListSettings();
+    const listSettings = new ListRename();
     listSettings.save();
+}
+
+/**********************************************************
+Delete the current list
+**********************************************************/
+function deleteList() {
+    const listID = ListSettingsModal.getCurrentListID();
+    const listDelete = new ListDelete(listID);
+
+    if (!listDelete.confirm()) {
+        return;
+    }
+
+    listDelete.delete();
+    listDelete.removeListElements();
+    ListSettingsModal.closeModal();
 }
 
 
