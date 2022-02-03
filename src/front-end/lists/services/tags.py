@@ -1,4 +1,5 @@
 from __future__ import annotations
+from uuid import UUID
 import requests
 from enum import Enum
 import flask
@@ -27,6 +28,7 @@ def getTagsHomePagePayload() -> list[dict]:
     return tags
 
 
+
 #------------------------------------------------------
 # Fetch all the user's tags from the api
 #------------------------------------------------------
@@ -40,10 +42,20 @@ def getAllTags() -> requests.Response:
     return flaskforward.routines.sendRequest(body)
 
 
+def getListTags(list_id: UUID) -> requests.Response:
+    return requests.get(
+        url = f'{api_wrapper.base_wrapper.URL_BASE}{api_wrapper.ApiUrls.LISTS}/{list_id}/tags',
+        auth = (flask.g.email, flask.g.password)
+    )
+
+
+
+
+
 #------------------------------------------------------
 # Calculate the tag text color for all the given tags
 #------------------------------------------------------
-def calculateTextColors(tags: list[dict]) -> list[dict]:
+def calculateTextColors(tags: list[dict]):
     for tag in tags:
         tag_color = tag.get('color')
         tag['text_color'] = _getTextColor(tag_color).value
