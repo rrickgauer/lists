@@ -24,3 +24,16 @@ SELECT_ALL = '''
     
     ORDER BY vt.name ASC;
 '''
+
+#------------------------------------------------------
+# Delete all the tag assignments to a list
+#
+# 2 parms: 
+#   - list_id
+#   - user_id
+#------------------------------------------------------
+DELETE_ALL = '''
+    DELETE FROM List_Tags lt
+    WHERE   lt.list_id = %s
+    AND     OWNS_LIST(%s, lt.list_id);
+'''

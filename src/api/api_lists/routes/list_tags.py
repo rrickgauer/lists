@@ -23,7 +23,7 @@ def getAll(list_id: UUID):
 
 
 #------------------------------------------------------
-# Retrieve all the tags for a list
+# Delete all assigned tags for the given list
 #------------------------------------------------------
 @bp_list_tags.delete('')
 @security.login_required
