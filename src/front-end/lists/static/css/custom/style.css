@@ -400,6 +400,20 @@ textarea {
   background-color: #faf9fa;
 }
 
+#modal-list-settings-sidenav .sidenav-tags-collapse-item {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-bottom: 1px solid #d9d8de;
+  padding: 10px;
+}
+#modal-list-settings-sidenav .sidenav-tags-collapse-item:first-child {
+  border-top: 1px solid #d9d8de;
+}
+#modal-list-settings-sidenav .sidenav-tags-collapse-item-icon {
+  margin: 0px 5px;
+}
+
 .tags-list-group-item .tags-list-group-item-display {
   display: flex;
   justify-content: space-between;

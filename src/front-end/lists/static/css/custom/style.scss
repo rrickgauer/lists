@@ -388,6 +388,38 @@ textarea {
 }
 
 
+$sidenav-tags-collapse-item-border: 1px solid map-get($colors-grays, "lighter");
+
+// list settings modal - tags section
+#modal-list-settings-sidenav {
+    .sidenav-tags-collapse-item {
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        border-bottom: $sidenav-tags-collapse-item-border;
+        padding: 10px;
+
+        // give first item in the collection a top border
+        &:first-child {
+            border-top: $sidenav-tags-collapse-item-border;
+        }
+    }
+
+    .sidenav-tags-collapse-item-icon {
+        margin: 0px 5px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
 // ------------------------------------
 // Tags
 // ------------------------------------
