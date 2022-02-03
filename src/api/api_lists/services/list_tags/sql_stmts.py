@@ -25,5 +25,7 @@ SELECT_ALL = '''
                     FROM Lists l 
                     WHERE l.user_id = %s
                 )
-    );
+    )
+    
+    ORDER BY vt.name ASC;
 '''

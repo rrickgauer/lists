@@ -5,10 +5,10 @@ export class ListHtml
 {
 
     constructor(listID) {
-        this.listID       = listID;
-        this.items        = null;
-        this.metadata     = null;
-        this.assignedTags = null;
+        this.listID   = listID;
+        this.items    = null;
+        this.metadata = null;
+        this.tags     = null;
 
         // bind the object's methods
         this.fetchData            = this.fetchData.bind(this);
@@ -37,6 +37,8 @@ export class ListHtml
         this.items = await this.parseApiResponseData(sendRequestsResult.apiResponses.items);
         this.metadata = await this.parseApiResponseData(sendRequestsResult.apiResponses.meta);
         this.tags = await this.parseApiResponseData(sendRequestsResult.apiResponses.tags);
+
+        console.table(this.tags);
 
         return true;
     }
@@ -101,6 +103,7 @@ export class ListHtml
     **********************************************************/
     getHtml() {
         const itemsHtml = this.getItemsHtml();
+        const tagsHtml = this.getTagsHtml();
 
         // determine which type icon to display
         const typeIcon = ListHtml.getTypeIcon(this.metadata.type);
@@ -150,6 +153,12 @@ export class ListHtml
                         </button>
                     </div>
                 </div>
+
+
+                <div>
+                    ${tagsHtml}
+                </div>
+
             </div>
 
             <div class="card-body">
@@ -176,6 +185,16 @@ export class ListHtml
         let html = '';
         for (const item of this.items) {
             html += new ItemHtml(item).getHtml();
+        }
+
+        return html;
+    }
+
+    getTagsHtml() {
+        let html = '';
+        
+        for (const tag of this.tags) {
+            html += `<span class="badge badge-pill tag-badge ${tag.text_color} mx-1" style="background-color: ${tag.color};">${tag.name}</span>`;
         }
 
         return html;
