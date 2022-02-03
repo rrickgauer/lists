@@ -19,7 +19,7 @@ bp_list_tags = flask.Blueprint('list_tags', __name__)
 @bp_list_tags.get('')
 @security.login_required
 def getAll(list_id: UUID):
-    return list_tag_services.responseGetAll(list_id)
+    return list_tag_services.responseGetTags(list_id)
 
 
 #------------------------------------------------------
@@ -28,4 +28,14 @@ def getAll(list_id: UUID):
 @bp_list_tags.delete('')
 @security.login_required
 def deleteAll(list_id: UUID):
-    return list_tag_services.responseDeleteAll(list_id)
+    return list_tag_services.responseDeleteTags(list_id)
+
+
+
+#------------------------------------------------------
+# Assign the given tag to the given list
+#------------------------------------------------------
+@bp_list_tags.post('<uuid:tag_id>')
+@security.login_required
+def assignNewTag(list_id: UUID, tag_id: UUID):
+    return list_tag_services.responsePostTag(list_id, tag_id)

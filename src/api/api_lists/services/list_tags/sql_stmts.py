@@ -37,3 +37,15 @@ DELETE_ALL = '''
     WHERE   lt.list_id = %s
     AND     OWNS_LIST(%s, lt.list_id);
 '''
+
+
+#------------------------------------------------------
+# Insert a List_Tags record
+# Calls a stored procedure
+#
+# 3 parms: 
+#   - list_id
+#   - tag_id
+#   - user_id
+#------------------------------------------------------
+INSERT_SINGLE = 'CALL Insert_List_Tag(%s, %s, %s);'

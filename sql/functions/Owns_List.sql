@@ -7,7 +7,6 @@ CREATE FUNCTION `Owns_List`(
 ) RETURNS tinyint(1)
     DETERMINISTIC
 BEGIN
-    DECLARE customerLevel VARCHAR(20);
     DECLARE record_count INT DEFAULT 0;
     DECLARE is_user_list BOOL;
     
