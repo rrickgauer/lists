@@ -1,5 +1,6 @@
 import { ApiWrapper } from "../../classes/api-wrapper";
 import { ItemHtml } from "./item-html";
+import { TagHtml } from "./tag-html";
 
 export class ListHtml
 {
@@ -37,8 +38,6 @@ export class ListHtml
         this.items = await this.parseApiResponseData(sendRequestsResult.apiResponses.items);
         this.metadata = await this.parseApiResponseData(sendRequestsResult.apiResponses.meta);
         this.tags = await this.parseApiResponseData(sendRequestsResult.apiResponses.tags);
-
-        console.table(this.tags);
 
         return true;
     }
@@ -155,7 +154,7 @@ export class ListHtml
                 </div>
 
 
-                <div>
+                <div class="${ListHtml.Elements.TAGS_CONTAINER}">
                     ${tagsHtml}
                 </div>
 
@@ -190,11 +189,14 @@ export class ListHtml
         return html;
     }
 
+    /**********************************************************
+    Generate the html for all this list' assigned tags
+    **********************************************************/
     getTagsHtml() {
         let html = '';
         
         for (const tag of this.tags) {
-            html += `<span class="badge badge-pill tag-badge ${tag.text_color} mx-1" style="background-color: ${tag.color};">${tag.name}</span>`;
+            html += new TagHtml(tag).getHtml();
         }
 
         return html;
@@ -293,6 +295,12 @@ export class ListHtml
         return $(eActiveList).find(`.${ItemHtml.Elements.TOP}`);
     }
 
+    /**********************************************************
+    Retrieve all the assigned tag elements of the given list element
+    **********************************************************/
+    static getAssignedTags(eActiveListContainer) {
+        return $(eActiveListContainer).find(`.${ListHtml.Elements.TAGS_CONTAINER} .${TagHtml.Elements.CONTAINER}`);
+    }
 
 
 }
@@ -305,7 +313,8 @@ ListHtml.Elements = {
     ACTION_BUTTONS: 'list-header-buttons',
     LIST_NAME: 'active-list-name',
     TOGGLE_COMPLETE: 'list-header-toggle-complete',
-    TYPE_ICON: 'list-header-type-icon'
+    TYPE_ICON: 'list-header-type-icon',
+    TAGS_CONTAINER: 'active-list-tags-container',
 }
 
 

@@ -1,6 +1,8 @@
 import { SpinnerButton } from '../../classes/spinner-button';
 import { ListHtml } from './list-html';
 
+import { ListSettingsModalTags } from "./list-settings-modal-tags";
+
 
 /**
  * This class handles all the elements/actions surrounding the list settings modal.
@@ -25,6 +27,9 @@ export class ListSettingsModal
         // set the related type radio input to checked
         const listType = $(eActiveListContainer).attr('data-list-type');
         ListSettingsModal.setTypeOptionChecked(listType);
+
+        // set the list's assigned tags
+        ListSettingsModalTags.setAssignedTags(listID);
 
         // show the modal
         $(ListSettingsModal.Elements.MODAL).modal('show');
@@ -189,13 +194,13 @@ export class ListSettingsModal
 
 
 ListSettingsModal.Elements = {
-    MODAL: '#modal-list-settings',
-    INPUT: '#list-rename-form-input',
-    BTN_SAVE: '#list-rename-form-save',
-    TYPE_OPTIONS: 'list-rename-form-type-radio-option',
-    BTN_CLONE: '#modal-list-settings-btn-clone',
-    BTN_DELETE: '#modal-list-settings-btn-delete',
-    BTN_CLOSE_MODAL: '#modal-list-settings-btn-close-modal',
+    MODAL                      : '#modal-list-settings',
+    INPUT                      : '#list-rename-form-input',
+    BTN_SAVE                   : '#list-rename-form-save',
+    TYPE_OPTIONS               : 'list-rename-form-type-radio-option',
+    BTN_CLONE                  : '#modal-list-settings-btn-clone',
+    BTN_DELETE                 : '#modal-list-settings-btn-delete',
+    BTN_CLOSE_MODAL            : '#modal-list-settings-btn-close-modal',
 }
 
 ListSettingsModal.SpinnerButtons = {
