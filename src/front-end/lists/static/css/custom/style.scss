@@ -392,6 +392,13 @@ $sidenav-tags-collapse-item-border: 1px solid map-get($colors-grays, "lighter");
 
 // list settings modal - tags section
 #modal-list-settings-sidenav {
+
+    .sidenav-tags-collapse-list {
+        max-height: 300px;
+        overflow-y: auto;
+
+    }
+
     .sidenav-tags-collapse-item {
         display: flex;
         justify-content: flex-start;
@@ -409,10 +416,6 @@ $sidenav-tags-collapse-item-border: 1px solid map-get($colors-grays, "lighter");
         margin: 0px 5px;
     }
 }
-
-
-
-
 
 
 

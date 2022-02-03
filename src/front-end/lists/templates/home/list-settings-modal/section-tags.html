@@ -29,25 +29,31 @@ Incoming data:
         
         <div class="collapse" id="modal-list-settings-sidenav-tags-collapse">
             <div class="card card-body">
-                <!-- All tags that user has created that can be assigned to this list -->
-                {% for tag in data.tags %}
 
-                    <div class="sidenav-tags-collapse-item" data-tag-id="{{ tag.id }}">
-                        <div class="d-flex align-items-center">
-                            <!-- checkbox -->
-                            <div class="form-check sidenav-tags-collapse-item-input">
-                                <input class="form-check-input position-static" type="checkbox" value="{{ tag.id }}"/>
-                            </div>
 
-                            <!-- tag color icon -->
-                            <i class='bx bxs-circle sidenav-tags-collapse-item-icon' style="color: {{tag.color}};"></i>
-                        </div> 
+                <div class="sidenav-tags-collapse-list">
+                    <!-- All tags that user has created that can be assigned to this list -->
+                    {% for tag in data.tags %}
 
-                        <!-- tag name -->
-                        <span class="sidenav-tags-collapse-item-name">{{ tag.name }}</span>
-                    </div>
+                        <div class="sidenav-tags-collapse-item" data-tag-id="{{ tag.id }}">
+                            <div class="d-flex align-items-center">
+                                <!-- checkbox -->
+                                <div class="form-check sidenav-tags-collapse-item-input">
+                                    <input class="form-check-input position-static" type="checkbox" value="{{ tag.id }}"/>
+                                </div>
 
-                {% endfor %}
+                                <!-- tag color icon -->
+                                <i class='bx bxs-circle sidenav-tags-collapse-item-icon' style="color: {{tag.color}};"></i>
+                            </div> 
+
+                            <!-- tag name -->
+                            <span class="sidenav-tags-collapse-item-name">{{ tag.name }}</span>
+                        </div>
+
+                    {% endfor %}
+                </div>
+
+
             </div>
         </div>
     
