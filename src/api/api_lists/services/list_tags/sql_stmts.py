@@ -38,6 +38,21 @@ DELETE_ALL = '''
     AND     OWNS_LIST(%s, lt.list_id);
 '''
 
+#------------------------------------------------------
+# Delete the single tag assignment from the given list
+#
+# 3 parms: 
+#   - list_id
+#   - tag_id
+#   - user_id
+#------------------------------------------------------
+DELETE_SINGLE = '''
+    DELETE FROM List_Tags lt
+    WHERE   lt.list_id = %s
+    AND     lt.tag_id = %s
+    AND     Owns_List(%s, lt.list_id);
+'''
+
 
 #------------------------------------------------------
 # Insert a List_Tags record
@@ -49,3 +64,7 @@ DELETE_ALL = '''
 #   - user_id
 #------------------------------------------------------
 INSERT_SINGLE = 'CALL Insert_List_Tag(%s, %s, %s);'
+
+
+
+

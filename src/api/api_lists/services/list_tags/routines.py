@@ -101,6 +101,35 @@ def cmdInsert(list_id: UUID, tag_id: UUID) -> DbOperationResult:
     return sql_engine.modify(sql, parms)
 
 
+#------------------------------------------------------
+# Delete a single tag assignment
+#------------------------------------------------------
+def responseDeleteTag(list_id: UUID, tag_id: UUID) -> flask.Response:
+    sql_result = cmdDeleteSingle(list_id, tag_id)
+
+    if not sql_result.successful:
+        return responses.badRequest(str(sql_result.error))
+
+    if sql_result.data != 1:
+        return responses.notFound()
+
+    return responses.deleted()
+
+
+#------------------------------------------------------
+# SQL command to delete a single tag assignment
+#------------------------------------------------------
+def cmdDeleteSingle(list_id: UUID, tag_id: UUID) -> DbOperationResult:
+    sql = sql_stmts.DELETE_SINGLE
+
+    parms = (
+        str(list_id),
+        str(tag_id),
+        str(flask.g.client_id)
+    )
+
+    return sql_engine.modify(sql, parms)
+
 
 
 

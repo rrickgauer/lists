@@ -39,3 +39,12 @@ def deleteAll(list_id: UUID):
 @security.login_required
 def assignNewTag(list_id: UUID, tag_id: UUID):
     return list_tag_services.responsePostTag(list_id, tag_id)
+
+
+#------------------------------------------------------
+# Assign the given tag to the given list
+#------------------------------------------------------
+@bp_list_tags.delete('<uuid:tag_id>')
+@security.login_required
+def deleteTagAssignment(list_id: UUID, tag_id: UUID):
+    return list_tag_services.responseDeleteTag(list_id, tag_id)
