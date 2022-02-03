@@ -5,17 +5,18 @@ export class ListHtml
 {
 
     constructor(listID) {
-        this.listID = listID;
-        this.items = null;
-        this.metadata = null;
+        this.listID       = listID;
+        this.items        = null;
+        this.metadata     = null;
+        this.assignedTags = null;
 
         // bind the object's methods
-        this.fetchData          = this.fetchData.bind(this);
-        this.fetchListMetadata  = this.fetchListMetadata.bind(this);
-        this.fetchItems         = this.fetchItems.bind(this);
-        this.renderHtml         = this.renderHtml.bind(this);
-        this.getHtml            = this.getHtml.bind(this);
-        this.displayLoadingCard = this.displayLoadingCard.bind(this);
+        this.fetchData            = this.fetchData.bind(this);
+        this.sendApiRequests      = this.sendApiRequests.bind(this);
+        this.parseApiResponseData = this.parseApiResponseData.bind(this);
+        this.renderHtml           = this.renderHtml.bind(this);
+        this.getHtml              = this.getHtml.bind(this);
+        this.displayLoadingCard   = this.displayLoadingCard.bind(this);
     }
 
     /**********************************************************
@@ -26,68 +27,64 @@ export class ListHtml
         false: api error
     **********************************************************/
     async fetchData() {
-        const fetchMetadataSuccess = await this.fetchListMetadata();
+        const sendRequestsResult = await this.sendApiRequests();
 
-        if (!fetchMetadataSuccess) {
+        if (!sendRequestsResult.successful) {
             return false;
         }
 
-        const fetchItemsSuccess = await this.fetchItems();
-
-        if (!fetchItemsSuccess) {
-            return false;
-        }
-
+        // parse each api response and assign it to the respective property
+        this.items = await this.parseApiResponseData(sendRequestsResult.apiResponses.items);
+        this.metadata = await this.parseApiResponseData(sendRequestsResult.apiResponses.meta);
+        this.tags = await this.parseApiResponseData(sendRequestsResult.apiResponses.tags);
 
         return true;
     }
     
     /**********************************************************
-    Fetch the list metadata from the api.
+    Send all the api requests:
+        GET: /lists/:list_id
+        GET: /lists/:list_id/items
+        GET: /lists/:list_id/tags
 
-    Returns a bool:
-        true: data was successfully fetched
-        false: api error
+    Returns an object:
+        successful - bool
+        apiResponses - object with all 3 request responses
     **********************************************************/
-    async fetchListMetadata() {
-        const apiResponse = await ApiWrapper.listsGet(this.listID);
+    async sendApiRequests() {
 
-        if (!apiResponse.ok) {
-            return false;
+        const returnVal = {
+            successful: true,
         }
 
-        try {
-            this.metadata = await apiResponse.json();    
-        } catch (error) {
-            this.metadata = null;
-            return false;
+        // create an object with all 3 requests
+        returnVal.apiResponses = {
+            meta: await ApiWrapper.listsGet(this.listID),
+            tags: await ApiWrapper.listTagsGet(this.listID),
+            items: await ApiWrapper.itemsGetByList(this.listID),
         }
 
-        return true;
+        // send all 3 requests
+        await Promise.all(Object.values(returnVal.apiResponses)).catch((error) => {
+            console.error(error);
+            returnVal.successful = false;
+        });
+
+        return returnVal;
     }
 
     /**********************************************************
-    Fetch the list items from the api
-
-    Returns a bool:
-        true: data was successfully fetched
-        false: api error
+    Try to parse the given text data into json
+    Returns an empty list if unable to parse
     **********************************************************/
-    async fetchItems() {
-        const apiResponse = await ApiWrapper.itemsGetByList(this.listID);
-
-        if (!apiResponse.ok) {
-            return false;
-        }
-
+    async parseApiResponseData(apiResponsePromise) {
         try {
-            this.items = await apiResponse.json();
+            return await apiResponsePromise.json();
         } catch (error) {
-            this.items = [];    // no items in this list
+            return [];
         }
-        
-        return true;
     }
+
 
     /**********************************************************
     Render this list's html to the given html element

@@ -20,11 +20,11 @@ from . import sql_stmts
 #------------------------------------------------------
 def responseGetAll(list_id: UUID) -> flask.Response:
     sql_result = cmdSelectAll(list_id)
-
+    
     if not sql_result.successful:
         return responses.badRequest(str(sql_result.error))
 
-    return responses.get(sql_result.data)
+    return responses.get(sql_result.data or [])
 
 
 

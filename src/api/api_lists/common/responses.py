@@ -58,7 +58,7 @@ def forbidden(output=None) -> flask.Response:
 #----------------------------------------------------------
 def _standardReturn(output, response_code: HTTPStatus) -> flask.Response:
     
-    if not output:
+    if output == None:
         return ('', response_code)
     else:
         return (flask.jsonify(output), response_code)

@@ -78,6 +78,28 @@ export class ApiWrapper
     }
 
 
+
+    /**********************************************************
+    GET: /lists/:list_id/tags
+    **********************************************************/
+    static async listTagsGet(listID) {
+        const url = `${ApiWrapper.Urls.LISTS}/${listID}/tags`;
+
+        return await fetch(url, {
+            method: ApiWrapper.Methods.GET,
+        });
+    }
+
+
+
+
+
+
+
+
+
+
+    
     /**********************************************************
     Get the items that belong to the given list id
     **********************************************************/
