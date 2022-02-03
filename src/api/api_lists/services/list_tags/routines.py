@@ -27,8 +27,9 @@ def responseGetAll(list_id: UUID) -> flask.Response:
     return responses.get(sql_result.data or [])
 
 
-
-
+#------------------------------------------------------
+# SQL command that selects all the tags assigned to the given list
+#------------------------------------------------------
 def cmdSelectAll(list_id: UUID) -> DbOperationResult:
     sql = sql_stmts.SELECT_ALL
     
@@ -38,3 +39,14 @@ def cmdSelectAll(list_id: UUID) -> DbOperationResult:
     )
 
     return sql_engine.select(sql, parms, True)
+
+
+# Respond to a request to delete all assigned tags for the given list
+def responseDeleteAll(list_id: UUID) -> flask.Response:
+    
+    
+    
+    
+    
+    return 'delete all list tags'
+

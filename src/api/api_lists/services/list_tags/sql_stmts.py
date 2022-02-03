@@ -19,12 +19,7 @@ SELECT_ALL = '''
         FROM    List_Tags lt
         WHERE   lt.list_id = %s 
         AND     lt.tag_id = vt.id
-        AND     lt.list_id IN 
-                (
-                    SELECT l.id 
-                    FROM Lists l 
-                    WHERE l.user_id = %s
-                )
+        AND     Owns_List(%s, lt.list_id)
     )
     
     ORDER BY vt.name ASC;

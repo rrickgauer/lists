@@ -22,3 +22,10 @@ def getAll(list_id: UUID):
     return list_tag_services.responseGetAll(list_id)
 
 
+#------------------------------------------------------
+# Retrieve all the tags for a list
+#------------------------------------------------------
+@bp_list_tags.delete('')
+@security.login_required
+def deleteAll(list_id: UUID):
+    return list_tag_services.responseDeleteAll(list_id)
