@@ -28,13 +28,10 @@ Incoming data:
         </div>
         
         <div class="collapse" id="modal-list-settings-sidenav-tags-collapse">
-            <div class="card card-body">
-
-
-                <div class="sidenav-tags-collapse-list">
+            <div class="card">
+                <div class="card-body sidenav-tags-collapse-list">
                     <!-- All tags that user has created that can be assigned to this list -->
                     {% for tag in data.tags %}
-
                         <div class="sidenav-tags-collapse-item" data-tag-id="{{ tag.id }}">
                             <div class="d-flex align-items-center">
                                 <!-- checkbox -->
@@ -49,11 +46,14 @@ Incoming data:
                             <!-- tag name -->
                             <span class="sidenav-tags-collapse-item-name">{{ tag.name }}</span>
                         </div>
-
                     {% endfor %}
                 </div>
 
-
+                <!-- link to tags page -->
+                <div class="card-footer bg-white">
+                    <a href="/tags">Edit labels</a>
+                </div>
+                
             </div>
         </div>
     
