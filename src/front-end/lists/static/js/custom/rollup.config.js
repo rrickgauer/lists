@@ -6,6 +6,7 @@ export default [
             file: 'dist/home.bundle.js',
             format: 'iife',
             compact: true,
+            sourcemap: true,
         }
     },
     {
@@ -14,6 +15,7 @@ export default [
             file: 'dist/login.bundle.js',
             format: 'iife',
             compact: true,
+            sourcemap: true,
         }
     },
     {
@@ -22,6 +24,7 @@ export default [
             file: 'dist/tags.bundle.js',
             format: 'iife',
             compact: true,
+            sourcemap: true,
         }
     },
   ];
