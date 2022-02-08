@@ -21,23 +21,23 @@ Incoming data:
 <body>
 
     <!-- header -->
-    <div class="container my-5">
-        <h1>Tags</h1>
-        <a href="/" class="btn btn-lg btn-light">Back to lists</a>
+    <div class="container mt-5 mb-3">
+        <!-- <h1>Tags</h1> -->
+        <a href="/" class="btn btn-lg btn-light"><i class='bx bx-arrow-back'></i> Back to lists</a>
     </div>
 
 
     <!-- existing tags -->
     <div class="container my-5" id="tags-container">
         <div class="card" id="tags-card">
-            <div class="card-header">
+            <div class="card-header bg-gray-lightest">
                 <div class="d-flex justify-content-between align-items-center">
-                    <div>
+                    <div class="font-weight-bolder">
                         {{data.tags|length}} tags
                     </div>
                     
                     <div>
-                        <button type="button" class="btn btn-success" data-toggle="collapse" data-target="#tags-form-new-container">New tag</button>
+                        <button type="button" class="btn btn-success" data-toggle="collapse" data-target="#tags-form-new-container">New</button>
                     </div>
                 </div>
 
@@ -49,44 +49,7 @@ Incoming data:
             
             
             <div class="card-body">
-
-                <ul class="list-group">
-                    {% for tag in data.tags %}
-
-                        <li class="list-group-item tags-list-group-item" data-tag-id="{{tag.id}}">
-                            <!-- tag display section -->
-                            <div class="tags-list-group-item-display">
-                                <span class="badge badge-pill tag-badge {{ tag.text_color }}" style="background-color: {{tag.color}};">{{tag.name}}</span>
-
-                                <div>
-                                    <button type="button" class="tags-list-group-item-btn-edit btn btn-sm btn-gray">Edit</button>
-                                    <button type="button" class="tags-list-group-item-btn-delete btn btn-sm btn-gray text-danger">Delete</button>
-                                </div>
-                            </div>
-
-                            <!-- edit tag form -->
-                            <div class="tags-list-group-item-form-container d-none">
-                                <form class="tags-form-edit">
-                                    <!-- name -->
-                                    <div class="form-group">
-                                        <input type="text" class="form-control form-control-sm tags-form-edit-input-name" required value="{{tag.name}}" required>
-                                    </div>
-                        
-                                    <!-- color -->
-                                    <div class="form-group">
-                                        <input type="color" class="form-control form-control-sm tags-form-edit-input-color" required value="{{tag.color}}" required>
-                                    </div>
-                        
-                                    <!-- submit -->
-                                    <button type="submit" class="tags-form-edit-btn-submit btn btn-sm btn-success">Save changes</button>
-                                    <button type="button" class="tags-form-edit-btn-cancel btn btn-sm btn-gray">Cancel</button>
-                                </form>
-                            </div>
-
-                        </li>
-
-                    {% endfor %}
-                </ul>
+                {% include 'tags/tags-list.html' %}
             </div>
     
         </div>

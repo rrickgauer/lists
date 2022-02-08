@@ -424,4 +424,16 @@ textarea {
   align-items: center;
 }
 
+#tags-card .card-header {
+  background-color: #f6f5ff;
+  border-bottom: 1px solid #d9d8de;
+}
+#tags-card .card-body {
+  padding: 0px;
+}
+#tags-card .tags-list-group-item {
+  border-radius: 0px;
+  border-bottom: 1px solid #d9d8de;
+}
+
 /*# sourceMappingURL=style.css.map */

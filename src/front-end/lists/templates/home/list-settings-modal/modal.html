@@ -30,39 +30,15 @@ Incoming data:
                 </button>
             </div>
             <div class="modal-body">
-                <ul class="nav nav-pills mb-3 modal-list-settings-nav" role="tablist">
-                    <!-- basic settings -->
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link active" data-toggle="pill" href="#modal-list-settings-section-basic" role="tab">Basic</a>
-                    </li>
 
-                    <!-- tags -->
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link" data-toggle="pill" href="#modal-list-settings-section-tags" role="tab">Tags</a>
-                    </li>
-              
-                </ul>
-                <div class="tab-content">
-                    <!-- basic list settings -->
-                    <div class="tab-pane fade show active" id="modal-list-settings-section-basic" role="tabpanel">
-                        
-                        <div class="row">
-                            <div class="col-sm-12 col-lg-8">
-                                {% include 'home/list-settings-modal/section-settings.html' %}
-                            </div>
-                            <div class="col-sm-12 col-lg-4">
-                                {% include 'home/list-settings-modal/section-tags.html' %}
-                            </div>
-                            
-                        </div>
-                        
-                        
+                <div class="row">
+                    <div class="col-sm-12 col-lg-8">
+                        {% include 'home/list-settings-modal/section-settings.html' %}
                     </div>
-
-                    <!-- tags -->
-                    <div class="tab-pane fade" id="modal-list-settings-section-tags" role="tabpanel">
+                    <div class="col-sm-12 col-lg-4">
                         {% include 'home/list-settings-modal/section-tags.html' %}
                     </div>
+                    
                 </div>
             </div>
         </div>
