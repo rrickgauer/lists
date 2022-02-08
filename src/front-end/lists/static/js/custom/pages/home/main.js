@@ -11,6 +11,8 @@ import { CompleteItemsRemover } from "./list-remove-complete-items";
 import { ListClone } from "./list-clone";
 import { ListSettingsModal } from "./list-settings-modal";
 import { ListDelete } from './list-delete';
+import { ListSettingsModalTags } from "./list-settings-modal-tags";
+import { TagAssignment } from "./tag-assignment";
 
 
 const eOverlay = '<div style="z-index: 109;" class="drawer-overlay"></div>';
@@ -380,6 +382,12 @@ function addListSettingsModalListeners() {
 
     // rename list name input
     $(ListSettingsModal.Elements.INPUT).on('keyup change', ListSettingsModal.handleNameInputChange);
+
+    // assign/remove a tag to a list
+    $(`.${ListSettingsModalTags.Elements.ITEM_CHECKBOX}`).on('change', function() {
+        assignListTag(this);
+    });
+
 }
 
 /**********************************************************
@@ -406,8 +414,26 @@ function deleteList() {
     ListSettingsModal.closeModal();
 }
 
+/**********************************************************
+Add or remove the tag assignment
+**********************************************************/
+function assignListTag(eClickedCheckbox) {
+    const tagAssignment = new TagAssignment(eClickedCheckbox);
+
+    if (tagAssignment.isNew()) {
+        tagAssignment.save();
+    } else {
+        tagAssignment.delete();
+    }
+}
+
+
+
+
 
 function testingActivateFirstList() {
     const firstList = $('#lists-container').find('.list-group-item-action')[0];
     activateList(firstList);
 }
+
+

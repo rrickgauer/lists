@@ -91,13 +91,27 @@ export class ApiWrapper
     }
 
 
+    /**********************************************************
+    POST: /lists/:list_id/tags/:tag_id
+    **********************************************************/
+    static async listTagsPost(listID, tagID) {
+        const url = `${ApiWrapper.Urls.LISTS}/${listID}/tags/${tagID}`;
 
+        return await fetch(url, {
+            method: ApiWrapper.Methods.POST,
+        });
+    }
 
+    /**********************************************************
+    DELETE: /lists/:list_id/tags/:tag_id
+    **********************************************************/
+    static async listTagsDelete(listID, tagID) {
+        const url = `${ApiWrapper.Urls.LISTS}/${listID}/tags/${tagID}`;
 
-
-
-
-
+        return await fetch(url, {
+            method: ApiWrapper.Methods.DELETE,
+        });
+    }
 
     
     /**********************************************************
@@ -217,6 +231,17 @@ export class ApiWrapper
     }
 
     /**********************************************************
+    DELETE: /tags/:tag_id
+    **********************************************************/
+    static async tagsGet(tagID) {
+        const url = `${ApiWrapper.Urls.TAGS}/${tagID}`;
+
+        return await fetch(url, {
+            method: ApiWrapper.Methods.GET,
+        });
+    }
+
+    /**********************************************************
     PUT: /tags/:tag_id
     **********************************************************/
     static async tagsPut(tagID, formData) {
@@ -227,6 +252,8 @@ export class ApiWrapper
             body: formData,
         });
     }
+
+    
 
 
 

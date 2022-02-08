@@ -99,6 +99,24 @@ def getAllListTags(list_id: UUID):
 
     return (flask.json.dumps(tags_with_text_color), api_response.status_code, api_response.headers.items())
 
+#------------------------------------------------------
+# Need to do some additional processing for tag api requests
+# Calculate the tag text color
+#------------------------------------------------------
+@bp_api.route('tags/<uuid:tag_id>', methods=['GET'])
+@security.login_required
+def getTag(tag_id: UUID):
+    api_response = tag_services.getTag(tag_id)
+
+    try:
+        tags_with_text_color = api_response.json()
+    except Exception:
+        return (None, api_response.status_code, api_response.headers.items())
+
+    tags_with_text_color['text_color'] = tag_services._getTextColor(tags_with_text_color.get('color')).value
+
+    return (flask.json.dumps(tags_with_text_color), api_response.status_code, api_response.headers.items())
+
 
 #------------------------------------------------------
 # Forward all these requests to the api
@@ -122,11 +140,6 @@ def router(api_endpoint: str):
     api_response = flaskforward.routines.sendRequest(body)
     
     return flaskforward.routines.toFlaskResponse(api_response)
-
-
-
-
-
 
 
 def get_tags_text_color(api_response: requests.Response):

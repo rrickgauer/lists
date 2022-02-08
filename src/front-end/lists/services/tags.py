@@ -50,6 +50,13 @@ def getListTags(list_id: UUID) -> requests.Response:
 
 
 
+def getTag(tag_id: UUID) -> requests.Response:
+    return requests.get(
+        url = f'{api_wrapper.base_wrapper.URL_BASE}{api_wrapper.ApiUrls.TAGS}/{tag_id}',
+        auth = (flask.g.email, flask.g.password)
+    )
+
+
 
 
 #------------------------------------------------------
