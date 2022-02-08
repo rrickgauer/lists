@@ -27,6 +27,7 @@ def registerBlueprints(flask_app: flask.Flask):
     flask_app.register_blueprint(routes.home.bp_home, url_prefix='/')
     flask_app.register_blueprint(routes.login.bp_login, url_prefix='/login')
     flask_app.register_blueprint(routes.api.bp_api, url_prefix='/api')
+    flask_app.register_blueprint(routes.tags.bp_tags, url_prefix='/tags')
 
 
 

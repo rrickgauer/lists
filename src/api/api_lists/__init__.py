@@ -29,8 +29,9 @@ def setConfigValues(flask_app: flask.Flask):
 def registerBlueprints(flask_app: flask.Flask):
     flask_app.register_blueprint(routes.users.bp_users, url_prefix='/users')
     flask_app.register_blueprint(routes.lists.bp_lists, url_prefix='/lists')
+    flask_app.register_blueprint(routes.list_tags.bp_list_tags, url_prefix='/lists/<uuid:list_id>/tags')
     flask_app.register_blueprint(routes.items.bp_items, url_prefix='/items')
-
+    flask_app.register_blueprint(routes.tags.bp_tags, url_prefix='/tags')
 
 
 app = flask.Flask(__name__)
@@ -38,11 +39,7 @@ app = flask.Flask(__name__)
 setApplicationConfiguration(app)
 setConfigValues(app)
 
-
 app.json_encoder = CustomJSONEncoder
 registerBlueprints(app)
 
-
-# for t in app.config.items():
-#     print(t)
 

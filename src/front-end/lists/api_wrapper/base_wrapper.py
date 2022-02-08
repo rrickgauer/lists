@@ -17,6 +17,7 @@ class ApiUrls(str, Enum):
     USERS = 'users'
     LISTS = 'lists'
     ITEMS = 'items'
+    TAGS  = 'tags'
 
 
 #------------------------------------------------------

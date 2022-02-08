@@ -6,11 +6,13 @@ Prefix:     /api
 Purpose:    create all the routes for the api
 ********************************************************************************************
 """
-
+from uuid import UUID
+import requests
 import flask
 import flaskforward
 from .. import api_wrapper
 from ..common import security
+from ..services import tags as tag_services
 
 # module blueprint
 bp_api = flask.Blueprint('api', __name__)
@@ -78,12 +80,51 @@ def login():
     return ('', api_response.status_code)
 
 
+
+#------------------------------------------------------
+# Need to do some additional processing for tag api requests
+# Calculate the tag text color
+#------------------------------------------------------
+@bp_api.route('lists/<uuid:list_id>/tags', methods=['GET'])
+@security.login_required
+def getAllListTags(list_id: UUID):
+    api_response = tag_services.getListTags(list_id)
+
+    try:
+        tags_with_text_color = api_response.json()
+    except Exception:
+        tags_with_text_color = []
+
+    tag_services.calculateTextColors(tags_with_text_color)
+
+    return (flask.json.dumps(tags_with_text_color), api_response.status_code, api_response.headers.items())
+
+#------------------------------------------------------
+# Need to do some additional processing for tag api requests
+# Calculate the tag text color
+#------------------------------------------------------
+@bp_api.route('tags/<uuid:tag_id>', methods=['GET'])
+@security.login_required
+def getTag(tag_id: UUID):
+    api_response = tag_services.getTag(tag_id)
+
+    try:
+        tags_with_text_color = api_response.json()
+    except Exception:
+        return (None, api_response.status_code, api_response.headers.items())
+
+    tags_with_text_color['text_color'] = tag_services._getTextColor(tags_with_text_color.get('color')).value
+
+    return (flask.json.dumps(tags_with_text_color), api_response.status_code, api_response.headers.items())
+
+
 #------------------------------------------------------
 # Forward all these requests to the api
 #------------------------------------------------------
 @bp_api.route('<path:api_endpoint>', methods=flaskforward.enums.RequestMethods.values())
 @security.login_required
-def router(api_endpoint):
+def router(api_endpoint: str):
+
     body = flaskforward.structs.SingleRequest(
         url    = f'{api_wrapper.base_wrapper.URL_BASE}{api_endpoint}',
         auth   = (flask.g.email, flask.g.password),
@@ -97,5 +138,16 @@ def router(api_endpoint):
         body.headers.setdefault('Content-Type', 'application/json')
 
     api_response = flaskforward.routines.sendRequest(body)
-
+    
     return flaskforward.routines.toFlaskResponse(api_response)
+
+
+def get_tags_text_color(api_response: requests.Response):
+    try:
+        tags = api_response.json()        
+    except Exception:
+        tags = []
+
+    tag_services._getTextColor(tags)
+
+    return tags

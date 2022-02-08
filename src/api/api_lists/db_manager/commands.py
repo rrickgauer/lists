@@ -62,7 +62,7 @@ def modify(sql_stmt: str, parms: tuple=None) -> DbOperationResult:
         db_result.data = cursor.rowcount
     except Exception as e:
         print(json.dumps((e.msg, e.errno, e.sqlstate), indent=4))
-        db_result.error = str(e)
+        db_result.error = e
     finally:
         db.close()
     

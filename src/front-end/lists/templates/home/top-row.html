@@ -1,5 +1,21 @@
 {#
 This comprises the navigation button row at the top of the home page.
+
+Incoming data:
+    - lists (collection)
+        - id
+        - name
+        - type
+        - created_on
+        - modified_on
+        - count_items
+        - type_icon
+    
+    - tags (collection)
+        - id
+        - name
+        - color
+        - created_on
 #}
 
 <div class="top-row-buttons-container">
@@ -10,6 +26,8 @@ This comprises the navigation button row at the top of the home page.
             <button type="button" class="top-row-button btn no-focus-outline" id="btn-show-sidenav" title="Show list menu"><i class='bx bx-menu'></i></button>
 
             <div class="d-flex">
+                <a href="/tags" class="top-row-button mr-3" title="Tags"><i class='bx bx-tag'></i></a>
+
                 <!-- logout -->
                 <a href="/login" class="top-row-button mr-3" title="Logout"><i class='bx bx-log-out'></i></a>
 

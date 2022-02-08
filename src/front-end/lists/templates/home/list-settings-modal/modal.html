@@ -1,0 +1,46 @@
+{#
+
+This is the top document for the home page list settings modal
+
+Incoming data:
+    - lists (collection)
+        - id
+        - name
+        - type
+        - created_on
+        - modified_on
+        - count_items
+        - type_icon
+    - tags (collection)
+        - id
+        - name
+        - color
+        - created_on
+#}
+
+
+<!-- Modal -->
+<div class="modal fade" id="modal-list-settings" tabindex="-1" data-list-id>
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Settings</h5>
+                <button type="button" class="close color-primary-darkest" data-dismiss="modal" id="modal-list-settings-btn-close-modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-sm-12 col-lg-8">
+                        {% include 'home/list-settings-modal/section-settings.html' %}
+                    </div>
+                    <div class="col-sm-12 col-lg-4">
+                        {% include 'home/list-settings-modal/section-tags.html' %}
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

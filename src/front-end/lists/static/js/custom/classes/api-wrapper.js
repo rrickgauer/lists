@@ -78,6 +78,42 @@ export class ApiWrapper
     }
 
 
+
+    /**********************************************************
+    GET: /lists/:list_id/tags
+    **********************************************************/
+    static async listTagsGet(listID) {
+        const url = `${ApiWrapper.Urls.LISTS}/${listID}/tags`;
+
+        return await fetch(url, {
+            method: ApiWrapper.Methods.GET,
+        });
+    }
+
+
+    /**********************************************************
+    POST: /lists/:list_id/tags/:tag_id
+    **********************************************************/
+    static async listTagsPost(listID, tagID) {
+        const url = `${ApiWrapper.Urls.LISTS}/${listID}/tags/${tagID}`;
+
+        return await fetch(url, {
+            method: ApiWrapper.Methods.POST,
+        });
+    }
+
+    /**********************************************************
+    DELETE: /lists/:list_id/tags/:tag_id
+    **********************************************************/
+    static async listTagsDelete(listID, tagID) {
+        const url = `${ApiWrapper.Urls.LISTS}/${listID}/tags/${tagID}`;
+
+        return await fetch(url, {
+            method: ApiWrapper.Methods.DELETE,
+        });
+    }
+
+    
     /**********************************************************
     Get the items that belong to the given list id
     **********************************************************/
@@ -114,7 +150,6 @@ export class ApiWrapper
         return await fetch(url, {
             method: ApiWrapper.Methods.PUT,
             body: formData,
-            
         });
     }
 
@@ -161,6 +196,9 @@ export class ApiWrapper
     }
 
 
+    /**********************************************************
+    Internal function used for item complete updating
+    **********************************************************/
     static async _itemCompleteUpdate(itemID, requestMethod) {
         const url = `${ApiWrapper.Urls.ITEMS}/${itemID}/complete`;
 
@@ -169,6 +207,59 @@ export class ApiWrapper
         });
     }
 
+    /**********************************************************
+    POST: /tags
+    **********************************************************/
+    static async tagsPost(formData) {
+        const url = `${ApiWrapper.Urls.TAGS}`;
+
+        return await fetch(url, {
+            method: ApiWrapper.Methods.POST,
+            body: formData,
+        });
+    }
+
+    /**********************************************************
+    DELETE: /tags/:tag_id
+    **********************************************************/
+    static async tagsDelete(tagID) {
+        const url = `${ApiWrapper.Urls.TAGS}/${tagID}`;
+
+        return await fetch(url, {
+            method: ApiWrapper.Methods.DELETE,
+        });
+    }
+
+    /**********************************************************
+    DELETE: /tags/:tag_id
+    **********************************************************/
+    static async tagsGet(tagID) {
+        const url = `${ApiWrapper.Urls.TAGS}/${tagID}`;
+
+        return await fetch(url, {
+            method: ApiWrapper.Methods.GET,
+        });
+    }
+
+    /**********************************************************
+    PUT: /tags/:tag_id
+    **********************************************************/
+    static async tagsPut(tagID, formData) {
+        const url = `${ApiWrapper.Urls.TAGS}/${tagID}`;
+
+        return await fetch(url, {
+            method: ApiWrapper.Methods.PUT,
+            body: formData,
+        });
+    }
+
+    
+
+
+
+    /**********************************************************
+    Log the api response error
+    **********************************************************/
     static async logError(apiResponse) {
         console.error(await apiResponse.text());
     }
@@ -190,4 +281,5 @@ ApiWrapper.Urls = {
     LOGIN: '/api/login',
     LISTS: '/api/lists',
     ITEMS: '/api/items',
+    TAGS: '/api/tags'
 }

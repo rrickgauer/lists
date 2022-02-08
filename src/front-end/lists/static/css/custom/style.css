@@ -400,4 +400,40 @@ textarea {
   background-color: #faf9fa;
 }
 
+#modal-list-settings-sidenav .sidenav-tags-collapse-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+#modal-list-settings-sidenav .sidenav-tags-collapse-item {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-bottom: 1px solid #d9d8de;
+  padding: 10px;
+}
+#modal-list-settings-sidenav .sidenav-tags-collapse-item:first-child {
+  border-top: 1px solid #d9d8de;
+}
+#modal-list-settings-sidenav .sidenav-tags-collapse-item-icon {
+  margin: 0px 5px;
+}
+
+.tags-list-group-item .tags-list-group-item-display {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#tags-card .card-header {
+  background-color: #f6f5ff;
+  border-bottom: 1px solid #d9d8de;
+}
+#tags-card .card-body {
+  padding: 0px;
+}
+#tags-card .tags-list-group-item {
+  border-radius: 0px;
+  border-bottom: 1px solid #d9d8de;
+}
+
 /*# sourceMappingURL=style.css.map */

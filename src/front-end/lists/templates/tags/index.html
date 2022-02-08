@@ -1,0 +1,63 @@
+{#
+
+This is the top document for tags page.
+
+Incoming data:
+    - tags (list)
+        - id
+        - name
+        - color
+        - created_on
+#}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% include 'includes/header.html' %}
+    <title>Lists - Tags</title>
+</head>
+
+<body>
+
+    <!-- header -->
+    <div class="container mt-5 mb-3">
+        <!-- <h1>Tags</h1> -->
+        <a href="/" class="btn btn-lg btn-light"><i class='bx bx-arrow-back'></i> Back to lists</a>
+    </div>
+
+
+    <!-- existing tags -->
+    <div class="container my-5" id="tags-container">
+        <div class="card" id="tags-card">
+            <div class="card-header bg-gray-lightest">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="font-weight-bolder">
+                        {{data.tags|length}} tags
+                    </div>
+                    
+                    <div>
+                        <button type="button" class="btn btn-success" data-toggle="collapse" data-target="#tags-form-new-container">New</button>
+                    </div>
+                </div>
+
+
+                <!-- new tag form -->
+                {% include 'tags/new-tag-form.html' %}
+                
+            </div>
+            
+            
+            <div class="card-body">
+                {% include 'tags/tags-list.html' %}
+            </div>
+    
+        </div>
+    </div>
+
+
+    {% include 'includes/footer.html' %}
+    <script src="/static/js/custom/dist/tags.bundle.js"></script>
+</body>
+
+</html>
