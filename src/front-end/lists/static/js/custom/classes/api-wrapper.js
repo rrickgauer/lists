@@ -67,13 +67,14 @@ export class ApiWrapper
     }
 
     /**********************************************************
-    Clone the given list.
+    POST: /lists/:list_id/clones
     **********************************************************/
-    static async listsClone(listID) {
+    static async listsClone(listID, formData) {
         const url = `${ApiWrapper.Urls.LISTS}/${listID}/clones`;
 
         return await fetch(url, {
             method: ApiWrapper.Methods.POST,
+            body: formData,
         });
     }
 

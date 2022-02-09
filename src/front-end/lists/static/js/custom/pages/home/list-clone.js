@@ -27,7 +27,7 @@ export class ListClone
         const formData = this.getUrlEncodedInputValue();
 
         // send the clone api request
-        const apiResponse = await ApiWrapper.listsClone(this.listID);
+        const apiResponse = await ApiWrapper.listsClone(this.listID, formData);
 
         // ensure the request was successful
         if (!apiResponse.ok) {
