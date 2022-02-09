@@ -369,10 +369,17 @@ function addListSettingsModalListeners() {
 
 
     // clone list
-    $(ListSettingsModal.Elements.BTN_CLONE).on('click', function() {
+    // $(ListSettingsModal.Elements.BTN_CLONE).on('click', function() {
+    //     const listSettings = new ListClone();
+    //     listSettings.clone();
+    // });
+
+    $(ListSettingsModal.Elements.FORM_CLONE).on('submit', function(e) {
+        e.preventDefault();
         const listSettings = new ListClone();
         listSettings.clone();
     });
+
 
     // delete list
     $(ListSettingsModal.Elements.BTN_DELETE).on('click', deleteList);

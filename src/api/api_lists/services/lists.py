@@ -10,7 +10,7 @@ from uuid import UUID, uuid4
 from datetime import datetime
 import uuid
 import flask
-from ..db_manager import commands as sql_engine, DbOperationResult
+from ..db_manager import commands as sql_engine, DbOperationResult, DB
 from ..common import responses
 from ..models import List, ListType
 
@@ -97,14 +97,22 @@ def getList(list_id: UUID) -> flask.Response:
 #------------------------------------------------------
 # Generate response for cloning a list
 #------------------------------------------------------
-def cloneListResponse(list_id: UUID) -> flask.Response:
-    new_list_id = uuid.uuid4()
-    clone_db_result = cmdCloneList(list_id, new_list_id)
+def cloneListResponse(list_id: UUID, request_form: dict) -> flask.Response:
+    new_list = List(
+        id      = uuid.uuid4(),
+        user_id = flask.g.client_id,
+        name    = request_form.get('name') or None
+    )
+
+    if not new_list.name:
+        return responses.badRequest('Missing required request body field: name')
+
+    clone_db_result = cmdCloneList(list_id, new_list)
 
     if not clone_db_result.successful:
         return responses.badRequest(clone_db_result.error)
 
-    db_select = _query(new_list_id)
+    db_select = _query(new_list.id)
 
     return responses.created(db_select.data) 
 
@@ -116,13 +124,16 @@ def cloneListResponse(list_id: UUID) -> flask.Response:
 #   existing_list_id: id of the existing list
 #   new_list_id: designated ID to give the newly created list
 #------------------------------------------------------
-def cmdCloneList(existing_list_id: UUID, new_list_id: UUID) -> DbOperationResult:
-    sql = 'CALL Clone_List(%s, %s);'
+def cmdCloneList(existing_list_id: UUID, new_list: List) -> DbOperationResult:
     
     parms = (
+        str(new_list.user_id),
         str(existing_list_id),
-        str(new_list_id),
+        str(new_list.id),
+        new_list.name,
     )
+
+    sql = 'CALL Clone_List(%s, %s, %s, %s);'
 
     return sql_engine.modify(sql, parms)
 
@@ -137,7 +148,10 @@ def _query(list_id: UUID) -> DbOperationResult:
         LIMIT 1
     '''
 
-    parms = (str(list_id), str(flask.g.client_id))
+    parms = (
+        str(list_id), 
+        str(flask.g.client_id)
+    )
 
     return sql_engine.select(sql, parms, False)
 

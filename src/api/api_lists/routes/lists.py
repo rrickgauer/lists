@@ -73,4 +73,4 @@ def getListItems(list_id: UUID):
 @bp_lists.post('<uuid:list_id>/clones')
 @security.login_required
 def cloneList(list_id: UUID):
-    return list_services.cloneListResponse(list_id)
+    return list_services.cloneListResponse(list_id, flask.request.form.to_dict())
