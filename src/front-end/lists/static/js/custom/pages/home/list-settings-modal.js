@@ -45,6 +45,9 @@ export class ListSettingsModal
 
         // name input form element value
         $(ListSettingsModal.Elements.INPUT).val(listName);
+
+        // clone form input 
+        $(ListSettingsModal.Elements.FORM_CLONE_INPUT).val(listName);
     }
 
 
@@ -190,23 +193,32 @@ export class ListSettingsModal
         ListSettingsModal.setInputProps(false);
     }
 
+    /**********************************************************
+    Get the current value of the clone form input element
+    **********************************************************/
+    static getCloneFormInputValue() {
+        return $(ListSettingsModal.Elements.FORM_CLONE_INPUT).val();
+    }
+
 }
 
 
 ListSettingsModal.Elements = {
-    MODAL                      : '#modal-list-settings',
-    INPUT                      : '#list-rename-form-input',
-    BTN_SAVE                   : '#list-rename-form-save',
-    TYPE_OPTIONS               : 'list-rename-form-type-radio-option',
-    BTN_CLONE                  : '#modal-list-settings-btn-clone',
-    BTN_DELETE                 : '#modal-list-settings-btn-delete',
-    BTN_CLOSE_MODAL            : '#modal-list-settings-btn-close-modal',
+    MODAL            : '#modal-list-settings',
+    INPUT            : '#list-rename-form-input',
+    BTN_SAVE         : '#list-rename-form-save',
+    TYPE_OPTIONS     : 'list-rename-form-type-radio-option',
+    BTN_CLONE        : '#modal-list-settings-btn-clone',
+    BTN_DELETE       : '#modal-list-settings-btn-delete',
+    BTN_CLOSE_MODAL  : '#modal-list-settings-btn-close-modal',
+    FORM_CLONE       : '#list-clone-form',
+    FORM_CLONE_INPUT : '#list-clone-form-input-name',
 }
 
 ListSettingsModal.SpinnerButtons = {
     SAVE: new SpinnerButton(ListSettingsModal.Elements.BTN_SAVE),
-    CLONE: new SpinnerButton(ListSettingsModal.Elements.BTN_CLONE),
     DELETE: new SpinnerButton(ListSettingsModal.Elements.BTN_DELETE),
+    CLONE_SUBMIT: new SpinnerButton(ListSettingsModal.Elements.BTN_CLONE),
 }
 
 ListSettingsModal.WaitingClasses = {

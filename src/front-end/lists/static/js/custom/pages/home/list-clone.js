@@ -1,4 +1,5 @@
 import { ApiWrapper } from "../../classes/api-wrapper";
+import { Utilities } from "../../classes/utilities";
 import { ListSettingsModal } from "./list-settings-modal";
 
 /**
@@ -10,7 +11,10 @@ export class ListClone
         this.listID = ListSettingsModal.getCurrentListID();
 
         // bind the object methods
-        this.clone                     = this.clone.bind(this);
+        this.clone                   = this.clone.bind(this);
+        this.freezeModal             = this.freezeModal.bind(this);
+        this.getUrlEncodedInputValue = this.getUrlEncodedInputValue.bind(this);
+        this.unfreezeModal           = this.unfreezeModal.bind(this);
     }
 
     
@@ -18,24 +22,44 @@ export class ListClone
     Clone the current list
     **********************************************************/
     async clone() {
-        // disable spinner button
-        ListSettingsModal.SpinnerButtons.CLONE.showSpinner();
+        this.freezeModal();
 
-        ListSettingsModal.keepModalOpen(true);
+        const formData = this.getUrlEncodedInputValue();
 
         // send the clone api request
         const apiResponse = await ApiWrapper.listsClone(this.listID);
 
         // ensure the request was successful
         if (!apiResponse.ok) {
-            ListSettingsModal.SpinnerButtons.CLONE.reset();
-            console.error(await apiResponse.text());
-            ListSettingsModal.keepModalOpen(false);
+            this.unfreezeModal();
+            
+            ApiWrapper.logError(apiResponse);
+            
             return false;
         }
         
         // successfull clone - refresh the page
         window.location.href = window.location.href;
         return true;
+    }
+
+    // freeze the modal
+    freezeModal() {
+        // disable spinner button
+        ListSettingsModal.SpinnerButtons.CLONE_SUBMIT.showSpinner();
+        ListSettingsModal.keepModalOpen(true);
+    }
+
+    // url-encode the name input element value for the api
+    getUrlEncodedInputValue() {
+        return Utilities.objectToFormData({
+            name: ListSettingsModal.getCloneFormInputValue(),
+        })
+    }
+
+    // allow user to close the modal
+    unfreezeModal() {
+        ListSettingsModal.SpinnerButtons.CLONE_SUBMIT.reset();
+        ListSettingsModal.keepModalOpen(false);
     }
 }
