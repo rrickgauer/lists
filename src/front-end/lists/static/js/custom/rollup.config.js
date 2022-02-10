@@ -1,9 +1,9 @@
 // import the babel plugins
-import resolve from '@rollup/plugin-node-resolve';
-import babel from '@rollup/plugin-babel';
+// import resolve from '@rollup/plugin-node-resolve';
+// import babel from '@rollup/plugin-babel';
 
 // common plugins
-const myPlugins =  [resolve(), babel({ babelHelpers: 'bundled' })];
+// const myPlugins =  [resolve(), babel({ babelHelpers: 'bundled' })];
 
 // rollup.config.js
 export default 
@@ -16,7 +16,7 @@ export default
             compact: true,
             sourcemap: true,
         },
-        plugins: myPlugins,
+        // plugins: myPlugins,
     },
     {
         input: 'pages/login/main.js',
@@ -26,7 +26,7 @@ export default
             compact: true,
             sourcemap: true,
         },
-        plugins: myPlugins,
+        // plugins: myPlugins,
     },
     {
         input: 'pages/tags/main.js',
@@ -36,6 +36,6 @@ export default
             compact: true,
             sourcemap: true,
         },
-        plugins: myPlugins,
+        // plugins: myPlugins,
     },
 ];
