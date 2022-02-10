@@ -143,6 +143,13 @@ export class ListHtml
                                 <button class="dropdown-item" type="button" data-list-action="${ListHtml.HeaderButtonActions.REMOVE_COMPLETE}">
                                     <i class='bx bx-trash'></i> Remove completed items
                                 </button>
+                                
+                                <div class="dropdown-divider"></div>
+
+                                <button class="dropdown-item" type="button" data-list-action="${ListHtml.HeaderButtonActions.EXPORT}">
+                                    <i class='bx bx-export'></i> Export
+                                </button>
+
                     
                             </div>
                         </div>
@@ -332,6 +339,7 @@ ListHtml.HeaderButtonActions = {
     SETTINGS: 'settings',
     TOGGLE_COMPLETE: 'toggle-complete',
     REMOVE_COMPLETE: 'remove-complete',
+    EXPORT: 'export',
 }
 
 

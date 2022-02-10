@@ -418,11 +418,6 @@ $sidenav-tags-collapse-item-border: 1px solid map-get($colors-grays, "lighter");
 }
 
 
-
-
-
-
-
 // ------------------------------------
 // Tags
 // ------------------------------------
@@ -444,17 +439,30 @@ $sidenav-tags-collapse-item-border: 1px solid map-get($colors-grays, "lighter");
         padding: 0px;
     }
 
-    .list-group {
-        // border-radius: 0px;
-    }
-
     .tags-list-group-item {
         border-radius: 0px;
         border-bottom: 1px solid map-get($map: $colors-grays, $key: "lighter");
-        // background-color: map-get($map: $colors-grays, $key: "lightest");
+    }
+}
+
+// ------------------------------------
+// Export list items modal
+// ------------------------------------
+
+
+// hide either display or loading sections in the modal
+#export-items-modal {
+    & {
+        .modal-body-loading { display: none; }
+        .modal-body-display { display: block; }
     }
 
-
+    &.loading {
+        .modal-body-loading { display: block; }
+        .modal-body-display { display: none; }
+    }
 }
+
+
 
 

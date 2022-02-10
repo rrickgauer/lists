@@ -1,0 +1,41 @@
+<!-- This is the container file for the export items modal -->
+
+
+<div class="modal loading" tabindex="-1" id="export-items-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Export items</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+
+                <div class="modal-body-loading py-5">
+
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border" role="status"></div>
+                    </div>
+                    
+                    
+                </div>
+
+                <div class="modal-body-display">
+                    <div class="form-group">
+                        <label for="export-items-textarea">Items</label>
+                        <textarea class="form-control" id="export-items-textarea" rows="3"></textarea>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
