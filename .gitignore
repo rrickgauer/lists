@@ -159,3 +159,4 @@ cython_debug/
 
 credentials.py
 .table-schemas/
+node_modules/
