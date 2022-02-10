@@ -14,7 +14,7 @@ import { ListDelete } from './list-delete';
 import { ListSettingsModalTags } from "./list-settings-modal-tags";
 import { TagAssignment } from "./tag-assignment";
 import { ExportItemsModal } from "./export-items-modal";
-
+import { ExportItems } from "./export-items";
 
 const eOverlay = '<div style="z-index: 109;" class="drawer-overlay"></div>';
 
@@ -36,10 +36,10 @@ $(document).ready(function() {
     addEventListeners();
     toggleSidenav();    // open the sidebar initially
     testingActivateFirstList();
-    // $('#modal-templates').modal('show');
     
-
-    ExportItemsModal.showModal();
+    
+    // $('#modal-templates').modal('show');
+    // ExportItemsModal.showModal();
 });
 
 
@@ -285,6 +285,12 @@ function removeCompleteItems(eListActionButton) {
 
 function exportList(eListActionButton) {
     ExportItemsModal.showModal();
+
+    const eList = ListHtml.getParentActiveListElement(eListActionButton);
+    const listID = ListHtml.getActiveListElementID(eList);
+
+    const exporter = new ExportItems(listID);
+    exporter.export();
 }
 
 
