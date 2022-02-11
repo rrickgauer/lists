@@ -16,6 +16,8 @@ import { TagAssignment } from "./tag-assignment";
 import { ExportItemsModal } from "./export-items-modal";
 import { ExportItems } from "./export-items";
 
+
+
 const eOverlay = '<div style="z-index: 109;" class="drawer-overlay"></div>';
 
 const eSidebar = {
@@ -282,7 +284,9 @@ function removeCompleteItems(eListActionButton) {
 }
 
 
-
+/**********************************************************
+Export the list by instantiating an ExportItems object
+**********************************************************/
 function exportList(eListActionButton) {
     ExportItemsModal.showModal();
 
@@ -292,11 +296,6 @@ function exportList(eListActionButton) {
     const exporter = new ExportItems(listID);
     exporter.export();
 }
-
-
-
-
-
 
 
 /**********************************************************
@@ -400,11 +399,6 @@ function addListSettingsModalListeners() {
 
 
     // clone list
-    // $(ListSettingsModal.Elements.BTN_CLONE).on('click', function() {
-    //     const listSettings = new ListClone();
-    //     listSettings.clone();
-    // });
-
     $(ListSettingsModal.Elements.FORM_CLONE).on('submit', function(e) {
         e.preventDefault();
         const listSettings = new ListClone();
@@ -466,12 +460,12 @@ function assignListTag(eClickedCheckbox) {
 }
 
 
-
-
+/**********************************************************
+Action listeners for export items modal
+**********************************************************/
 function addExportItemsModalListeners() {
-
     // show the spinner when the modal is closed
-    // $(ExportItemsModal.Elements.MODAL).on('hidden.bs.modal', ExportItemsModal.showLoadingSection);
+    $(ExportItemsModal.Elements.MODAL).on('hidden.bs.modal', ExportItemsModal.showLoadingSection);
 
 }
 

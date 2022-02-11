@@ -9,6 +9,7 @@ import { Item } from "../../models/item";
  */
 export class ExportItems
 {
+    
     /**
      * Constructor
      * 
@@ -17,16 +18,16 @@ export class ExportItems
     constructor(listID) {
         this.listID = listID;
 
-
         /** @type { Item[] } */
         this.items = [];
 
-
-        ExportItemsModal.setCurrentListID(this.listID);
         
+        // bind the object's methods
         this.export       = this.export.bind(this);
         this._fetchItems  = this._fetchItems.bind(this);
         this._renderItems = this._renderItems.bind(this);
+
+        ExportItemsModal.setCurrentListID(this.listID);
     }
 
     /**
@@ -43,6 +44,7 @@ export class ExportItems
         this._renderItems();
 
         ExportItemsModal.hideLoadingSection();
+        ExportItemsModal.resizeTextarea();   
     }
 
     /**

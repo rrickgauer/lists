@@ -1,25 +1,40 @@
 
+import autosize from "../../lib/autosize";
 
 
+/**
+ * This class controls the export items modal.
+ */
 export class ExportItemsModal
 {
-    // show the modal
+
+    /**
+     * Show the modal
+     */
     static showModal() {
         $(ExportItemsModal.Elements.MODAL).modal('show');
     }
 
-    // show the loading section (spinner) and hide the textarea section
+    /**
+     * Show the loading section (spinner) and hide the textarea section
+     */
     static showLoadingSection() {
         $(ExportItemsModal.Elements.MODAL).addClass('loading');
     }
 
-    // show the normal textarea section and hide the loading section
+    /**
+     * Show the normal textarea section and hide the loading section
+     */
     static hideLoadingSection() {
         $(ExportItemsModal.Elements.MODAL).removeClass('loading');
     }
 
 
-    // set the modal's list id data attribute value
+    /**
+     * Set the modal's list id data attribute value 
+     * 
+     * @param {string} newListID 
+     */
     static setCurrentListID(newListID) {
         $(ExportItemsModal.Elements.MODAL).attr('data-list-id', newListID);
     }
@@ -29,8 +44,22 @@ export class ExportItemsModal
         return $(ExportItemsModal.Elements.MODAL).attr('data-list-id');
     }
 
+    /**
+     * Set the textarea's value to the one given
+     * 
+     * @param {string} newTextareaValue - the new textarea value
+     */
     static setTextareaValue(newTextareaValue) {
         $(ExportItemsModal.Elements.TEXTAREA).val(newTextareaValue);
+    }
+
+
+    /**
+     * Auto adjust the height of the textarea to fit all the list items
+     */
+    static resizeTextarea() {
+        autosize($(ExportItemsModal.Elements.TEXTAREA));
+        autosize.update($(ExportItemsModal.Elements.TEXTAREA));
     }
 }
 
