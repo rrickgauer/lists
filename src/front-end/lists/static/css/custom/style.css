@@ -436,4 +436,17 @@ textarea {
   border-bottom: 1px solid #d9d8de;
 }
 
+#export-items-modal .modal-body-loading {
+  display: none;
+}
+#export-items-modal .modal-body-display {
+  display: block;
+}
+#export-items-modal.loading .modal-body-loading {
+  display: block;
+}
+#export-items-modal.loading .modal-body-display {
+  display: none;
+}
+
 /*# sourceMappingURL=style.css.map */

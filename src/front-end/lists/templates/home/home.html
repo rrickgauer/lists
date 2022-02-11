@@ -37,6 +37,10 @@ Incoming data (data):
 
             <!-- active lists container -->
             <div class="container-fluid">
+
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#export-items-modal">Export items</button>
+
+
                 <div class="board-wrapper">
                     <div class="active-lists-board">
                         <!-- active lists go here -->
@@ -48,6 +52,7 @@ Incoming data (data):
     </div>
 
     {% include 'home/list-settings-modal/modal.html' %}
+    {% include 'home/export-items-modal/modal.html' %}
 
     {% include 'includes/footer.html' %}
     <script src="/static/js/custom/dist/home.bundle.js"></script>

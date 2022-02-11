@@ -13,6 +13,9 @@ import { ListSettingsModal } from "./list-settings-modal";
 import { ListDelete } from './list-delete';
 import { ListSettingsModalTags } from "./list-settings-modal-tags";
 import { TagAssignment } from "./tag-assignment";
+import { ExportItemsModal } from "./export-items-modal";
+import { ExportItems } from "./export-items";
+
 
 
 const eOverlay = '<div style="z-index: 109;" class="drawer-overlay"></div>';
@@ -35,7 +38,10 @@ $(document).ready(function() {
     addEventListeners();
     toggleSidenav();    // open the sidebar initially
     testingActivateFirstList();
+    
+    
     // $('#modal-templates').modal('show');
+    // ExportItemsModal.showModal();
 });
 
 
@@ -47,6 +53,7 @@ function addEventListeners() {
     addActiveListElementListeners();
     addActiveListItemElementListeners();
     addListSettingsModalListeners();
+    addExportItemsModalListeners();
     ItemDrag.listen(eActiveListContainer);  // listen for item drag/drop actions
 }
 
@@ -214,14 +221,24 @@ function performListAction(event) {
     // determine which button was clicked
     switch(listActionValue)
     {
+        // open the list settings modal
         case ListHtml.HeaderButtonActions.SETTINGS:
             ListSettingsModal.openModal(event.target);
             break;
+        
+        // toggle complete items' visibility
         case ListHtml.HeaderButtonActions.TOGGLE_COMPLETE:
             handleToggleCompleteItemsButton(event);
             break;
+        
+        // delete all complete items
         case ListHtml.HeaderButtonActions.REMOVE_COMPLETE:
             removeCompleteItems(event.target);
+            break;
+
+        // export list
+        case ListHtml.HeaderButtonActions.EXPORT:
+            exportList(event.target);
             break;
             
     }
@@ -266,6 +283,19 @@ function removeCompleteItems(eListActionButton) {
     completeItemRemover.remove();
 }
 
+
+/**********************************************************
+Export the list by instantiating an ExportItems object
+**********************************************************/
+function exportList(eListActionButton) {
+    ExportItemsModal.showModal();
+
+    const eList = ListHtml.getParentActiveListElement(eListActionButton);
+    const listID = ListHtml.getActiveListElementID(eList);
+
+    const exporter = new ExportItems(listID);
+    exporter.export();
+}
 
 
 /**********************************************************
@@ -369,11 +399,6 @@ function addListSettingsModalListeners() {
 
 
     // clone list
-    // $(ListSettingsModal.Elements.BTN_CLONE).on('click', function() {
-    //     const listSettings = new ListClone();
-    //     listSettings.clone();
-    // });
-
     $(ListSettingsModal.Elements.FORM_CLONE).on('submit', function(e) {
         e.preventDefault();
         const listSettings = new ListClone();
@@ -434,6 +459,15 @@ function assignListTag(eClickedCheckbox) {
     }
 }
 
+
+/**********************************************************
+Action listeners for export items modal
+**********************************************************/
+function addExportItemsModalListeners() {
+    // show the spinner when the modal is closed
+    $(ExportItemsModal.Elements.MODAL).on('hidden.bs.modal', ExportItemsModal.showLoadingSection);
+
+}
 
 
 
