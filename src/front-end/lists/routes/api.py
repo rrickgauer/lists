@@ -56,7 +56,7 @@ def login():
     user_password = flask.request.form.get('password') or None
 
     body = flaskforward.structs.SingleRequest(
-        url = f'{api_wrapper.URL_BASE}{api_wrapper.ApiUrls.USERS}',
+        url = f'{api_wrapper.base_wrapper.URL_BASE}{api_wrapper.ApiUrls.USERS}',
         auth = (user_email, user_password),
         method = flaskforward.enums.RequestMethods.GET
     )
