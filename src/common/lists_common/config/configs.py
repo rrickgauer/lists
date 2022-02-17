@@ -12,8 +12,8 @@ class Base:
     # custom keys
     URL_API = 'https://api.lists.ryanrickgauer.com/'
     URL_GUI = 'https://lists.ryanrickgauer.com/'
-
     DB_NAME = 'Lists'
+    DB_HOST = 'localhost'
     
 
 
@@ -30,8 +30,8 @@ class Production(Base):
 class Dev(Base):
     URL_API = 'http://10.0.0.82:6000/'
     URL_GUI = 'http://10.0.0.82:6001/'
-    
     DB_NAME = 'Lists_Dev'
+    DB_HOST = '104.225.208.163'
  
 
 

@@ -21,7 +21,7 @@ def setApplicationConfiguration(flask_app: flask.Flask):
 #------------------------------------------------------
 def setConfigValues(flask_app: flask.Flask):
     db_manager.credentials.DATABASE = flask_app.config.get('DB_NAME')
-
+    db_manager.credentials.HOST = flask_app.config.get('DB_HOST')
 
 #------------------------------------------------------
 # Register all of the Flask blueprints

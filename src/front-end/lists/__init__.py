@@ -19,6 +19,8 @@ def configureApplication(flask_app: flask.Flask):
 
     api_wrapper.base_wrapper.URL_BASE = flask_app.config.get('URL_API')
 
+    print(api_wrapper.base_wrapper.URL_BASE)
+
 
 #------------------------------------------------------
 # Register all of the Flask blueprints

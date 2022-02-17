@@ -1,4 +1,6 @@
+#!/bin/bash
 
+IP_ADDRESS='104.225.208.163'
 
 #---------------------------------------
 # Start up the API
@@ -15,7 +17,7 @@ mod_wsgi-express setup-server \
 --access-log  \
 --log-level info   \
 --server-root /etc/api.lists.ryanrickgauer.com \
---host 104.225.208.116 \
+--host $IP_ADDRESS \
 --setup-only \
 api_lists.wsgi
 
@@ -42,7 +44,7 @@ mod_wsgi-express setup-server \
 --access-log  \
 --log-level info   \
 --server-root /etc/lists.ryanrickgauer.com \
---host 104.225.208.116 \
+--host $IP_ADDRESS \
 --setup-only \
 --document-root /var/www/lists/front-end/lists/static \
 lists.wsgi
