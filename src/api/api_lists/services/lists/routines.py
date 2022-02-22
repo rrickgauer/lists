@@ -12,8 +12,8 @@ import uuid
 import flask
 import pymysql.commands
 from pymysql.structs import DbOperationResult
-from ..common import responses
-from ..models import List, ListType
+from ...common import responses
+from ...models import List, ListType
 
 
 # the template for selecting multiple lists from the database

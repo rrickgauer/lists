@@ -53,7 +53,7 @@ def _queryAll() -> DbOperationResult:
 def _queryFilterByLists(list_ids: list[UUID]) -> DbOperationResult:
     sql = _getQueryFilterStmt(len(list_ids)) + ' ORDER BY -`rank` DESC, modified_on DESC;'
     parms = _getQueryFilterParms(list_ids)
-    return pymysql.commands.select(sql, parms)
+    return pymysql.commands.selectAll(sql, parms)
 
 
 #------------------------------------------------------
