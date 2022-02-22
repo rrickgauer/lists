@@ -10,7 +10,8 @@ from uuid import UUID, uuid4
 from datetime import datetime
 import uuid
 import flask
-from ..db_manager import commands as sql_engine, DbOperationResult, DB
+import pymysql.commands
+from pymysql.structs import DbOperationResult
 from ..common import responses
 from ..models import List, ListType
 
@@ -66,7 +67,7 @@ def _queryAll() -> DbOperationResult:
     sql = SQL_SELECT_ALL_TEMPLATE.format('')
     parms = (str(flask.g.client_id),)
 
-    return sql_engine.select(sql, parms, True)
+    return pymysql.commands.selectAll(sql, parms)
 
 
 #------------------------------------------------------
@@ -80,7 +81,7 @@ def _queryAllFilterByType(filter_type: ListType) -> DbOperationResult:
         filter_type.value
     )
 
-    return sql_engine.select(sql, parms, True)
+    return pymysql.commands.selectAll(sql, parms)
 
 
 #------------------------------------------------------
@@ -135,7 +136,7 @@ def cmdCloneList(existing_list_id: UUID, new_list: List) -> DbOperationResult:
 
     sql = 'CALL Clone_List(%s, %s, %s, %s);'
 
-    return sql_engine.modify(sql, parms)
+    return pymysql.commands.modify(sql, parms)
 
 #------------------------------------------------------
 # Fetch a single list from the database
@@ -153,7 +154,7 @@ def _query(list_id: UUID) -> DbOperationResult:
         str(flask.g.client_id)
     )
 
-    return sql_engine.select(sql, parms, False)
+    return pymysql.commands.select(sql, parms)
 
 
 #------------------------------------------------------
@@ -235,7 +236,7 @@ def _modifyDbCommand(list_: List) -> DbOperationResult:
         list_.type
     )
 
-    return sql_engine.modify(sql, parms)
+    return pymysql.commands.modify(sql, parms)
 
 
 #------------------------------------------------------
@@ -260,4 +261,4 @@ def _cmdDeleteList(list_: List) -> DbOperationResult:
     sql = 'DELETE FROM Lists WHERE id=%s AND user_id=%s'
     parms = (str(list_.id), str(flask.g.client_id))
 
-    return sql_engine.modify(sql, parms)
+    return pymysql.commands.modify(sql, parms)

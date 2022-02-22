@@ -1,7 +1,7 @@
 from __future__ import annotations
 import flask
 from functools import wraps
-from ..db_manager import commands as sql_engine
+import pymysql
 
 
 #------------------------------------------------------
@@ -45,7 +45,10 @@ def getUserID(email: str, password: str) -> str | None:
         sql = 'SELECT id FROM Users u WHERE u.email=%s AND u.password=%s LIMIT 1'
         parms = (email, password)
 
-        db_return = sql_engine.select(sql, parms, False)
+        db_return = pymysql.commands.select(sql, parms)
+
+        print(db_return)
+
         return db_return.data.get('id')
     except Exception as e:
         print(e)

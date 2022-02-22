@@ -9,9 +9,9 @@ List tag services
 from __future__ import annotations
 from uuid import UUID
 import flask
+import pymysql.commands
+from pymysql.structs import DbOperationResult
 from ...common import responses
-from ...db_manager import DbOperationResult
-from ...db_manager import commands as sql_engine
 from .. import tags as tag_services
 from . import sql_stmts
 
@@ -39,7 +39,7 @@ def cmdSelectAll(list_id: UUID) -> DbOperationResult:
         str(flask.g.client_id)
     )
 
-    return sql_engine.select(sql, parms, True)
+    return pymysql.commands.selectAll(sql, parms)
 
 #------------------------------------------------------
 # Respond to a request to delete all assigned tags for the given list
@@ -69,7 +69,7 @@ def cmdDeleteAll(list_id: UUID) -> DbOperationResult:
         str(flask.g.client_id)
     )
 
-    return sql_engine.modify(sql, parms)
+    return pymysql.commands.modify(sql, parms)
 
 
 #------------------------------------------------------
@@ -98,7 +98,7 @@ def cmdInsert(list_id: UUID, tag_id: UUID) -> DbOperationResult:
         str(flask.g.client_id)
     )
 
-    return sql_engine.modify(sql, parms)
+    return pymysql.commands.modify(sql, parms)
 
 
 #------------------------------------------------------
@@ -128,7 +128,7 @@ def cmdDeleteSingle(list_id: UUID, tag_id: UUID) -> DbOperationResult:
         str(flask.g.client_id)
     )
 
-    return sql_engine.modify(sql, parms)
+    return pymysql.commands.modify(sql, parms)
 
 
 

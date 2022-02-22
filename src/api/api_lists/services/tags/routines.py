@@ -6,10 +6,10 @@ This module contains all services related to tags.
 from typing import Tuple
 from enum import Enum
 from datetime import datetime
-from re import S
 from uuid import UUID, uuid4
 import flask
-from ...db_manager import commands as sql_engine, DbOperationResult
+import pymysql.commands
+from pymysql.structs import DbOperationResult
 from ...common import responses
 from ...models import Tag
 from . import sql_statements
@@ -37,7 +37,7 @@ def cmdSelectAll() -> DbOperationResult:
     sql = sql_statements.SELECT_ALL
     parms = (str(flask.g.client_id), )
 
-    return sql_engine.select(sql, parms, True)
+    return pymysql.commands.selectAll(sql, parms)
 
 
 #------------------------------------------------------
@@ -133,7 +133,7 @@ def isTagValidForModify(tag: Tag) -> bool:
 #------------------------------------------------------
 def cmdModify(tag: Tag) -> DbOperationResult:
     parms = cmdInsertGetParmsTuple(tag)
-    return sql_engine.modify(sql_statements.INSERT_UPDATE, parms)
+    return pymysql.commands.modify(sql_statements.INSERT_UPDATE, parms)
 
 #------------------------------------------------------
 # Transform the given Tag object into the required tuple for inserting/updating sql command
@@ -174,7 +174,7 @@ def cmdSelectSingle(tag_id: UUID) -> DbOperationResult:
         str(tag_id),
     )
 
-    return sql_engine.select(sql, parms, False)
+    return pymysql.commands.select(sql, parms)
 
 #------------------------------------------------------
 # Respond to a delete request for a single tag
@@ -208,4 +208,4 @@ def cmdDeleteSingle(tag_id: UUID) -> DbOperationResult:
         str(flask.g.client_id)
     )
 
-    return sql_engine.modify(sql, parms)
+    return pymysql.commands.modify(sql, parms)

@@ -1,7 +1,9 @@
 import flask
 from lists_common import config
-from . import routes, db_manager
+from . import routes
+import pymysql
 from .common import CustomJSONEncoder
+from .db_manager import credentials as db_credentials
 
 
 #------------------------------------------------------
@@ -20,8 +22,10 @@ def setApplicationConfiguration(flask_app: flask.Flask):
 # Set the values of some constants needed for the application
 #------------------------------------------------------
 def setConfigValues(flask_app: flask.Flask):
-    db_manager.credentials.DATABASE = flask_app.config.get('DB_NAME')
-    db_manager.credentials.HOST = flask_app.config.get('DB_HOST')
+    pymysql.credentials.DATABASE = flask_app.config.get('DB_NAME')
+    pymysql.credentials.HOST     = flask_app.config.get('DB_HOST')
+    pymysql.credentials.USER     = db_credentials.USER
+    pymysql.credentials.PASSWORD = db_credentials.PASSWORD
 
 #------------------------------------------------------
 # Register all of the Flask blueprints
