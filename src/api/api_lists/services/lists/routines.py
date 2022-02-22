@@ -12,7 +12,7 @@ import flask
 from pymysql.structs import DbOperationResult
 from ...common import responses
 from ...models import List, ListType
-from . import sql_engine as sql_engine
+from . import sql_commands as sql_engine
 
 #------------------------------------------------------
 # Return all of a user's lists
