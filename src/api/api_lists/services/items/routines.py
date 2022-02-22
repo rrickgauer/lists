@@ -10,10 +10,10 @@ from typing import Tuple
 from datetime import datetime
 from uuid import UUID, uuid4
 import flask
-from ...db_manager import commands as sql_engine, DbOperationResult
+import pymysql.commands
+from pymysql.structs import DbOperationResult
 from ...common import responses
 from ...models import Item, ItemComplete
-
 from .parser import BatchItemParserUpdate, ParseReturnCodes, BatchItemParserDelete
 
 SQL_SELECT_INIT = '''
@@ -44,7 +44,7 @@ def _queryAll() -> DbOperationResult:
     sql = f'{SQL_SELECT_INIT} ORDER BY created_on DESC'
     parms = (str(flask.g.client_id),)
 
-    return sql_engine.select(sql, parms, True)
+    return pymysql.commands.selectAll(sql, parms)
 
 
 #------------------------------------------------------
@@ -53,7 +53,7 @@ def _queryAll() -> DbOperationResult:
 def _queryFilterByLists(list_ids: list[UUID]) -> DbOperationResult:
     sql = _getQueryFilterStmt(len(list_ids)) + ' ORDER BY -`rank` DESC, modified_on DESC;'
     parms = _getQueryFilterParms(list_ids)
-    return sql_engine.select(sql, parms, True)
+    return pymysql.commands.select(sql, parms)
 
 
 #------------------------------------------------------
@@ -193,7 +193,7 @@ def _modifyDbCommand(item: Item) -> DbOperationResult:
         item.created_on.isoformat()
     )
 
-    return sql_engine.modify(sql, parms)
+    return pymysql.commands.modify(sql, parms)
 
 
 #------------------------------------------------------
@@ -235,7 +235,7 @@ def _query(item_id: UUID) -> DbOperationResult:
         str(item_id)
     )
 
-    return sql_engine.select(sql, parms, False)
+    return pymysql.commands.select(sql, parms)
 
 
 
@@ -269,7 +269,7 @@ def _cmdUpdateItemComplete(item_id: UUID, complete: ItemComplete) -> DbOperation
     sql = 'UPDATE Items SET complete=%s WHERE id=%s'
     parms = (complete.value, str(item_id))
 
-    return sql_engine.modify(sql, parms)
+    return pymysql.commands.modify(sql, parms)
 
 
 #------------------------------------------------------
@@ -301,7 +301,7 @@ def _cmdDeleteItem(item_id: UUID) -> DbOperationResult:
         str(flask.g.client_id)
     )
 
-    return sql_engine.modify(sql, parms)
+    return pymysql.commands.modify(sql, parms)
 
 
 #------------------------------------------------------
@@ -358,7 +358,7 @@ def _cmdBatchUpdateItemRanks(items: list[Item]) -> DbOperationResult:
     # transform the list of items into a tuple
     parms = _itemsListToTuple(items)
 
-    return sql_engine.modify(sql, parms)
+    return pymysql.commands.modify(sql, parms)
 
 
 #------------------------------------------------------
@@ -468,7 +468,7 @@ def _cmdBatchDeleteItems(item_ids: list[UUID]) -> DbOperationResult:
     # get the parms
     parms = _getBatchDeleteSqlParms(item_ids)
 
-    return sql_engine.modify(sql, parms)
+    return pymysql.commands.modify(sql, parms)
 
 
 #------------------------------------------------------

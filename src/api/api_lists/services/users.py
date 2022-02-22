@@ -9,7 +9,8 @@ This module contains all the business logic for user services.
 from uuid import UUID, uuid4
 import flask
 from ..models import User
-from ..db_manager import commands as sql_engine, DbOperationResult
+import pymysql.commands
+from pymysql.structs import DbOperationResult
 from ..common import responses
 
 
@@ -68,7 +69,7 @@ def _insertIntoDatabase(new_user: User) -> DbOperationResult:
     sql = 'INSERT INTO Users (id, email, password) VALUES (%s, %s, %s)'
     parms = (str(new_user.id), new_user.email, new_user.password)
 
-    return sql_engine.modify(sql, parms)
+    return pymysql.commands.modify(sql, parms)
 
 
 #------------------------------------------------------
@@ -89,4 +90,4 @@ def queryDb(user_id: UUID) -> DbOperationResult:
     sql = 'SELECT * FROM View_Users u WHERE u.id = %s LIMIT 1'
     parms = (str(user_id),)
 
-    return sql_engine.select(sql, parms, False)
+    return pymysql.commands.select(sql, parms)
