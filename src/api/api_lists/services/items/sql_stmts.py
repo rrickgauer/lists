@@ -109,7 +109,7 @@ def generateBatchUpdateSqlStatement(num_items: int) -> str:
     # generate the string with all the tuples in it
     parms_str = _getBatchUpdateParmSqlString(num_items)
     
-    sql = TEMPLATE_BATCH_UPDATE.format(parms_str)
+    sql = TEMPLATE_BATCH_UPDATE.format(named_parms=parms_str)
 
     return sql
 

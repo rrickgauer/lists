@@ -52,7 +52,7 @@ def responsePostTag(list_id: UUID, tag_id: UUID) -> flask.Response:
     if not sql_result.successful:
         return responses.notFound()
 
-    tag = tag_services.cmdSelectSingle(tag_id).data
+    tag = tag_services.sql_commands.selectSingle(tag_id)
 
     return responses.created(tag)
 
