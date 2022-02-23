@@ -9,43 +9,27 @@ List tag services
 from __future__ import annotations
 from uuid import UUID
 import flask
-import pymysql.commands
-from pymysql.structs import DbOperationResult
 from ...common import responses
 from .. import tags as tag_services
-from . import sql_stmts
+from . import sql_commands
 
 
 #------------------------------------------------------
 # Retrieve all the tags assigned to the given list
 #------------------------------------------------------
 def responseGetTags(list_id: UUID) -> flask.Response:
-    sql_result = cmdSelectAll(list_id)
+    sql_result = sql_commands.selectAll(list_id)
     
     if not sql_result.successful:
         return responses.badRequest(str(sql_result.error))
 
     return responses.get(sql_result.data or [])
 
-
-#------------------------------------------------------
-# SQL command that selects all the tags assigned to the given list
-#------------------------------------------------------
-def cmdSelectAll(list_id: UUID) -> DbOperationResult:
-    sql = sql_stmts.SELECT_ALL
-    
-    parms = (
-        str(list_id),
-        str(flask.g.client_id)
-    )
-
-    return pymysql.commands.selectAll(sql, parms)
-
 #------------------------------------------------------
 # Respond to a request to delete all assigned tags for the given list
 #------------------------------------------------------
 def responseDeleteTags(list_id: UUID) -> flask.Response:
-    sql_result = cmdDeleteAll(list_id)
+    sql_result = sql_commands.deleteAll(list_id)
 
     if not sql_result.successful:
         return responses.badRequest(str(sql_result.error))
@@ -58,25 +42,12 @@ def responseDeleteTags(list_id: UUID) -> flask.Response:
     
     return responses.deleted()
 
-#------------------------------------------------------
-# SQL command to delete all tag assignments for the given list
-#------------------------------------------------------
-def cmdDeleteAll(list_id: UUID) -> DbOperationResult:
-    sql = sql_stmts.DELETE_ALL
-    
-    parms = (
-        str(list_id),
-        str(flask.g.client_id)
-    )
-
-    return pymysql.commands.modify(sql, parms)
-
 
 #------------------------------------------------------
 # Assign the given tag to the given list
 #------------------------------------------------------
 def responsePostTag(list_id: UUID, tag_id: UUID) -> flask.Response:
-    sql_result = cmdInsert(list_id, tag_id)
+    sql_result = sql_commands.insert(list_id, tag_id)
 
     if not sql_result.successful:
         return responses.notFound()
@@ -85,27 +56,11 @@ def responsePostTag(list_id: UUID, tag_id: UUID) -> flask.Response:
 
     return responses.created(tag)
 
-
-#------------------------------------------------------
-# SQL command to insert the new List_Tags record
-#------------------------------------------------------
-def cmdInsert(list_id: UUID, tag_id: UUID) -> DbOperationResult:
-    sql = sql_stmts.INSERT_SINGLE
-
-    parms = (
-        str(list_id),
-        str(tag_id),
-        str(flask.g.client_id)
-    )
-
-    return pymysql.commands.modify(sql, parms)
-
-
 #------------------------------------------------------
 # Delete a single tag assignment
 #------------------------------------------------------
 def responseDeleteTag(list_id: UUID, tag_id: UUID) -> flask.Response:
-    sql_result = cmdDeleteSingle(list_id, tag_id)
+    sql_result = sql_commands.delete(list_id, tag_id)
 
     if not sql_result.successful:
         return responses.badRequest(str(sql_result.error))
@@ -114,24 +69,4 @@ def responseDeleteTag(list_id: UUID, tag_id: UUID) -> flask.Response:
         return responses.notFound()
 
     return responses.deleted()
-
-
-#------------------------------------------------------
-# SQL command to delete a single tag assignment
-#------------------------------------------------------
-def cmdDeleteSingle(list_id: UUID, tag_id: UUID) -> DbOperationResult:
-    sql = sql_stmts.DELETE_SINGLE
-
-    parms = (
-        str(list_id),
-        str(tag_id),
-        str(flask.g.client_id)
-    )
-
-    return pymysql.commands.modify(sql, parms)
-
-
-
-
-
 
