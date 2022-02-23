@@ -10,81 +10,24 @@ from typing import Tuple
 from datetime import datetime
 from uuid import UUID, uuid4
 import flask
-import pymysql.commands
-from pymysql.structs import DbOperationResult
 from ...common import responses
 from ...models import Item, ItemComplete
 from .parser import BatchItemParserUpdate, ParseReturnCodes, BatchItemParserDelete
-
-SQL_SELECT_INIT = '''
-    SELECT * FROM View_Items vi
-    WHERE vi.list_id in (SELECT l.id FROM Lists l WHERE l.user_id = %s)
-'''
-
+from . import sql_commands as sql_engine
 
 #------------------------------------------------------
 # Response to a GET request for items
 #------------------------------------------------------
 def getItems(list_ids: list[UUID]=None) -> flask.Response:
     if not list_ids:
-        db_result = _queryAll()                     # return all the items
+        db_result = sql_engine.selectAll()                     # return all the items
     else:
-        db_result = _queryFilterByLists(list_ids)   # return the items that belong to the given lists
+        db_result = sql_engine.selectAllFromLists(list_ids)   # return the items that belong to the given lists
     
     if not db_result.successful:
         return responses.badRequest(db_result.error)
 
     return responses.get(db_result.data)
-    
-
-#------------------------------------------------------
-# Get all items from database
-#------------------------------------------------------
-def _queryAll() -> DbOperationResult:
-    sql = f'{SQL_SELECT_INIT} ORDER BY created_on DESC'
-    parms = (str(flask.g.client_id),)
-
-    return pymysql.commands.selectAll(sql, parms)
-
-
-#------------------------------------------------------
-# Get the items that are children of the given lists
-#------------------------------------------------------
-def _queryFilterByLists(list_ids: list[UUID]) -> DbOperationResult:
-    sql = _getQueryFilterStmt(len(list_ids)) + ' ORDER BY -`rank` DESC, modified_on DESC;'
-    parms = _getQueryFilterParms(list_ids)
-    return pymysql.commands.select(sql, parms)
-
-
-#------------------------------------------------------
-# Generate the select statement for _queryFilterByLists
-#------------------------------------------------------
-def _getQueryFilterStmt(num_lists) -> str:
-    result_stmt = SQL_SELECT_INIT + ' AND vi.list_id IN ({})'
-
-    first = True
-    sql = ''
-
-    for i in range(num_lists):
-        if not first:
-            sql += ','
-        else:
-            first = False
-        
-        sql += '%s'
-
-    return result_stmt.format(sql)
-
-#------------------------------------------------------
-# Generate the parms tuple required for the select stmt
-#------------------------------------------------------
-def _getQueryFilterParms(list_ids: list[UUID]) -> tuple:
-    id_string = []
-    
-    for list_id in list_ids:
-        id_string.append(str(list_id))
-    
-    return (str(flask.g.client_id),) + tuple(id_string)
 
 
 #------------------------------------------------------
@@ -115,13 +58,13 @@ def _modifyItemActions(item_id: UUID, request_body: dict) -> flask.Response:
         return responses.badRequest('Missing one of the required fields: list_id or content')
 
     # record the changes in the database
-    db_result = _modifyDbCommand(new_item)
+    db_result = sql_engine.modify(new_item)
 
     if not db_result.successful:
-        return responses.badRequest(db_result.error)
+        return responses.badRequest(str(db_result.error))
 
     # retrieve the list object from the database that contains all the updated values
-    response_data = _query(new_item.id)
+    response_data = sql_engine.selectSingle(new_item.id)
 
     # determine the appropriate return code we need to send back
     response_function = _determineResponseFunction(db_result.data)
@@ -170,31 +113,6 @@ def _parseCompleteDictFIeld(item_dict: dict) -> ItemComplete:
     return item_complete
 
 
-#------------------------------------------------------
-# SQL command that either inserts a new list, or updates
-# an exiting record's name if it already exists.
-#------------------------------------------------------
-def _modifyDbCommand(item: Item) -> DbOperationResult:
-    sql = '''
-        INSERT INTO Items (id, list_id, content, `rank`, complete, created_on) 
-        VALUES (%s, %s, %s, %s, %s, %s)
-        ON DUPLICATE KEY UPDATE 
-        content  = VALUES(content),
-        complete = VALUES(complete),
-        `rank`     = VALUES(`rank`);
-    '''
-
-    parms = (
-        str(item.id),
-        str(item.list_id),
-        item.content,
-        item.rank,
-        item.complete.value,
-        item.created_on.isoformat()
-    )
-
-    return pymysql.commands.modify(sql, parms)
-
 
 #------------------------------------------------------
 # Determine the appropriate response function to use 
@@ -203,7 +121,7 @@ def _modifyDbCommand(item: Item) -> DbOperationResult:
 # If rows_affected = 1 then return a created response code
 # Otherwise, return an updated response code.
 #
-# Returns a function.
+# Returns a response function.
 #------------------------------------------------------
 def _determineResponseFunction(rows_affected: int):
     if rows_affected == 1:
@@ -216,28 +134,12 @@ def _determineResponseFunction(rows_affected: int):
 # Response to a GET request for a single item
 #------------------------------------------------------
 def getItem(item_id: UUID) -> flask.Response:
-    db_result = _query(item_id)
+    db_result = sql_engine.selectSingle(item_id)
 
     if not db_result.successful:
         return responses.badRequest(db_result.error)
 
     return responses.get(db_result.data)
-
-
-#------------------------------------------------------
-# Retrieve the given item from the database
-#------------------------------------------------------
-def _query(item_id: UUID) -> DbOperationResult:
-    sql = f'{SQL_SELECT_INIT} AND vi.id = %s LIMIT 1;'
-    
-    parms = (
-        str(flask.g.client_id),
-        str(item_id)
-    )
-
-    return pymysql.commands.select(sql, parms)
-
-
 
 #------------------------------------------------------
 # Update a single item's complete value.
@@ -254,7 +156,7 @@ def updateItemComplete(item_id: UUID, request_method: str) -> flask.Response:
         return_method = responses.deleted
     
 
-    db_result = _cmdUpdateItemComplete(item_id, item_complete)
+    db_result = sql_engine.updateComplete(item_id, item_complete)
 
     if not db_result.successful:
         return responses.badRequest(db_result.error)
@@ -263,20 +165,10 @@ def updateItemComplete(item_id: UUID, request_method: str) -> flask.Response:
 
 
 #------------------------------------------------------
-# Retrieve the given item from the database
-#------------------------------------------------------
-def _cmdUpdateItemComplete(item_id: UUID, complete: ItemComplete) -> DbOperationResult:
-    sql = 'UPDATE Items SET complete=%s WHERE id=%s'
-    parms = (complete.value, str(item_id))
-
-    return pymysql.commands.modify(sql, parms)
-
-
-#------------------------------------------------------
 # Delete the given item
 #------------------------------------------------------
 def deleteItem(item_id: UUID) -> flask.Response:
-    db_result = _cmdDeleteItem(item_id)
+    db_result = sql_engine.delete(item_id)
 
     if not db_result.successful:
         return responses.badRequest(db_result.error)
@@ -286,23 +178,6 @@ def deleteItem(item_id: UUID) -> flask.Response:
         return responses.notFound()
 
     return responses.deleted()
-
-#------------------------------------------------------
-# Execute a sql command to delete the given item
-#------------------------------------------------------
-def _cmdDeleteItem(item_id: UUID) -> DbOperationResult:
-    sql = '''
-        DELETE FROM Items WHERE id=%s
-        AND EXISTS (SELECT 1 FROM Lists l WHERE l.user_id=%s)
-    '''
-
-    parms = (
-        str(item_id), 
-        str(flask.g.client_id)
-    )
-
-    return pymysql.commands.modify(sql, parms)
-
 
 #------------------------------------------------------
 # Execute a sql command to delete the given item
@@ -320,7 +195,7 @@ def patchItems(flask_request: flask.Request) -> flask.Response:
 
 
     # save updates in the database
-    db_result = _cmdBatchUpdateItemRanks(items)
+    db_result = sql_engine.updateRanks(items)
 
     if not db_result.successful:
         return responses.badRequest(db_result.error)
@@ -347,67 +222,6 @@ def _parseBatchUpdateRequestData(flask_request: flask.Request) -> Tuple[ParseRet
 
     return (parsing_result, parser.items)
 
-   
-#------------------------------------------------------
-# Execute the sql command to batch update item ranks
-#------------------------------------------------------
-def _cmdBatchUpdateItemRanks(items: list[Item]) -> DbOperationResult:
-    # generate the update sql statement
-    sql = _generateBatchUpdateSqlStatement(items)
-
-    # transform the list of items into a tuple
-    parms = _itemsListToTuple(items)
-
-    return pymysql.commands.modify(sql, parms)
-
-
-#------------------------------------------------------
-# Generate the sql batch rank update statement
-#------------------------------------------------------
-def _generateBatchUpdateSqlStatement(items: list[Item]) -> str:
-    # generate the string with all the tuples in it
-    parms_str = _getBatchUpdateParmSqlString(items)
-    
-    sql = f'INSERT INTO Items (id, `rank`) VALUES {parms_str} ON DUPLICATE KEY UPDATE `rank`=values(`rank`);'
-
-    return sql
-
-
-#------------------------------------------------------
-# Generate a the parameter portion (%s, %s) of the batch 
-# update sql string with the given number of items
-#
-# Args:
-#   num_items: number of (%s, %s) elements to add to the string
-#------------------------------------------------------
-def _getBatchUpdateParmSqlString(items: list[Item]) -> str:
-    first = True
-    sql = ''
-
-    for i in items:
-        if not first:
-            sql += ', '
-        else:
-            first = False
-        
-        sql += '(%s, %s)'
-
-
-    return sql
-
-
-#------------------------------------------------------
-# Transform the given list of items into a tuple 
-# for the batch update sql statement.
-#------------------------------------------------------
-def _itemsListToTuple(items: list[Item]) -> tuple:
-    tuple_list = []
-
-    for item in items:
-        tuple_list.append(str(item.id))
-        tuple_list.append(item.rank)
-
-    return tuple(tuple_list)
 
 #------------------------------------------------------
 # Respond to a request to do a batch delete of existing items
@@ -424,7 +238,7 @@ def batchDeleteItems(flask_request: flask.Request) -> flask.Response:
         return responses.deleted()
 
     # delete the items from the database
-    sql_result = _cmdBatchDeleteItems(item_ids)
+    sql_result = sql_engine.deleteBatch(item_ids)
 
     if not sql_result.successful:
         return responses.badRequest(sql_result.error)
@@ -457,54 +271,5 @@ def _parseBatchDeleteRequestBody(request: flask.Request) -> Tuple[list[UUID], st
         
     return (parser.items, None)
 
-
-#------------------------------------------------------
-# Delete the given list of item ids from the database
-#------------------------------------------------------
-def _cmdBatchDeleteItems(item_ids: list[UUID]) -> DbOperationResult:
-    # generate the sql statement for the delete command
-    sql = _generateBatchDeleteSqlStmt(len(item_ids))
-
-    # get the parms
-    parms = _getBatchDeleteSqlParms(item_ids)
-
-    return pymysql.commands.modify(sql, parms)
-
-
-#------------------------------------------------------
-# Generate the sql statement for the batch delete command
-# Every item to be deleted needs to have a corresponding '%s' in the statement
-#
-# Args:
-#   num_items: number of items to be deleted
-#
-# Returns a str: the delete sql statement
-#------------------------------------------------------
-def _generateBatchDeleteSqlStmt(num_items: int) -> str:
-    sql = '''
-        DELETE FROM Items i 
-        WHERE i.id IN (%s{remaining}) 
-        AND i.list_id IN (SELECT l.id FROM Lists l WHERE l.user_id=%s)
-    '''
-
-    # create '%s' string of all items besides first 1 since 
-    # it's already in the string created above
-    percents = ', %s' * (num_items - 1)
-    sql = sql.format(remaining=percents)
-
-    return sql
-
-#------------------------------------------------------
-# Generate the paramter tuple for the batch delete sql command
-# Tuple is all the item_id's and then the client_id
-#------------------------------------------------------
-def _getBatchDeleteSqlParms(item_ids: list[UUID]) -> tuple:
-    # convert all the item_id UUID's into strings
-    str_ids = tuple(map(lambda item_id: str(item_id) , item_ids))
-    
-    # parms are all the item_id's then the client_id
-    parms = (*str_ids, str(flask.g.client_id))
-
-    return parms
 
 

@@ -1,6 +1,10 @@
+"""
+**********************************************************************************
+All the SQL statements for selecting/modifying Tags in the database
+**********************************************************************************
+"""
 
-# This module contains all the sql statements for tags
-
+# Select all tags owned by a user
 SELECT_ALL = '''
     SELECT * FROM View_Tags vt
     WHERE EXISTS (
@@ -11,6 +15,7 @@ SELECT_ALL = '''
     ORDER BY vt.name ASC;
 '''
 
+# Select a single tag
 SELECT_SINGLE = '''
     SELECT * FROM View_Tags vt
     WHERE EXISTS (
@@ -22,8 +27,8 @@ SELECT_SINGLE = '''
     ORDER BY vt.name ASC;
 '''
 
-
-INSERT_UPDATE = '''
+# Insert or update a tag - depends on whether it exists already
+MODIFY = '''
     INSERT INTO Tags (id, name, color, created_on, user_id) 
     VALUES (%s, %s, %s, %s, %s)
     ON DUPLICATE KEY UPDATE
@@ -31,11 +36,11 @@ INSERT_UPDATE = '''
     color = VALUES(color);
 '''
 
-
-DELETE_SINGLE = '''
+# Delete a tag
+DELETE = '''
     DELETE FROM Tags t 
     WHERE t.id = %s
-    AND t.user_id = %s
+    AND t.user_id = %s;
 '''
 
 
