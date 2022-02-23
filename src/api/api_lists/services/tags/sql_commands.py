@@ -1,4 +1,8 @@
-
+"""
+**********************************************************************************
+All the sql commands for Tags
+**********************************************************************************
+"""
 
 from uuid import UUID
 import flask
@@ -17,13 +21,13 @@ def selectAll() -> DbOperationResult:
     return pymysql.commands.selectAll(sql, parms)
 
 
-
 #------------------------------------------------------
 # Sql command to create a new tag or update an existing one
 #------------------------------------------------------
 def modify(tag: Tag) -> DbOperationResult:
     parms = _getModifyParmsTuple(tag)
-    return pymysql.commands.modify(sql_statements.INSERT_UPDATE, parms)
+    return pymysql.commands.modify(sql_statements.MODIFY, parms)
+
 
 #------------------------------------------------------
 # Transform the given Tag object into the required tuple for inserting/updating sql command
@@ -41,7 +45,7 @@ def _getModifyParmsTuple(tag: Tag) -> tuple:
 #------------------------------------------------------
 # Fetch the tag record that has the given tag_id
 #------------------------------------------------------
-def cmdSelectSingle(tag_id: UUID) -> DbOperationResult:
+def selectSingle(tag_id: UUID) -> DbOperationResult:
     sql = sql_statements.SELECT_SINGLE
     parms = (
         str(flask.g.client_id),
@@ -50,14 +54,11 @@ def cmdSelectSingle(tag_id: UUID) -> DbOperationResult:
 
     return pymysql.commands.select(sql, parms)
 
-
-
-
 #------------------------------------------------------
 # Delete the tag record with the matching tag_id
 #------------------------------------------------------
-def cmdDeleteSingle(tag_id: UUID) -> DbOperationResult:
-    sql = sql_statements.DELETE_SINGLE
+def delete(tag_id: UUID) -> DbOperationResult:
+    sql = sql_statements.DELETE
 
     parms = (
         str(tag_id),

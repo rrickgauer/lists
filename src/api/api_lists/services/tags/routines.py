@@ -12,6 +12,7 @@ from ...common import responses
 from ...models import Tag
 from . import sql_commands
 
+
 # Possible error messages to return for a bad request
 class ErrorMessages(str, Enum):
     POST_MISSING_FIELDS = 'Missing a required field: name or tag'
@@ -27,8 +28,7 @@ def responseGetAllTags() -> flask.Response:
         return responses.badRequest(sql_result.error)
     
     return responses.get(sql_result.data)
-
-
+    
 
 #------------------------------------------------------
 # Respond to a POST /tags request
@@ -57,7 +57,7 @@ def _responsePutPostTag(tag_id: UUID, flask_request_form: dict, responses_method
         return responses.badRequest(error_message)
 
     # return the response used for a GET request for a single tag
-    tag_view_table = sql_commands.cmdSelectSingle(tag_id).data
+    tag_view_table = sql_commands.selectSingle(tag_id).data
     return responses_method(tag_view_table)
 
 #------------------------------------------------------
@@ -124,7 +124,7 @@ def isTagValidForModify(tag: Tag) -> bool:
 #------------------------------------------------------
 def responseGetSingleTag(tag_id: UUID) -> flask.Response:
     # fetch the tag record from the database
-    sql_result = sql_commands.cmdSelectSingle(tag_id)
+    sql_result = sql_commands.selectSingle(tag_id)
 
     # sql error
     if not sql_result.successful:
@@ -141,7 +141,7 @@ def responseGetSingleTag(tag_id: UUID) -> flask.Response:
 #------------------------------------------------------
 def responseDeleteTag(tag_id: UUID) -> flask.Response:
     # delete the record from the database
-    sql_result = sql_commands.cmdDeleteSingle(tag_id)
+    sql_result = sql_commands.delete(tag_id)
 
     # make sure the sql command was correct
     if not sql_result.successful:
