@@ -47,8 +47,6 @@ def getUserID(email: str, password: str) -> str | None:
 
         db_return = pymysql.commands.select(sql, parms)
 
-        print(db_return)
-
         return db_return.data.get('id')
     except Exception as e:
         print(e)
