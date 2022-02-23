@@ -8,11 +8,9 @@ from enum import Enum
 from datetime import datetime
 from uuid import UUID, uuid4
 import flask
-import pymysql.commands
-from pymysql.structs import DbOperationResult
 from ...common import responses
 from ...models import Tag
-from . import sql_statements
+from . import sql_commands
 
 # Possible error messages to return for a bad request
 class ErrorMessages(str, Enum):
@@ -23,21 +21,13 @@ class ErrorMessages(str, Enum):
 # Get all tags response
 #------------------------------------------------------
 def responseGetAllTags() -> flask.Response:
-    sql_result = cmdSelectAll()
+    sql_result = sql_commands.selectAll()
 
     if not sql_result.successful:
         return responses.badRequest(sql_result.error)
     
     return responses.get(sql_result.data)
 
-#------------------------------------------------------
-# Get all the user's tags from the database
-#------------------------------------------------------
-def cmdSelectAll() -> DbOperationResult:
-    sql = sql_statements.SELECT_ALL
-    parms = (str(flask.g.client_id), )
-
-    return pymysql.commands.selectAll(sql, parms)
 
 
 #------------------------------------------------------
@@ -67,7 +57,7 @@ def _responsePutPostTag(tag_id: UUID, flask_request_form: dict, responses_method
         return responses.badRequest(error_message)
 
     # return the response used for a GET request for a single tag
-    tag_view_table = cmdSelectSingle(tag_id).data
+    tag_view_table = sql_commands.cmdSelectSingle(tag_id).data
     return responses_method(tag_view_table)
 
 #------------------------------------------------------
@@ -86,7 +76,7 @@ def modifyTag(tag_id: UUID, tag_dict: dict) -> Tuple[bool, str]:
         return (False, ErrorMessages.POST_MISSING_FIELDS)
 
     # insert it into the database
-    sql_result = cmdModify(new_tag)
+    sql_result = sql_commands.modify(new_tag)
 
     if not sql_result.successful:
         return (False, str(sql_result.error))
@@ -128,31 +118,13 @@ def isTagValidForModify(tag: Tag) -> bool:
     else:
         return True
 
-#------------------------------------------------------
-# Sql command to create a new tag or update an existing one
-#------------------------------------------------------
-def cmdModify(tag: Tag) -> DbOperationResult:
-    parms = cmdInsertGetParmsTuple(tag)
-    return pymysql.commands.modify(sql_statements.INSERT_UPDATE, parms)
-
-#------------------------------------------------------
-# Transform the given Tag object into the required tuple for inserting/updating sql command
-#------------------------------------------------------
-def cmdInsertGetParmsTuple(tag: Tag) -> tuple:
-    return (
-        str(tag.id),
-        tag.name,
-        tag.color,
-        tag.created_on,
-        str(tag.user_id)
-    )
 
 #------------------------------------------------------
 # Respond to a get request for a single tag
 #------------------------------------------------------
 def responseGetSingleTag(tag_id: UUID) -> flask.Response:
     # fetch the tag record from the database
-    sql_result = cmdSelectSingle(tag_id)
+    sql_result = sql_commands.cmdSelectSingle(tag_id)
 
     # sql error
     if not sql_result.successful:
@@ -165,23 +137,11 @@ def responseGetSingleTag(tag_id: UUID) -> flask.Response:
     return responses.get(sql_result.data)
 
 #------------------------------------------------------
-# Fetch the tag record that has the given tag_id
-#------------------------------------------------------
-def cmdSelectSingle(tag_id: UUID) -> DbOperationResult:
-    sql = sql_statements.SELECT_SINGLE
-    parms = (
-        str(flask.g.client_id),
-        str(tag_id),
-    )
-
-    return pymysql.commands.select(sql, parms)
-
-#------------------------------------------------------
 # Respond to a delete request for a single tag
 #------------------------------------------------------
 def responseDeleteTag(tag_id: UUID) -> flask.Response:
     # delete the record from the database
-    sql_result = cmdDeleteSingle(tag_id)
+    sql_result = sql_commands.cmdDeleteSingle(tag_id)
 
     # make sure the sql command was correct
     if not sql_result.successful:
@@ -197,15 +157,3 @@ def responseDeleteTag(tag_id: UUID) -> flask.Response:
     return responses.deleted()
 
 
-#------------------------------------------------------
-# Delete the tag record with the matching tag_id
-#------------------------------------------------------
-def cmdDeleteSingle(tag_id: UUID) -> DbOperationResult:
-    sql = sql_statements.DELETE_SINGLE
-
-    parms = (
-        str(tag_id),
-        str(flask.g.client_id)
-    )
-
-    return pymysql.commands.modify(sql, parms)
