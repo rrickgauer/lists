@@ -8,9 +8,16 @@ from enum import Enum
 from datetime import datetime
 from uuid import UUID, uuid4
 import flask
+from colour import Color
 from ...common import responses
 from ...models import Tag
 from . import sql_commands
+
+
+# Text color values
+class TextColors(str, Enum):
+    WHITE = '#ffffff'
+    BLACK = '#000000'
 
 
 # Possible error messages to return for a bad request
@@ -34,7 +41,7 @@ def responseGetAllTags() -> flask.Response:
 # Respond to a POST /tags request
 #------------------------------------------------------
 def responsePostTag(flask_request: flask.Request) -> flask.Response:
-    new_tag_id = uuid4()
+    new_tag_id = uuid4()    # new tags get an auto-generated UUID
     request_form = flask_request.form.to_dict()
     return _responsePutPostTag(new_tag_id, request_form, responses.created)
 
@@ -58,10 +65,11 @@ def _responsePutPostTag(tag_id: UUID, flask_request_form: dict, responses_method
 
     # return the response used for a GET request for a single tag
     tag_view_table = sql_commands.selectSingle(tag_id).data
+
     return responses_method(tag_view_table)
 
 #------------------------------------------------------
-# Modify the tag record with the given tag_id to have the values fo the dict passed in
+# Modify the tag record with the given tag_id to have the values of the dict passed in
 #
 # Returns a tuple:
 #   bool: successful - whether or not the database record was successfully updated
@@ -75,6 +83,9 @@ def modifyTag(tag_id: UUID, tag_dict: dict) -> Tuple[bool, str]:
     if not isTagValidForModify(new_tag):
         return (False, ErrorMessages.POST_MISSING_FIELDS)
 
+    # figure out what the color_text value should be, and set it
+    new_tag.color_text = getColorTextValue(new_tag.color).value
+
     # insert it into the database
     sql_result = sql_commands.modify(new_tag)
 
@@ -83,9 +94,8 @@ def modifyTag(tag_id: UUID, tag_dict: dict) -> Tuple[bool, str]:
 
     return (True, None)
 
-
 #------------------------------------------------------
-# create a new Tag object from the request body data
+# Create a new Tag object from the request body data dict
 #------------------------------------------------------
 def setupNewTagObject(tag_id: UUID, request_form: dict) -> Tag:
     new_tag = dictToTag(request_form)
@@ -109,6 +119,7 @@ def setExistingTagObjectField(new_tag: Tag, tag_id: UUID):
     new_tag.created_on = datetime.now()
     new_tag.user_id    = flask.g.client_id
 
+
 #------------------------------------------------------
 # Request must contain name and color fields 
 #------------------------------------------------------
@@ -117,6 +128,28 @@ def isTagValidForModify(tag: Tag) -> bool:
         return False
     else:
         return True
+
+#------------------------------------------------------
+# Determine the color_text value of a tag, given its color
+#
+# Args:
+#   tag_color - the tag's color as a hex string
+#------------------------------------------------------
+def getColorTextValue(tag_color: str) -> TextColors:
+    # default to black
+    text_color = TextColors.BLACK
+
+    try:
+        pycolor = Color(tag_color)
+        hue, saturation, luminance = pycolor.get_hsl()
+
+        if luminance < .5:
+            text_color = TextColors.WHITE
+
+    except Exception as e:
+        print(e)
+
+    return text_color
 
 
 #------------------------------------------------------

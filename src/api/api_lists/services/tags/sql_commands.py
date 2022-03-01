@@ -31,12 +31,21 @@ def modify(tag: Tag) -> DbOperationResult:
 
 #------------------------------------------------------
 # Transform the given Tag object into the required tuple for inserting/updating sql command
+#
+# Returns a tuple with these elements:
+#   0) tag.id
+#   1) tag.name
+#   2) tag.color
+#   3) tag.color_text
+#   4) tag.created_on
+#   5) tag.user_id
 #------------------------------------------------------
 def _getModifyParmsTuple(tag: Tag) -> tuple:
     return (
         str(tag.id),
         tag.name,
         tag.color,
+        tag.color_text,
         tag.created_on,
         str(tag.user_id)
     )

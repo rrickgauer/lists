@@ -10,7 +10,7 @@ export class Tag
         this.color      = null;
         this.created_on = null;
         this.user_id    = null;
-        this.text_color = null;
+        this.color_text = null;
 
         for (const key in this) {
             if (newTagObject.hasOwnProperty(key)) {

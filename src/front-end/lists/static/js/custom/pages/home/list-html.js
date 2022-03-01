@@ -53,7 +53,6 @@ export class ListHtml
         apiResponses - object with all 3 request responses
     **********************************************************/
     async sendApiRequests() {
-
         const returnVal = {
             successful: true,
         }

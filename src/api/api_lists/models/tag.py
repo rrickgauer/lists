@@ -13,6 +13,7 @@ class Tag:
     id         : UUID    = None
     name       : str     = None
     color      : str     = None
+    color_text : str     = None
     created_on: datetime = None
     user_id    : UUID    = None
 
