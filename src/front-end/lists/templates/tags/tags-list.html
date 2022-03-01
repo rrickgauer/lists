@@ -7,6 +7,7 @@ Incoming data:
 - id
 - name
 - color
+- color_text
 - created_on
 #}
 
@@ -17,7 +18,7 @@ Incoming data:
     <li class="list-group-item tags-list-group-item" data-tag-id="{{tag.id}}">
         <!-- tag display section -->
         <div class="tags-list-group-item-display">
-            <span class="badge badge-pill tag-badge {{ tag.text_color }} user-select-all" style="background-color: {{tag.color}};">{{tag.name}}</span>
+            <span class="badge badge-pill tag-badge {{ tag.text_color }} user-select-all" style="background-color: {{tag.color}}; color: {{tag.color_text}};">{{tag.name}}</span>
 
             <div>
                 <button type="button" class="tags-list-group-item-btn-edit btn btn-sm btn-gray">Edit</button>

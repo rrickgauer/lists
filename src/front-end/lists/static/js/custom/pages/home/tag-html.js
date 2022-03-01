@@ -26,11 +26,12 @@ export class TagHtml
 
 
     getHtml() {
-        const classes = `badge badge-pill ${TagHtml.Elements.CONTAINER} ${this.tag.text_color} mx-1`;
-        const style = `background-color: ${this.tag.color};`;
+        const classes = `badge badge-pill ${TagHtml.Elements.CONTAINER} ${this.tag.color_text} mx-1`;
+        const styleBg = `background-color: ${this.tag.color};`;
+        const styleTextColor = `color: ${this.tag.color_text};`;
 
         const html = `
-        <span class="${classes}" style="${style}" data-tag-id="${this.tag.id}">
+        <span class="${classes}" style="${styleBg} ${styleTextColor}" data-tag-id="${this.tag.id}">
             ${this.tag.name}
         </span>`;
 

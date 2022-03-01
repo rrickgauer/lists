@@ -25,7 +25,7 @@ export default function addSidenavListeners() {
         toggleSidenav();
     }); 
 
-    // sidebar clicking on a list
+    // open a list from the sidebar
     $('#lists-container').on('click', '.list-group-item-action', function() {
         activateList(this);
     });

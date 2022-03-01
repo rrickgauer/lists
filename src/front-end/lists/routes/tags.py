@@ -34,7 +34,7 @@ def tagsHome():
     except:
         tags = []
 
-    tag_services.calculateTextColors(tags)
+    # tag_services.calculateTextColors(tags)
 
     payload = dict(
         tags = tags
